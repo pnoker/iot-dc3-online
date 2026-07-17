@@ -22,6 +22,16 @@
       </a>
     </div>
 
+    <!-- AdSense responsive banner -->
+    <div class="adsense-wrap">
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-7573143232245283"
+        data-ad-slot=""
+        data-ad-format="horizontal"
+        data-full-width-responsive="false"></ins>
+    </div>
+
     <!-- full-width sparkline -->
     <div class="sparkline-wrap">
       <canvas ref="sparkCanvas" class="sparkline-canvas" />
@@ -156,6 +166,8 @@ onMounted(() => {
   ro = new ResizeObserver(resize)
   const p = sparkCanvas.value?.parentElement; if (p) ro.observe(p)
   document.addEventListener('visibilitychange', onVis); start()
+  // AdSense manual placement
+  try { (window as any).adsbygoogle?.push({}) } catch (_) { /* ad-blocker or not loaded */ }
 })
 onBeforeUnmount(() => {
   stop(); ro?.disconnect(); document.removeEventListener('visibilitychange', onVis); ctx = null
@@ -235,6 +247,18 @@ onBeforeUnmount(() => {
 
 .card-chevron { flex-shrink: 0; color: var(--vp-c-text-3); transition: all 0.4s; opacity: 0.4; }
 .nav-card:hover .card-chevron { color: var(--vp-c-brand-1); transform: translateX(2px); opacity: 1; }
+
+/* ── adsense ── */
+.adsense-wrap {
+  max-width: 680px;
+  width: calc(100% - 3rem);
+  margin: 0 auto;
+  padding: 0.5rem 0 0.75rem;
+  display: flex; justify-content: center;
+  opacity: 0.55;
+  transition: opacity 0.35s;
+}
+.adsense-wrap:hover { opacity: 1; }
 
 /* ── sparkline: full-width breakout ── */
 .sparkline-wrap {
