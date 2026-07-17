@@ -1,25 +1,24 @@
 :root {
-  --vp-c-bg: #080b11;
-  --vp-c-bg-soft: #0d1117;
-  --vp-c-bg-alt: #0d1117;
-  --vp-c-text-1: #e8e8ed;
-  --vp-c-text-2: rgba(255,255,255,0.55);
-  --vp-c-brand-1: #1296db;
-  --vp-c-brand-2: #0e7fc0;
-  --vp-c-brand-3: #22c5e8;
+  --vp-c-brand-1: #4fb0f2;
+  --vp-c-brand-2: #38a0e8;
+  --vp-c-brand-3: #1f8ad4;
+  --vp-c-bg: #0f1620;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body {
-  background: #080b11;
-  color: #e8e8ed;
+  background: #0f1620;
+  color: #e8eef6;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* hide vitepress default chrome */
-.VPNav, .VPFooter, .VPLocalSearchBox, .DocSearch { display: none !important; }
+/* Hide VitePress default chrome */
+.VPNav, .VPFooter, .VPLocalSearchBox { display: none !important; }
 .VPContent { padding: 0 !important; }
+
+/* HeroParticles needs position:relative on the hero element to position its canvas */
+.VPHero { position: relative; overflow: hidden; }
