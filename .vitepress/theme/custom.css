@@ -1,24 +1,16 @@
-:root {
-  --vp-c-brand-1: #4fb0f2;
-  --vp-c-brand-2: #38a0e8;
-  --vp-c-brand-3: #1f8ad4;
-  --vp-c-bg: #0f1620;
-}
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body {
-  background: #0f1620;
-  color: #e8eef6;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #0f1620;
+  transition: background 0.5s;
 }
+
+html.light, html.light body { background: #f5f7fa; }
 
 /* Hide VitePress default chrome */
 .VPNav, .VPFooter, .VPLocalSearchBox { display: none !important; }
 .VPContent { padding: 0 !important; }
-
-/* HeroParticles needs position:relative on the hero element to position its canvas */
-.VPHero { position: relative; overflow: hidden; }
