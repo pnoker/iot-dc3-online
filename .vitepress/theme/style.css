@@ -139,6 +139,13 @@ body {
     line-height: 1.15;
 }
 
+.VPHero .tagline {
+    max-width: 660px;
+    color: var(--vp-c-text-2);
+    font-size: clamp(15px, 1.6vw, 17px);
+    line-height: 1.72;
+}
+
 .VPHero .image-container {
     transform: none !important;
 }
@@ -147,10 +154,6 @@ body {
     display: none;
 }
 
-/* hide tagline since it's rendered in CardNav */
-.VPHero .tagline {
-    display: none;
-}
 
 .VPHome {
     padding-bottom: 0;
