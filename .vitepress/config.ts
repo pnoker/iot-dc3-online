@@ -30,7 +30,7 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh-CN',
       themeConfig: {
-        footer: {message: 'Copyright © 2017-2026 pnoker'},
+        footer: {message: 'Copyright © 2016 ～ 2026 张红元'},
         socialLinks: [
           {icon: 'github', link: 'https://github.com/pnoker/iot-dc3'},
           {icon: 'gitee', link: 'https://gitee.com/pnoker/iot-dc3'},
@@ -42,7 +42,7 @@ export default defineConfig({
       label: 'English',
       lang: 'en-US',
       themeConfig: {
-        footer: {message: 'Copyright © 2017-2026 pnoker'},
+        footer: {message: 'Copyright © 2016 ~ 2026 Henry'},
         socialLinks: [
           {icon: 'github', link: 'https://github.com/pnoker/iot-dc3'},
           {icon: 'gitee', link: 'https://gitee.com/pnoker/iot-dc3'},
