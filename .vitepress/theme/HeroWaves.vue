@@ -102,7 +102,7 @@ function resize() {
 let ro: ResizeObserver | null = null
 
 function init() {
-  hero = document.querySelector('.shell') as HTMLElement | null
+  hero = document.querySelector('.VPHero') as HTMLElement | null
   if (!hero) return
   hero.style.position = 'relative'
   hero.querySelectorAll('.hero-waves-canvas').forEach(n => n.remove())
@@ -125,7 +125,7 @@ onMounted(() => {
   reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
   let tries = 0
   const tick = () => {
-    if (document.querySelector('.shell')) {
+    if (document.querySelector('.VPHero')) {
       init()
       return
     }
