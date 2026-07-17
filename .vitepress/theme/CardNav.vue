@@ -12,11 +12,16 @@
         </span>
       </a>
     </nav>
+
+    <!-- sparkline chart -->
+    <div class="sparkline-container">
+      <canvas ref="sparkCanvas" class="sparkline-canvas" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import {computed, onBeforeUnmount, onMounted, ref} from 'vue'
 import {useData} from 'vitepress'
 
 const {lang} = useData()
@@ -53,20 +58,178 @@ const row1 = computed(() => [
   {key: 'demo', icon: '🎮', url: 'https://demo.dc3.site', label: d.value.demo.label, desc: d.value.demo.desc},
 ])
 
+/* ── sparkline canvas ── */
+const sparkCanvas = ref<HTMLCanvasElement | null>(null)
+let raf = 0, ctx: CanvasRenderingContext2D | null = null
+let running = false, reduced = false
+let w = 0, h = 0, dpr = 1
+let phase = 0
+
+// Generate smooth data points using layered sine waves
+function genPoints(n: number, t: number, freqMul: number, ampMul: number, baseY: number): number[] {
+  const pts: number[] = []
+  for (let i = 0; i < n; i++) {
+    const x = i / (n - 1)
+    // combine multiple sine waves for a natural-looking signal
+    let y = 0
+    y += Math.sin(x * Math.PI * 1.7 * freqMul + t * 0.7) * 0.5
+    y += Math.cos(x * Math.PI * 2.3 * freqMul + t * 1.1) * 0.25
+    y += Math.sin(x * Math.PI * 4.1 * freqMul + t * 0.5) * 0.15
+    y = y * ampMul + baseY
+    pts.push(y)
+  }
+  return pts
+}
+
+function paint(t: number) {
+  if (!ctx || !w || !h) return
+  ctx.clearRect(0, 0, w, h)
+
+  const n = Math.max(40, Math.floor(w / 6))
+  const top = h * 0.05
+  const bot = h * 0.95
+  const mid = (top + bot) / 2
+  const amp = (bot - top) * 0.42
+
+  // draw subtle grid dots
+  const isDark = document.documentElement.classList.contains('dark')
+  ctx.fillStyle = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.05)'
+  for (let i = 0; i < n; i += 6) {
+    const gx = (i / (n - 1)) * w
+    for (let r = 0.2; r <= 0.8; r += 0.3) {
+      ctx.beginPath()
+      ctx.arc(gx, top + (bot - top) * r, 0.8, 0, Math.PI * 2)
+      ctx.fill()
+    }
+  }
+
+  // ── background line (more transparent, slower) ──
+  drawLine(genPoints(n, t * 0.3, 0.7, amp * 0.8, mid), n, 'rgba(18,150,219,0.06)', 0.8)
+
+  // ── middle line ──
+  drawLine(genPoints(n, t * 0.55, 1.0, amp * 0.9, mid), n, 'rgba(18,150,219,0.10)', 1.0)
+
+  // ── main line ──
+  const mainPts = genPoints(n, t * 0.8, 1.3, amp, mid)
+  drawLine(mainPts, n, 'rgba(18,150,219,0.28)', 1.4)
+
+  // ── area fill under main line ──
+  drawArea(mainPts, n, top, bot)
+
+  // ── highlight dots at peaks ──
+  for (let i = 1; i < n - 1; i++) {
+    if (mainPts[i] > mainPts[i-1] && mainPts[i] > mainPts[i+1] && mainPts[i] < mid + amp * 0.85) {
+      ctx.beginPath()
+      ctx.fillStyle = 'rgba(18,150,219,0.42)'
+      ctx.arc((i / (n - 1)) * w, mainPts[i], 2.2, 0, Math.PI * 2)
+      ctx.fill()
+    }
+  }
+}
+
+function drawLine(pts: number[], n: number, color: string, lw: number) {
+  if (!ctx) return
+  ctx.beginPath()
+  ctx.strokeStyle = color
+  ctx.lineWidth = lw
+  ctx.lineJoin = 'round'
+  ctx.lineCap = 'round'
+  for (let i = 0; i < n; i++) {
+    const sx = (i / (n - 1)) * w
+    const sy = pts[i]
+    if (i === 0) ctx.moveTo(sx, sy)
+    else ctx.lineTo(sx, sy)
+  }
+  ctx.stroke()
+}
+
+function drawArea(pts: number[], n: number, top: number, bot: number) {
+  if (!ctx) return
+  ctx.beginPath()
+  for (let i = 0; i < n; i++) {
+    const sx = (i / (n - 1)) * w
+    if (i === 0) ctx.moveTo(sx, pts[i])
+    else ctx.lineTo(sx, pts[i])
+  }
+  ctx.lineTo(w, bot)
+  ctx.lineTo(0, bot)
+  ctx.closePath()
+  const grad = ctx.createLinearGradient(0, top, 0, bot)
+  grad.addColorStop(0, 'rgba(18,150,219,0.10)')
+  grad.addColorStop(0.35, 'rgba(18,150,219,0.04)')
+  grad.addColorStop(1, 'rgba(18,150,219,0.00)')
+  ctx.fillStyle = grad
+  ctx.fill()
+}
+
+function frame(now: number) {
+  if (!running || !ctx) return
+  paint(now / 1000)
+  raf = requestAnimationFrame(frame)
+}
+
+function resize() {
+  const el = sparkCanvas.value
+  if (!el) return
+  dpr = Math.min(window.devicePixelRatio || 1, 2)
+  const parent = el.parentElement
+  if (!parent) return
+  w = parent.clientWidth
+  h = parent.clientHeight
+  el.width = Math.round(w * dpr)
+  el.height = Math.round(h * dpr)
+  el.style.width = w + 'px'
+  el.style.height = h + 'px'
+  ctx = el.getContext('2d')
+  if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+}
+
+function start() {
+  if (running) return
+  running = true
+  raf = requestAnimationFrame(frame)
+}
+function stop() {
+  running = false
+  if (raf) cancelAnimationFrame(raf)
+  raf = 0
+}
+function onVis() { if (document.hidden) stop(); else start() }
+
+let ro: ResizeObserver | null = null
+
+onMounted(() => {
+  reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
+  resize()
+  if (reduced) { paint(0); return }
+  ro = new ResizeObserver(resize)
+  const parent = sparkCanvas.value?.parentElement
+  if (parent) ro.observe(parent)
+  document.addEventListener('visibilitychange', onVis)
+  start()
+})
+
+onBeforeUnmount(() => {
+  stop()
+  ro?.disconnect()
+  document.removeEventListener('visibilitychange', onVis)
+  ctx = null
+})
 </script>
 
 <style scoped>
 /* ── section ── */
 .cardnav-section {
   display: flex; flex-direction: column; align-items: center;
-  padding: 0.5rem 1.5rem 3rem;
+  gap: 1.5rem;
+  padding: 1rem 1.5rem 0;
 }
 
 .nav-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  max-width: 720px;
+  max-width: 780px;
   width: 100%;
 }
 
@@ -75,7 +238,7 @@ const row1 = computed(() => [
   --card-glow: color-mix(in srgb, var(--vp-c-brand-1) 6%, transparent);
 
   display: flex; align-items: center; gap: 0.85rem;
-  padding: 1rem 1.1rem;
+  padding: 1.2rem 1.15rem;
   background: var(--vp-c-bg-soft);
   border: 1px solid transparent;
   border-radius: 16px;
@@ -147,8 +310,8 @@ const row1 = computed(() => [
 
 /* ── icon ── */
 .card-icon {
-  font-size: 1.3rem;
-  width: 42px; height: 42px;
+  font-size: 1.35rem;
+  width: 44px; height: 44px;
   display: flex; align-items: center; justify-content: center;
   background: var(--vp-c-brand-soft);
   border-radius: 12px;
@@ -173,13 +336,13 @@ const row1 = computed(() => [
 /* ── text ── */
 .card-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.15rem; }
 .card-label {
-  font-size: 0.92rem; font-weight: 620; letter-spacing: -0.01em;
+  font-size: 0.95rem; font-weight: 620; letter-spacing: -0.01em;
   transition: color 0.35s;
 }
 .nav-card:hover .card-label { color: var(--vp-c-brand-1); }
 
 .card-desc {
-  font-size: 0.76rem; color: var(--vp-c-text-3);
+  font-size: 0.78rem; color: var(--vp-c-text-3);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   transition: color 0.35s;
 }
@@ -197,9 +360,25 @@ const row1 = computed(() => [
   opacity: 1;
 }
 
+/* ── sparkline ── */
+.sparkline-container {
+  width: 100%;
+  max-width: 900px;
+  height: 140px;
+  position: relative;
+  overflow: hidden;
+}
+.sparkline-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
 /* ── responsive ── */
 @media (max-width: 600px) {
   .nav-grid { grid-template-columns: 1fr; max-width: 380px; }
-  .nav-card { padding: 0.9rem 1rem; }
+  .nav-card { padding: 1rem 1.05rem; }
+  .sparkline-container { height: 100px; }
 }
 </style>
