@@ -88,24 +88,32 @@ const row1 = computed(() => [
 /* ── animated gradient border ── */
 .nav-card::before {
   content: '';
-  position: absolute; inset: -1px; z-index: -2;
-  border-radius: 17px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    color-mix(in srgb, var(--vp-c-brand-1) 18%, transparent) 90deg,
-    transparent 180deg,
-    color-mix(in srgb, var(--vp-c-brand-1) 18%, transparent) 270deg,
-    transparent 360deg
+  position: absolute; inset: 0; z-index: -2;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    transparent 35%,
+    color-mix(in srgb, var(--vp-c-brand-1) 22%, transparent) 50%,
+    transparent 65%,
+    transparent 100%
   );
-  animation: border-rotate 6s linear infinite;
+  background-size: 300% 300%;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: border-sweep 5s ease-in-out infinite;
   opacity: 0;
   transition: opacity 0.5s;
 }
 .nav-card:hover::before { opacity: 1; }
 
-@keyframes border-rotate {
-  to { transform: rotate(360deg); }
+@keyframes border-sweep {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 /* ── inner shimmer ── */
