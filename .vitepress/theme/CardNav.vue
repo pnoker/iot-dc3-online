@@ -27,9 +27,9 @@
       <ins class="adsbygoogle"
         style="display:block"
         data-ad-client="ca-pub-7573143232245283"
-        data-ad-slot=""
-        data-ad-format="horizontal"
-        data-full-width-responsive="false"></ins>
+        data-ad-slot="2006078743"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
     </div>
 
     <!-- full-width sparkline -->
