@@ -4,7 +4,6 @@ export default defineConfig({
   title: 'IoT DC3',
   description: '开源、分布式的物联网(IoT)平台',
   lang: 'zh-CN',
-  base: '/iot-dc3-online/',
   srcExclude: ['AGENTS.md'],
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
