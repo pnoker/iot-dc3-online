@@ -48,13 +48,16 @@
             class="rail-cover-feature"
             :aria-label="slides[activeSlide].action"
           >
-            <img
-              :src="slides[activeSlide].image"
-              :alt="slides[activeSlide].imageAlt || ''"
-              width="2479"
-              height="3508"
-              decoding="async"
-            >
+            <span class="rail-book-page" aria-hidden="true"></span>
+            <span class="rail-book-cover">
+              <img
+                :src="slides[activeSlide].image"
+                :alt="slides[activeSlide].imageAlt || ''"
+                width="2479"
+                height="3508"
+                decoding="async"
+              >
+            </span>
           </a>
           <template v-else>
             <strong>{{ slides[activeSlide].title }}</strong>
@@ -454,42 +457,129 @@ onBeforeUnmount(() => {
 .rail-cover-feature {
   position: relative;
   display: block;
-  width: 146px;
+  width: 136px;
   aspect-ratio: 2479 / 3508;
+  margin-left: 34px;
   border-radius: 7px 9px 9px 7px;
+  -webkit-perspective: 900px;
+  perspective: 900px;
+  transform: rotateZ(0.4deg);
+  transition: transform 320ms ease;
+}
+
+.rail-book-page,
+.rail-book-cover {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.rail-book-page {
+  overflow: hidden;
+  border: 1px solid rgba(111, 173, 218, 0.24);
+  background:
+    radial-gradient(circle at 77% 19%, rgba(38, 176, 210, 0.12), transparent 34%),
+    linear-gradient(145deg, #f8fcff, #edf7fb 62%, #f8fbf4);
+  box-shadow:
+    -4px 4px 0 rgba(55, 102, 172, 0.11),
+    0 19px 34px rgba(25, 91, 153, 0.19),
+    0 5px 11px rgba(25, 91, 153, 0.1),
+    inset 10px 0 18px rgba(58, 115, 169, 0.06);
+}
+
+.rail-book-page::before {
+  position: absolute;
+  inset: 20px 17px auto;
+  height: 68px;
+  background:
+    radial-gradient(circle at 14% 22%, #2b73e4 0 2px, transparent 3px),
+    radial-gradient(circle at 58% 8%, #18a7cb 0 2px, transparent 3px),
+    radial-gradient(circle at 82% 48%, #1db88c 0 2px, transparent 3px),
+    linear-gradient(32deg, transparent 48%, rgba(33, 143, 207, 0.25) 49%, rgba(33, 143, 207, 0.25) 51%, transparent 52%);
+  content: '';
+}
+
+.rail-book-page::after {
+  position: absolute;
+  right: 18px;
+  bottom: 24px;
+  left: 18px;
+  height: 62px;
+  background: repeating-linear-gradient(to bottom, rgba(64, 100, 132, 0.16) 0 1px, transparent 1px 11px);
+  content: '';
+  -webkit-mask-image: linear-gradient(90deg, #000 76%, transparent);
+  mask-image: linear-gradient(90deg, #000 76%, transparent);
+}
+
+.rail-book-cover {
+  z-index: 2;
   box-shadow:
     -4px 4px 0 rgba(55, 102, 172, 0.13),
     0 19px 34px rgba(25, 91, 153, 0.2),
     0 5px 11px rgba(25, 91, 153, 0.12);
-  transform: perspective(520px) rotateY(-7deg) rotateZ(0.4deg);
   transform-origin: left center;
-  transition: transform 320ms ease, box-shadow 320ms ease;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  animation: rail-book-invite 1.25s 480ms both;
+  transition: transform 760ms cubic-bezier(0.2, 0.72, 0.18, 1), box-shadow 760ms ease;
 }
 
-.rail-cover-feature::after {
+.rail-book-cover::before,
+.rail-book-cover::after {
   position: absolute;
   inset: 0;
-  border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: inherit;
-  background: linear-gradient(115deg, rgba(255, 255, 255, 0.24), transparent 34%);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   content: '';
   pointer-events: none;
 }
 
-.rail-cover-feature img {
+.rail-book-cover::before {
+  border: 1px solid rgba(123, 178, 214, 0.22);
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 13px, rgba(72, 112, 145, 0.11) 13px 14px),
+    linear-gradient(145deg, #f8fcff, #edf7fb);
+  box-shadow: inset -10px 0 18px rgba(58, 115, 169, 0.06);
+  transform: rotateY(180deg) translateZ(1px);
+}
+
+.rail-book-cover::after {
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.24), transparent 34%);
+  transform: translateZ(2px);
+}
+
+.rail-book-cover img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   border-radius: inherit;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   object-fit: cover;
+  transform: translateZ(1px);
 }
 
-.rail-cover-feature:hover {
+.rail-cover-feature:hover,
+.rail-cover-feature:focus-visible {
+  transform: rotateZ(0.4deg) translateY(-2px);
+}
+
+.rail-cover-feature:hover .rail-book-cover,
+.rail-cover-feature:focus-visible .rail-book-cover {
+  animation: none;
   box-shadow:
-    -3px 4px 0 rgba(55, 102, 172, 0.12),
-    0 23px 38px rgba(25, 91, 153, 0.24),
-    0 6px 12px rgba(25, 91, 153, 0.14);
-  transform: perspective(520px) rotateY(-3deg) translateY(-3px);
+    7px 10px 20px rgba(25, 91, 153, 0.13),
+    2px 4px 8px rgba(25, 91, 153, 0.1);
+  transform: rotateY(-118deg);
+}
+
+.rail-cover-feature:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--vp-c-brand-1) 58%, transparent);
+  outline-offset: 6px;
 }
 
 .rail-actions {
@@ -571,6 +661,11 @@ onBeforeUnmount(() => {
   to { transform: rotate(1turn); }
 }
 
+@keyframes rail-book-invite {
+  0%, 100% { transform: rotateY(0); }
+  52% { transform: rotateY(-16deg); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .rail-loading-orbit {
     animation: none;
@@ -578,8 +673,17 @@ onBeforeUnmount(() => {
 
   .rail-slide-enter-active,
   .rail-slide-leave-active,
-  .rail-cover-feature {
+  .rail-cover-feature,
+  .rail-book-cover {
+    animation: none;
     transition: none;
+  }
+
+  .rail-cover-feature:hover,
+  .rail-cover-feature:focus-visible,
+  .rail-cover-feature:hover .rail-book-cover,
+  .rail-cover-feature:focus-visible .rail-book-cover {
+    transform: none;
   }
 }
 </style>
