@@ -10,9 +10,12 @@ hero:
     alt: IoT DC3
   actions:
     - theme: brand
-      text: Get Started
+      text: 📖 Docs
       link: https://docs.dc3.site
     - theme: alt
-      text: GitHub
-      link: https://github.com/pnoker/iot-dc3
+      text: 📚 Book
+      link: https://book.dc3.site
+    - theme: alt
+      text: 🎮 Demo
+      link: https://demo.dc3.site
 ---

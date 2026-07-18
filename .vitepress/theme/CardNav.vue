@@ -1,27 +1,5 @@
 <template>
   <div class="cardnav-root">
-    <!-- horizontal cards, left-aligned with hero text -->
-    <div class="cardnav-content">
-      <a
-        v-for="item in cards"
-        :key="item.key"
-        :href="item.url"
-        target="_blank"
-        rel="noopener"
-        class="nav-card"
-        @mousemove="onMouseMove"
-      >
-        <span class="card-icon">{{ item.icon }}</span>
-        <span class="card-text">
-          <span class="card-label">{{ item.label }}</span>
-          <span class="card-desc">{{ item.desc }}</span>
-        </span>
-        <span class="card-chevron">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-        </span>
-      </a>
-    </div>
-
     <!-- AdSense responsive banner -->
     <div class="adsense-wrap">
       <ins class="adsbygoogle"
@@ -40,41 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onBeforeUnmount, onMounted, ref} from 'vue'
-import {useData} from 'vitepress'
-
-const {lang} = useData()
-
-const locale = computed(() => lang.value === 'en-US' ? 'en' : 'zh')
-
-function onMouseMove(e: MouseEvent) {
-  const card = e.currentTarget as HTMLElement
-  const rect = card.getBoundingClientRect()
-  card.style.setProperty('--mx', `${((e.clientX - rect.left) / rect.width) * 100}%`)
-  card.style.setProperty('--my', `${((e.clientY - rect.top) / rect.height) * 100}%`)
-}
-
-const langData: Record<string, Record<string, {label: string; desc: string}>> = {
-  zh: {
-    docs: {label: '文档', desc: '快速开始 · 配置指南 · 驱动开发'},
-    book: {label: '书籍', desc: '架构设计 · 最佳实践 · 深入理解'},
-    demo: {label: '演示', desc: '在线体验 IoT DC3 平台功能'},
-  },
-  en: {
-    docs: {label: 'Docs', desc: 'Quick Start · Config · Drivers'},
-    book: {label: 'Book', desc: 'Architecture · Best Practices · Deep Dive'},
-    demo: {label: 'Demo', desc: 'Live IoT DC3 Platform'},
-  },
-}
-
-const cards = computed(() => {
-  const d = langData[locale.value]
-  return [
-    {key: 'docs', icon: '📖', url: 'https://docs.dc3.site', label: d.docs.label, desc: d.docs.desc},
-    {key: 'book', icon: '📚', url: 'https://book.dc3.site', label: d.book.label, desc: d.book.desc},
-    {key: 'demo', icon: '🎮', url: 'https://demo.dc3.site', label: d.demo.label, desc: d.demo.desc},
-  ]
-})
+import {onBeforeUnmount, onMounted, ref} from 'vue'
 
 /* ── sparkline ── */
 const sparkCanvas = ref<HTMLCanvasElement | null>(null)
@@ -179,75 +123,6 @@ onBeforeUnmount(() => {
   display: flex; flex-direction: column;
 }
 
-/* ── cards: horizontal row, left-aligned with hero ── */
-.cardnav-content {
-  display: flex; gap: 0.9rem;
-  max-width: 680px;
-  width: calc(100% - 3rem);
-  margin: 0 auto;
-  padding: 0.25rem 0 1rem;
-}
-
-.nav-card {
-  --card-glow: color-mix(in srgb, var(--vp-c-brand-1) 6%, transparent);
-  flex: 1; min-width: 0;
-  display: flex; align-items: center; gap: 0.7rem;
-  padding: 0.75rem 0.9rem;
-  background: var(--vp-c-bg-soft);
-  border: 1px solid transparent;
-  border-radius: 14px;
-  text-decoration: none; color: var(--vp-c-text-1);
-  transition: all 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
-  position: relative; overflow: hidden; isolation: isolate;
-}
-
-/* border sweep */
-.nav-card::before {
-  content: ''; position: absolute; inset: 0; z-index: -2; border-radius: 14px; padding: 1px;
-  background: linear-gradient(120deg, transparent 30%, color-mix(in srgb, var(--vp-c-brand-1) 20%, transparent) 50%, transparent 70%);
-  background-size: 300% 300%;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude;
-  animation: sweep 5s ease-in-out infinite;
-  opacity: 0; transition: opacity 0.5s;
-}
-.nav-card:hover::before { opacity: 1; }
-@keyframes sweep { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-
-/* inner shimmer */
-.nav-card::after {
-  content: ''; position: absolute; inset: 0; z-index: -1; border-radius: 13px;
-  background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), var(--card-glow), transparent 50%);
-  opacity: 0; transition: opacity 0.5s;
-}
-.nav-card:hover::after { opacity: 1; }
-.nav-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(18,150,219,0.05), inset 0 1px 0 rgba(18,150,219,0.06);
-  background: color-mix(in srgb, var(--vp-c-brand-soft) 35%, var(--vp-c-bg-soft));
-}
-.nav-card:active { transform: translateY(-1px) scale(0.995); transition-duration: 0.08s; }
-
-.card-icon {
-  font-size: 1.2rem; width: 38px; height: 38px;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--vp-c-brand-soft); border-radius: 10px;
-  flex-shrink: 0; transition: all 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-.nav-card:hover .card-icon {
-  background: color-mix(in srgb, var(--vp-c-brand-1) 18%, transparent);
-  box-shadow: 0 0 16px rgba(18,150,219,0.12); transform: scale(1.05);
-}
-
-.card-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1rem; }
-.card-label { font-size: 0.88rem; font-weight: 620; letter-spacing: -0.01em; transition: color 0.35s; }
-.nav-card:hover .card-label { color: var(--vp-c-brand-1); }
-.card-desc { font-size: 0.72rem; color: var(--vp-c-text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.35s; }
-.nav-card:hover .card-desc { color: var(--vp-c-text-2); }
-
-.card-chevron { flex-shrink: 0; color: var(--vp-c-text-3); transition: all 0.4s; opacity: 0.4; }
-.nav-card:hover .card-chevron { color: var(--vp-c-brand-1); transform: translateX(2px); opacity: 1; }
-
 /* ── adsense ── */
 .adsense-wrap {
   max-width: 680px;
@@ -268,10 +143,7 @@ onBeforeUnmount(() => {
 }
 .sparkline-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 
-/* ── responsive ── */
 @media (max-width: 640px) {
-  .cardnav-content { flex-direction: column; gap: 0.5rem; width: calc(100% - 2rem); padding-bottom: 0.75rem; }
-  .nav-card { padding: 0.65rem 0.8rem; }
   .sparkline-wrap { height: 80px; }
 }
 </style>
