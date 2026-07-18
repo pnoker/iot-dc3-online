@@ -8,4 +8,11 @@ hero:
   image:
     src: /images/logo.svg
     alt: IoT DC3
+  actions:
+    - theme: brand
+      text: Get Started
+      link: https://docs.dc3.site
+    - theme: alt
+      text: GitHub
+      link: https://github.com/pnoker/iot-dc3
 ---
