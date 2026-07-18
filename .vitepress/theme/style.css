@@ -107,8 +107,8 @@ body {
 
 .VPHero {
     position: relative;
-    padding-top: 32px !important;
-    padding-bottom: 12px !important;
+    padding-top: 48px !important;
+    padding-bottom: 44px !important;
 }
 
 /* hero content floats above the two background canvases */
@@ -119,7 +119,7 @@ body {
 }
 
 .VPHero .main {
-    max-width: 640px !important;
+    max-width: 680px !important;
 }
 
 .VPHero .name,
@@ -128,21 +128,21 @@ body {
 }
 
 .VPHero .name {
-    font-size: clamp(36px, 6vw, 64px);
+    font-size: clamp(42px, 7vw, 76px);
     line-height: 0.98;
 }
 
 .VPHero .text {
-    max-width: 680px;
+    max-width: 720px;
     color: var(--vp-c-text-1);
-    font-size: clamp(21px, 3vw, 36px);
+    font-size: clamp(25px, 3.8vw, 44px);
     line-height: 1.15;
 }
 
 .VPHero .tagline {
     max-width: 660px;
     color: var(--vp-c-text-2);
-    font-size: clamp(15px, 1.6vw, 17px);
+    font-size: 19px;
     line-height: 1.72;
 }
 
@@ -157,9 +157,6 @@ body {
 
 .VPHome {
     padding-bottom: 0;
-    display: flex; flex-direction: column;
-    min-height: calc(100vh - 64px);
-    overflow: hidden;
 }
 
 /* features section: no padding, no cards (slots still render) */
@@ -207,38 +204,24 @@ body {
 /* hide footer on home page */
 .VPFooter { display: none; }
 
-/* home page: no scroll, exactly one viewport */
-html {
-    overflow: hidden;
-}
-
-.VPHome {
-    overflow: hidden;
-}
-
 .VPHomeContent {
     display: none;
 }
 
 @media (max-width: 960px) {
     .VPHero {
-        padding-top: 24px !important;
-        padding-bottom: 8px !important;
+        padding-top: 28px !important;
+        padding-bottom: 28px !important;
     }
+
     .VPHero .image {
-        margin-top: 16px;
+        margin-top: 24px;
     }
 }
 
 @media (max-width: 640px) {
-    .VPHero {
-        padding-top: 16px !important;
-        padding-bottom: 4px !important;
-    }
-    .VPHero .name {
-        font-size: clamp(28px, 9vw, 40px);
-    }
-    .VPHero .text {
-        font-size: clamp(16px, 5vw, 24px);
+    .VPHero .tagline {
+        font-size: 16px;
+        line-height: 1.65;
     }
 }
