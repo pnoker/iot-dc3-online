@@ -11,13 +11,11 @@ export default defineConfig({
   srcExclude: ['AGENTS.md'],
 
   head: [
-    ['link', {rel: 'icon', href: '/favicon.ico'}],
     ['link', {rel: 'icon', type: 'image/svg+xml', href: '/images/logo.svg'}],
     ['meta', {name: 'theme-color', content: '#1296db'}],
     ['meta', {name: 'baidu-site-verification', content: 'codeva-sdVaJjqMyt'}],
     ['meta', {name: 'google-site-verification', content: 'usDnZo6QlDGIDaJP9mQPRxoNeOQpwCjiT1gQAjGU_4Q'}],
     ['meta', {name: 'google-adsense-account', content: 'ca-pub-7573143232245283'}],
-    ['script', {async: 'true', src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7573143232245283', crossorigin: 'anonymous'}],
     ['meta', {name: 'keywords', content: 'iot,IoT,DC3,物联网,开源,分布式,物联网平台,Spring Cloud,工业物联网'}],
     ['script', {async: 'true', src: 'https://www.googletagmanager.com/gtag/js?id=G-0S37KX68Y3'}],
     ['script', {}, `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-0S37KX68Y3');`],

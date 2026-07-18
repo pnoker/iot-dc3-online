@@ -8,14 +8,4 @@ hero:
   image:
     src: /images/logo.svg
     alt: IoT DC3
-  actions:
-    - theme: brand
-      text: 📖 文档
-      link: https://docs.dc3.site
-    - theme: alt
-      text: 📚 书籍
-      link: https://book.dc3.site
-    - theme: alt
-      text: 🎮 演示
-      link: https://demo.dc3.site
 ---

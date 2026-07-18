@@ -187,9 +187,15 @@ onBeforeUnmount(() => {
   height: 100%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 959px) {
   .hero-logo {
-    width: min(320px, 64vw);
+    width: min(300px, 58vw);
+  }
+}
+
+@media (min-width: 960px) {
+  .hero-logo {
+    width: min(44vw, clamp(370px, 48vh, 520px));
   }
 }
 </style>
