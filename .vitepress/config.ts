@@ -1,4 +1,5 @@
 import {defineConfig} from 'vitepress'
+import {transformHead} from './seo'
 
 const LANG_DETECT = `(function(){var K='dc3-lang',B='/';var p;try{p=localStorage.getItem(K);}catch(e){}var r=location.pathname;if(r.length&&r[r.length-1]!=='/')r=r+'/';var rel=r.indexOf(B)===0?r.slice(B.length):r;var onEn=rel.indexOf('en/')===0;var onZh=rel.indexOf('zh/')===0;if(!onEn&&!onZh){if(!p){p=/^en/i.test(navigator.language)?'en':'zh';try{localStorage.setItem(K,p);}catch(e){}}location.replace(B+p+'/');}})();`
 
@@ -6,7 +7,12 @@ export default defineConfig({
   base: '/',
   lang: 'zh-CN',
   title: 'IoT DC3',
+  description: 'IoT DC3 is a multi-protocol, cloud-native, AI-powered open-source industrial IoT platform.',
   cleanUrls: true,
+  sitemap: {
+    hostname: 'https://dc3.site',
+    transformItems: items => items.filter(item => item.url !== '' && item.url !== '/')
+  },
 
   srcExclude: ['AGENTS.md'],
 
@@ -16,12 +22,15 @@ export default defineConfig({
     ['meta', {name: 'baidu-site-verification', content: 'codeva-sdVaJjqMyt'}],
     ['meta', {name: 'google-site-verification', content: 'usDnZo6QlDGIDaJP9mQPRxoNeOQpwCjiT1gQAjGU_4Q'}],
     ['meta', {name: 'google-adsense-account', content: 'ca-pub-7573143232245283'}],
+    ['script', {async: '', crossorigin: 'anonymous', src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7573143232245283'}],
     ['meta', {name: 'keywords', content: 'iot,IoT,DC3,物联网,开源,分布式,物联网平台,Spring Cloud,工业物联网'}],
     ['script', {async: 'true', src: 'https://www.googletagmanager.com/gtag/js?id=G-2QGF1Y0WBE'}],
     ['script', {}, `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-2QGF1Y0WBE');`],
     ['script', {}, `var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?32c28f6454ac3d0332773a40a2cc4f84";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s)})();`],
     ['script', {}, LANG_DETECT],
   ],
+
+  transformHead,
 
   locales: {
     zh: {
