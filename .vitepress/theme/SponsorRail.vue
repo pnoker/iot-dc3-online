@@ -1,6 +1,7 @@
 <template>
   <aside
     v-if="railEnabled"
+    ref="railRoot"
     class="sponsor-rail"
     :aria-label="copy.railLabel"
     data-cursor-rgb="18, 150, 219"
@@ -48,10 +49,7 @@
             class="rail-cover-feature"
             :aria-label="slides[activeSlide].action"
           >
-            <span class="rail-book-page" aria-hidden="true"></span>
-            <span class="rail-book-cover">
-              <BookCover :english="isEnglish" />
-            </span>
+            <BookCover :english="isEnglish" />
           </a>
           <template v-else>
             <strong>{{ slides[activeSlide].title }}</strong>
@@ -175,6 +173,7 @@ const slides = computed<Slide[]>(() => isEnglish.value ? [
 ])
 
 const railEnabled = ref(false)
+const railRoot = ref<HTMLElement | null>(null)
 const adState = ref<AdState>('loading')
 const adSlot = ref<HTMLElement | null>(null)
 const activeSlide = ref(0)
@@ -182,6 +181,8 @@ let reducedMotion = false
 let carouselTimer = 0
 let adStatusTimer = 0
 let adStatusObserver: MutationObserver | null = null
+let railAlignmentFrame = 0
+let railResizeObserver: ResizeObserver | null = null
 
 function isEligible() {
   const connection = (navigator as DataAwareNavigator).connection
@@ -274,16 +275,63 @@ function selectSlide(index: number) {
   resumeCarousel()
 }
 
+function alignRailToActionCards() {
+  if (railAlignmentFrame) window.cancelAnimationFrame(railAlignmentFrame)
+  railAlignmentFrame = window.requestAnimationFrame(() => {
+    railAlignmentFrame = 0
+    const rail = railRoot.value
+    const home = rail?.closest<HTMLElement>('.VPHome')
+    const actionGrid = home?.querySelector<HTMLElement>('.hero-action-grid')
+    const heroMain = home?.querySelector<HTMLElement>('.VPHero .main')
+    if (!rail || !home || !actionGrid || !heroMain) return
+
+    const homeRect = home.getBoundingClientRect()
+    const actionGridRect = actionGrid.getBoundingClientRect()
+    const heroMainRect = heroMain.getBoundingClientRect()
+    const railRect = rail.getBoundingClientRect()
+    const railLeft = (heroMainRect.left - homeRect.left - railRect.width) / 2
+    rail.style.setProperty('--dc3-rail-top', `${Math.round(actionGridRect.bottom - homeRect.top - railRect.height)}px`)
+    rail.style.setProperty('--dc3-rail-left', `${Math.round(Math.max(16, railLeft))}px`)
+  })
+}
+
+async function initializeRailAlignment() {
+  await nextTick()
+  const rail = railRoot.value
+  const home = rail?.closest<HTMLElement>('.VPHome')
+  const actionGrid = home?.querySelector<HTMLElement>('.hero-action-grid')
+  const heroMain = home?.querySelector<HTMLElement>('.VPHero .main')
+  if (!rail || !home || !actionGrid || !heroMain) return
+
+  railResizeObserver = new ResizeObserver(alignRailToActionCards)
+  railResizeObserver.observe(home)
+  railResizeObserver.observe(actionGrid)
+  railResizeObserver.observe(heroMain)
+  railResizeObserver.observe(rail)
+  window.addEventListener('resize', alignRailToActionCards, {passive: true})
+  alignRailToActionCards()
+}
+
+function stopRailAlignment() {
+  railResizeObserver?.disconnect()
+  railResizeObserver = null
+  window.removeEventListener('resize', alignRailToActionCards)
+  if (railAlignmentFrame) window.cancelAnimationFrame(railAlignmentFrame)
+  railAlignmentFrame = 0
+}
+
 onMounted(() => {
   reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
   if (!isEligible()) return
   railEnabled.value = true
+  void initializeRailAlignment()
   void initializeAd()
 })
 
 onBeforeUnmount(() => {
   pauseCarousel()
   stopAdWatch()
+  stopRailAlignment()
 })
 </script>
 
@@ -295,8 +343,8 @@ onBeforeUnmount(() => {
 @media (min-width: 1760px) and (min-height: 900px) {
   .sponsor-rail {
     position: absolute;
-    top: clamp(108px, 13vh, 156px);
-    right: max(16px, calc((100vw - 1152px) / 2 - 288px));
+    top: var(--dc3-rail-top, clamp(88px, 11vh, 134px));
+    left: var(--dc3-rail-left, max(16px, calc((100vw - 1696px) / 4)));
     z-index: 4;
     display: flex;
     flex-direction: column;
@@ -452,111 +500,16 @@ onBeforeUnmount(() => {
   -webkit-perspective: 900px;
   perspective: 900px;
   transform: translate3d(0, 0, 0) rotateZ(0.4deg);
-  transition: transform 760ms cubic-bezier(0.2, 0.72, 0.18, 1);
-}
-
-.rail-book-page,
-.rail-book-cover {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-}
-
-.rail-book-page {
-  overflow: hidden;
-  border: 1px solid rgba(111, 173, 218, 0.24);
-  background:
-    radial-gradient(circle at 77% 19%, rgba(38, 176, 210, 0.12), transparent 34%),
-    linear-gradient(145deg, #f8fcff, #edf7fb 62%, #f8fbf4);
-  box-shadow:
-    -4px 4px 0 rgba(55, 102, 172, 0.11),
-    0 19px 34px rgba(25, 91, 153, 0.19),
-    0 5px 11px rgba(25, 91, 153, 0.1),
-    inset 10px 0 18px rgba(58, 115, 169, 0.06);
-}
-
-.rail-book-page::before {
-  position: absolute;
-  inset: 20px 17px auto;
-  height: 68px;
-  background:
-    radial-gradient(circle at 14% 22%, #2b73e4 0 2px, transparent 3px),
-    radial-gradient(circle at 58% 8%, #18a7cb 0 2px, transparent 3px),
-    radial-gradient(circle at 82% 48%, #1db88c 0 2px, transparent 3px),
-    linear-gradient(32deg, transparent 48%, rgba(33, 143, 207, 0.25) 49%, rgba(33, 143, 207, 0.25) 51%, transparent 52%);
-  content: '';
-}
-
-.rail-book-page::after {
-  position: absolute;
-  right: 18px;
-  bottom: 24px;
-  left: 18px;
-  height: 62px;
-  background: repeating-linear-gradient(to bottom, rgba(64, 100, 132, 0.16) 0 1px, transparent 1px 11px);
-  content: '';
-  -webkit-mask-image: linear-gradient(90deg, #000 76%, transparent);
-  mask-image: linear-gradient(90deg, #000 76%, transparent);
-}
-
-.rail-book-cover {
-  z-index: 2;
-  box-shadow:
-    -4px 4px 0 rgba(55, 102, 172, 0.13),
-    0 19px 34px rgba(25, 91, 153, 0.2),
-    0 5px 11px rgba(25, 91, 153, 0.12);
-  transform-origin: left center;
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-  animation: rail-book-invite 1.25s 480ms both;
-  transition: transform 760ms cubic-bezier(0.2, 0.72, 0.18, 1), box-shadow 760ms ease;
-}
-
-.rail-book-cover::before,
-.rail-book-cover::after {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  content: '';
-  pointer-events: none;
-}
-
-.rail-book-cover::before {
-  border: 1px solid rgba(123, 178, 214, 0.22);
-  background:
-    repeating-linear-gradient(to bottom, transparent 0 13px, rgba(72, 112, 145, 0.11) 13px 14px),
-    linear-gradient(145deg, #f8fcff, #edf7fb);
-  box-shadow: inset -10px 0 18px rgba(58, 115, 169, 0.06);
-  transform: rotateY(180deg) translateZ(1px);
-}
-
-.rail-book-cover::after {
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  background: linear-gradient(115deg, rgba(255, 255, 255, 0.24), transparent 34%);
-  transform: translateZ(2px);
-}
-
-.rail-book-cover :deep(.book-cover-art) {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transform: translateZ(1px);
+  transition: transform 320ms ease;
 }
 
 .rail-cover-feature:hover,
 .rail-cover-feature:focus-visible {
-  transform: translate3d(36px, -2px, 0) rotateZ(0.4deg);
+  transform: translate3d(42px, -2px, 0) rotateZ(0.4deg);
 }
 
-.rail-cover-feature:hover .rail-book-cover,
-.rail-cover-feature:focus-visible .rail-book-cover {
+.rail-cover-feature:hover :deep(.book-front),
+.rail-cover-feature:focus-visible :deep(.book-front) {
   animation: none;
   box-shadow:
     7px 10px 20px rgba(25, 91, 153, 0.13),
@@ -648,11 +601,6 @@ onBeforeUnmount(() => {
   to { transform: rotate(1turn); }
 }
 
-@keyframes rail-book-invite {
-  0%, 100% { transform: rotateY(0); }
-  52% { transform: rotateY(-16deg); }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .rail-loading-orbit {
     animation: none;
@@ -660,16 +608,18 @@ onBeforeUnmount(() => {
 
   .rail-slide-enter-active,
   .rail-slide-leave-active,
-  .rail-cover-feature,
-  .rail-book-cover {
+  .rail-cover-feature {
     animation: none;
     transition: none;
   }
 
   .rail-cover-feature:hover,
-  .rail-cover-feature:focus-visible,
-  .rail-cover-feature:hover .rail-book-cover,
-  .rail-cover-feature:focus-visible .rail-book-cover {
+  .rail-cover-feature:focus-visible {
+    transform: none;
+  }
+
+  .rail-cover-feature:hover :deep(.book-front),
+  .rail-cover-feature:focus-visible :deep(.book-front) {
     transform: none;
   }
 }

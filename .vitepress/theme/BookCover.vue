@@ -27,6 +27,11 @@ const copy = computed(() => props.english ? {
   highlightSize: 7.2,
   author: 'Henry Zhang',
   authorTitle: 'IoT DC3 Creator · Architect · IoT Expert',
+  pageKicker: 'AIoT STACK',
+  pageTitle: 'Five-layer architecture',
+  pageSubtitle: 'From devices to intelligence',
+  pageLayers: ['Applications', 'Intelligence', 'Platform', 'Connectivity', 'Devices'],
+  pageLoop: 'Sense · Decide · Act · Feedback',
   brand: ['From Connectivity to', 'Intelligence'],
   brandSub: 'IoT DC3'
 } : {
@@ -51,19 +56,41 @@ const copy = computed(() => props.english ? {
   highlightSize: 7.6,
   author: '张红元',
   authorTitle: 'IoT DC3 开源作者 · 架构师 · 物联网专家',
+  pageKicker: 'AIoT STACK',
+  pageTitle: '五层架构',
+  pageSubtitle: '从设备接入到智能决策',
+  pageLayers: ['应用层', '智能层', '平台层', '连接层', '设备层'],
+  pageLoop: '感知 · 决策 · 执行 · 反馈',
   brand: ['从连接到智能'],
   brandSub: 'Connecting to Intelligence'
 })
 </script>
 
 <template>
-  <svg
-    class="book-cover-art"
-    :lang="copy.lang"
-    viewBox="0 0 480 680"
-    preserveAspectRatio="xMidYMid meet"
-    aria-hidden="true"
-  >
+  <span class="book-visual" aria-hidden="true">
+    <span class="book-page">
+      <span class="page-meta">
+        <span>{{ copy.pageKicker }}</span>
+        <span>01</span>
+      </span>
+      <strong class="page-title">{{ copy.pageTitle }}</strong>
+      <span class="page-subtitle">{{ copy.pageSubtitle }}</span>
+      <span class="page-layers">
+        <span v-for="layer in copy.pageLayers" :key="layer" class="page-layer">
+          <span class="page-layer-dot"></span>
+          <span>{{ layer }}</span>
+        </span>
+      </span>
+      <span class="page-loop">{{ copy.pageLoop }}</span>
+    </span>
+
+    <span class="book-front">
+      <svg
+        class="book-cover-art"
+        :lang="copy.lang"
+        viewBox="0 0 480 680"
+        preserveAspectRatio="xMidYMid meet"
+      >
     <defs>
       <linearGradient id="book-cover-background" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0" stop-color="#eef4ff" />
@@ -177,18 +204,198 @@ const copy = computed(() => props.english ? {
       >{{ line }}</text>
       <text x="430" :y="copy.brand.length > 1 ? 626 : 614" class="brand-subtitle">{{ copy.brandSub }}</text>
     </g>
-  </svg>
+      </svg>
+    </span>
+  </span>
 </template>
 
 <style scoped>
+.book-visual {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: inherit;
+  transform-style: preserve-3d;
+}
+
+.book-page,
+.book-front {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.book-page {
+  overflow: hidden;
+  padding: 10px 9px 8px;
+  border: 1px solid rgba(111, 173, 218, 0.24);
+  background:
+    radial-gradient(circle at 82% 10%, rgba(56, 189, 248, 0.16), transparent 32%),
+    linear-gradient(145deg, #f8fcff, #edf7fb 62%, #f8fbf4);
+  box-shadow:
+    -4px 4px 0 rgba(55, 102, 172, 0.11),
+    0 19px 34px rgba(25, 91, 153, 0.19),
+    0 5px 11px rgba(25, 91, 153, 0.1),
+    inset 10px 0 18px rgba(58, 115, 169, 0.06);
+  color: #334155;
+}
+
+.book-page::before {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(37, 99, 235, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, 0.045) 1px, transparent 1px);
+  background-size: 12px 12px;
+  content: '';
+}
+
+.book-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+.page-meta {
+  display: flex;
+  justify-content: space-between;
+  color: #0284c7;
+  font-size: 5px;
+  font-weight: 760;
+  letter-spacing: 0.12em;
+}
+
+.page-title,
+.page-subtitle,
+.page-loop {
+  display: block;
+}
+
+.page-title {
+  margin-top: 7px;
+  color: #0f3f78;
+  font-size: 10px;
+  line-height: 1.15;
+}
+
+.page-subtitle {
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 5.5px;
+  line-height: 1.3;
+}
+
+.page-layers {
+  display: grid;
+  gap: 3px;
+  margin-top: 9px;
+}
+
+.page-layer {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  min-height: 15px;
+  padding: 3px 6px;
+  border: 1px solid rgba(99, 102, 241, 0.12);
+  border-radius: 5px;
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.11), rgba(255, 255, 255, 0.62));
+  color: #3730a3;
+  font-size: 6px;
+  font-weight: 680;
+  line-height: 1;
+}
+
+.page-layer:nth-child(2) {
+  border-color: rgba(20, 184, 166, 0.14);
+  background: linear-gradient(90deg, rgba(20, 184, 166, 0.12), rgba(255, 255, 255, 0.62));
+  color: #0f766e;
+}
+
+.page-layer:nth-child(3) {
+  border-color: rgba(37, 99, 235, 0.14);
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.11), rgba(255, 255, 255, 0.62));
+  color: #1d4ed8;
+}
+
+.page-layer:nth-child(4) {
+  border-color: rgba(8, 145, 178, 0.14);
+  background: linear-gradient(90deg, rgba(8, 145, 178, 0.1), rgba(255, 255, 255, 0.62));
+  color: #0e7490;
+}
+
+.page-layer:nth-child(5) {
+  border-color: rgba(71, 85, 105, 0.12);
+  background: linear-gradient(90deg, rgba(71, 85, 105, 0.09), rgba(255, 255, 255, 0.62));
+  color: #334155;
+}
+
+.page-layer-dot {
+  width: 5px;
+  height: 5px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+}
+
+.page-loop {
+  margin-top: 8px;
+  color: #0891b2;
+  font-size: 5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.book-front {
+  z-index: 2;
+  box-shadow:
+    -4px 4px 0 rgba(55, 102, 172, 0.13),
+    0 19px 34px rgba(25, 91, 153, 0.2),
+    0 5px 11px rgba(25, 91, 153, 0.12);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  animation: book-invite 1.25s 480ms both;
+  transition: transform 760ms cubic-bezier(0.2, 0.72, 0.18, 1), box-shadow 760ms ease;
+}
+
+.book-front::before,
+.book-front::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  backface-visibility: hidden;
+  content: '';
+  pointer-events: none;
+}
+
+.book-front::before {
+  border: 1px solid rgba(123, 178, 214, 0.22);
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 13px, rgba(72, 112, 145, 0.11) 13px 14px),
+    linear-gradient(145deg, #f8fcff, #edf7fb);
+  box-shadow: inset -10px 0 18px rgba(58, 115, 169, 0.06);
+  transform: rotateY(180deg) translateZ(1px);
+}
+
+.book-front::after {
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.24), transparent 34%);
+  transform: translateZ(2px);
+}
+
 .book-cover-art {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
+  border-radius: inherit;
   background: #eef4ff;
+  backface-visibility: hidden;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   shape-rendering: geometricPrecision;
   text-rendering: geometricPrecision;
+  transform: translateZ(1px);
 }
 
 .constellation path {
@@ -282,5 +489,18 @@ const copy = computed(() => props.english ? {
   fill: #94a3b8;
   font-size: 6.5px;
   letter-spacing: 0.8px;
+}
+
+@keyframes book-invite {
+  0%, 100% { transform: rotateY(0); }
+  52% { transform: rotateY(-16deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-front {
+    animation: none;
+    transition: none;
+  }
+
 }
 </style>

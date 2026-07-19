@@ -124,7 +124,7 @@ function resetPointer(event: PointerEvent) {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   width: 100%;
-  padding-top: 30px;
+  padding-top: var(--dc3-hero-content-gap, 22px);
   perspective: 1200px;
 }
 
@@ -393,7 +393,6 @@ function resetPointer(event: PointerEvent) {
 @media (min-width: 960px) {
   .hero-action-grid {
     gap: clamp(10px, calc(0.417vh + 7px), 12px);
-    padding-top: clamp(18px, 2.5vh, 30px);
   }
 
   .hero-action-card {
@@ -436,7 +435,6 @@ function resetPointer(event: PointerEvent) {
   .hero-action-grid {
     grid-template-columns: 1fr;
     gap: 10px;
-    padding-top: 24px;
   }
 
   .hero-action-card {
