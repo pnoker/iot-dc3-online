@@ -50,13 +50,7 @@
           >
             <span class="rail-book-page" aria-hidden="true"></span>
             <span class="rail-book-cover">
-              <img
-                :src="slides[activeSlide].image"
-                :alt="slides[activeSlide].imageAlt || ''"
-                width="2479"
-                height="3508"
-                decoding="async"
-              >
+              <BookCover :english="isEnglish" />
             </span>
           </a>
           <template v-else>
@@ -96,7 +90,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, nextTick, onBeforeUnmount, onMounted, ref} from 'vue'
+import {computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref} from 'vue'
 import {useData} from 'vitepress'
 
 type AdState = 'loading' | 'filled' | 'fallback'
@@ -107,14 +101,13 @@ type Slide = {
   description: string
   action: string
   link: string
-  image?: string
-  imageAlt?: string
   coverOnly?: boolean
   secondaryAction?: string
   secondaryLink?: string
 }
 
 const ADSENSE_SRC = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7573143232245283'
+const BookCover = defineAsyncComponent(() => import('./BookCover.vue'))
 
 const {page} = useData()
 const isEnglish = computed(() => page.value.relativePath.startsWith('en/'))
@@ -141,8 +134,6 @@ const slides = computed<Slide[]>(() => isEnglish.value ? [
     description: 'From IoT platforms to LLM agents and IoT DC3 practice.',
     action: 'Read the book',
     link: 'https://book.dc3.site',
-    image: '/images/aiot-book-cover.webp',
-    imageAlt: 'Cover of AIoT Technology & Practice',
     coverOnly: true
   },
   {
@@ -165,8 +156,6 @@ const slides = computed<Slide[]>(() => isEnglish.value ? [
     description: '贯通物联网平台、大模型、Agent 与 IoT DC3 智能体实战。',
     action: '阅读书籍',
     link: 'https://book.dc3.site',
-    image: '/images/aiot-book-cover.webp',
-    imageAlt: '《AIoT 技术与实践——从物联网平台到智能体应用》封面',
     coverOnly: true
   },
   {
@@ -549,7 +538,7 @@ onBeforeUnmount(() => {
   transform: translateZ(2px);
 }
 
-.rail-book-cover img {
+.rail-book-cover :deep(.book-cover-art) {
   position: absolute;
   inset: 0;
   display: block;
@@ -558,7 +547,6 @@ onBeforeUnmount(() => {
   border-radius: inherit;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  object-fit: cover;
   transform: translateZ(1px);
 }
 
