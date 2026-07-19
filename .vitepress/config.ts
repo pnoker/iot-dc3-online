@@ -28,7 +28,6 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh-CN',
       themeConfig: {
-        footer: {message: 'IoT DC3 多协议接入、AI 赋能的云原生开源工业物联网平台'},
         socialLinks: [
           {icon: 'github', link: 'https://github.com/pnoker/iot-dc3'},
           {icon: 'gitee', link: 'https://gitee.com/pnoker/iot-dc3'},
@@ -40,7 +39,6 @@ export default defineConfig({
       label: 'English',
       lang: 'en-US',
       themeConfig: {
-        footer: {message: 'IoT DC3 — A cloud-native, open-source industrial IoT platform with multi-protocol connectivity, powered by AI'},
         socialLinks: [
           {icon: 'github', link: 'https://github.com/pnoker/iot-dc3'},
           {icon: 'gitee', link: 'https://gitee.com/pnoker/iot-dc3'},

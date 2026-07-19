@@ -48,14 +48,14 @@ const content = computed(() => isEnglish.value ? {
   description: 'From heterogeneous device access to AI-driven decisions, IoT DC3 turns every data change into a visible and controllable real-time loop.',
   capabilitiesLabel: 'Platform capabilities',
   capabilities: ['28 multi-protocol drivers', 'Spring AI intelligence loop', 'Distributed · Multi-tenant · Open source'],
-  footer: 'Distributed Industrial IoT Platform'
+  footer: 'A cloud-native, open-source industrial IoT platform with multi-protocol connectivity, powered by AI'
 } : {
   kicker: 'LIVE INDUSTRIAL DATA FLOW',
   title: '让设备、数据与智能持续流动',
   description: '从异构设备接入到 AI 决策执行，IoT DC3 将每一次数据变化汇入可感知、可控制的实时闭环。',
   capabilitiesLabel: '平台能力',
   capabilities: ['28 个多协议驱动', 'Spring AI 智能闭环', '分布式 · 多租户 · 全开源'],
-  footer: '分布式工业物联网平台'
+  footer: '多协议接入、AI 赋能的云原生开源工业物联网平台'
 })
 
 const sparkCanvas = ref<HTMLCanvasElement | null>(null)

@@ -3,9 +3,32 @@ import {computed} from 'vue'
 import {useData} from 'vitepress'
 
 const {page} = useData()
-const isZhHome = computed(() => page.value.relativePath === 'zh/index.md')
+const isEnglish = computed(() => page.value.relativePath === 'en/index.md')
+const isLocalizedHome = computed(() => ['zh/index.md', 'en/index.md'].includes(page.value.relativePath))
 
-const actions = [
+const actions = computed(() => isEnglish.value ? [
+  {
+    title: 'Documentation',
+    description: 'Explore architecture, deployment, and driver development to get started with IoT DC3',
+    link: 'https://docs.dc3.site',
+    icon: 'document',
+    cursorRgb: '18, 150, 219'
+  },
+  {
+    title: 'Book',
+    description: 'AIoT Technology & Practice: from IoT platforms to intelligent agent applications',
+    link: 'https://book.dc3.site',
+    icon: 'book',
+    cursorRgb: '27, 178, 165'
+  },
+  {
+    title: 'Demo',
+    description: 'Try device connectivity, data collection, and intelligent management online',
+    link: 'https://demo.dc3.site',
+    icon: 'demo',
+    cursorRgb: '91, 116, 235'
+  }
+] : [
   {
     title: '文档',
     description: '从架构、部署到驱动开发，快速掌握 IoT DC3',
@@ -27,7 +50,7 @@ const actions = [
     icon: 'demo',
     cursorRgb: '91, 116, 235'
   }
-]
+])
 
 function trackPointer(event: PointerEvent) {
   if (event.pointerType === 'touch') return
@@ -53,14 +76,14 @@ function resetPointer(event: PointerEvent) {
 </script>
 
 <template>
-  <nav v-if="isZhHome" class="hero-action-grid" aria-label="快速入口">
+  <nav v-if="isLocalizedHome" class="hero-action-grid" :aria-label="isEnglish ? 'Quick links' : '快速入口'">
     <a
       v-for="action in actions"
       :key="action.link"
       class="hero-action-card"
       :href="action.link"
       :data-cursor-rgb="action.cursorRgb"
-      :aria-label="`${action.title}：${action.description}`"
+      :aria-label="`${action.title}${isEnglish ? ': ' : '：'}${action.description}`"
       @pointermove="trackPointer"
       @pointerleave="resetPointer"
     >
