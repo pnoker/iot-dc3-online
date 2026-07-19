@@ -459,12 +459,11 @@ onBeforeUnmount(() => {
   display: block;
   width: 136px;
   aspect-ratio: 2479 / 3508;
-  margin-left: 34px;
   border-radius: 7px 9px 9px 7px;
   -webkit-perspective: 900px;
   perspective: 900px;
-  transform: rotateZ(0.4deg);
-  transition: transform 320ms ease;
+  transform: translate3d(0, 0, 0) rotateZ(0.4deg);
+  transition: transform 760ms cubic-bezier(0.2, 0.72, 0.18, 1);
 }
 
 .rail-book-page,
@@ -565,7 +564,7 @@ onBeforeUnmount(() => {
 
 .rail-cover-feature:hover,
 .rail-cover-feature:focus-visible {
-  transform: rotateZ(0.4deg) translateY(-2px);
+  transform: translate3d(36px, -2px, 0) rotateZ(0.4deg);
 }
 
 .rail-cover-feature:hover .rail-book-cover,

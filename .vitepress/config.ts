@@ -17,9 +17,9 @@ export default defineConfig({
     ['meta', {name: 'google-site-verification', content: 'usDnZo6QlDGIDaJP9mQPRxoNeOQpwCjiT1gQAjGU_4Q'}],
     ['meta', {name: 'google-adsense-account', content: 'ca-pub-7573143232245283'}],
     ['meta', {name: 'keywords', content: 'iot,IoT,DC3,物联网,开源,分布式,物联网平台,Spring Cloud,工业物联网'}],
-    ['script', {async: 'true', src: 'https://www.googletagmanager.com/gtag/js?id=G-0S37KX68Y3'}],
-    ['script', {}, `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-0S37KX68Y3');`],
-    ['script', {}, `var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?a55f7c2cebfa7386c0067d6539f9f202";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s)})();`],
+    ['script', {async: 'true', src: 'https://www.googletagmanager.com/gtag/js?id=G-2QGF1Y0WBE'}],
+    ['script', {}, `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-2QGF1Y0WBE');`],
+    ['script', {}, `var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?32c28f6454ac3d0332773a40a2cc4f84";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s)})();`],
     ['script', {}, LANG_DETECT],
   ],
 
@@ -28,7 +28,7 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh-CN',
       themeConfig: {
-        footer: {message: 'Copyright © 2016 ～ 2026 张红元'},
+        footer: {message: 'IoT DC3 多协议接入、AI 赋能的云原生开源工业物联网平台'},
         socialLinks: [
           {icon: 'github', link: 'https://github.com/pnoker/iot-dc3'},
           {icon: 'gitee', link: 'https://gitee.com/pnoker/iot-dc3'},
@@ -40,7 +40,7 @@ export default defineConfig({
       label: 'English',
       lang: 'en-US',
       themeConfig: {
-        footer: {message: 'Copyright © 2016 ~ 2026 Henry'},
+        footer: {message: 'IoT DC3 — A cloud-native, open-source industrial IoT platform with multi-protocol connectivity, powered by AI'},
         socialLinks: [
           {icon: 'github', link: 'https://github.com/pnoker/iot-dc3'},
           {icon: 'gitee', link: 'https://gitee.com/pnoker/iot-dc3'},
