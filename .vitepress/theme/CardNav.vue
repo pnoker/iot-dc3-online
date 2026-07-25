@@ -1,21 +1,25 @@
 <template>
   <div class="cardnav-root">
     <section class="signal-section" :aria-label="content.title" data-cursor-rgb="18, 150, 219">
-      <div class="signal-copy">
-        <div class="signal-heading">
-          <span class="signal-kicker">
-            <span class="signal-live-dot" aria-hidden="true"></span>
-            {{ content.kicker }}
-          </span>
-          <h2>{{ content.title }}</h2>
-          <p>{{ content.description }}</p>
-        </div>
+      <div class="signal-main">
+        <DiscoverCarousel />
 
-        <div class="signal-tags" :aria-label="content.capabilitiesLabel">
-          <span v-for="capability in content.capabilities" :key="capability" class="signal-tag">
-            <span class="signal-tag-mark" aria-hidden="true"></span>
-            {{ capability }}
-          </span>
+        <div class="signal-content">
+          <div class="signal-heading">
+            <span class="signal-kicker">
+              <span class="signal-live-dot" aria-hidden="true"></span>
+              {{ content.kicker }}
+            </span>
+            <h2>{{ content.title }}</h2>
+            <p>{{ content.description }}</p>
+          </div>
+
+          <div class="signal-tags" :aria-label="content.capabilitiesLabel">
+            <span v-for="capability in content.capabilities" :key="capability" class="signal-tag">
+              <span class="signal-tag-mark" aria-hidden="true"></span>
+              {{ capability }}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -39,6 +43,7 @@
 <script setup lang="ts">
 import {computed, onBeforeUnmount, onMounted, ref} from 'vue'
 import {useData} from 'vitepress'
+import DiscoverCarousel from './DiscoverCarousel.vue'
 
 const {page} = useData()
 const isEnglish = computed(() => page.value.relativePath.startsWith('en/'))
@@ -314,15 +319,23 @@ onBeforeUnmount(() => {
   box-shadow: 0 0 24px rgba(18, 150, 219, 0.34);
 }
 
-.signal-copy {
+.signal-main {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+  grid-template-columns: minmax(200px, 0.5fr) minmax(0, 1.5fr);
   gap: 56px;
-  align-items: end;
+  align-items: stretch;
+  min-height: clamp(248px, 32vh, 300px);
   width: min(1152px, 100%);
   margin: 0 auto;
+}
+
+.signal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
 }
 
 .signal-kicker {
@@ -365,7 +378,7 @@ onBeforeUnmount(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 .signal-tag {
@@ -396,10 +409,11 @@ onBeforeUnmount(() => {
 
 .sparkline-wrap {
   position: relative;
-  flex: 1 0 clamp(190px, 25vh, 280px);
-  width: calc(100% + 64px);
-  min-height: clamp(190px, 25vh, 280px);
-  margin: 28px -32px 0;
+  z-index: 1;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-top: calc(clamp(132px, 17vh, 210px) * -0.77);
+  height: clamp(132px, 17vh, 210px);
   overflow: hidden;
 }
 
@@ -480,13 +494,9 @@ onBeforeUnmount(() => {
 }
 
 @media (max-width: 900px) {
-  .signal-copy {
+  .signal-main {
     grid-template-columns: 1fr;
     gap: 28px;
-  }
-
-  .signal-tags {
-    justify-content: flex-start;
   }
 }
 
@@ -495,7 +505,7 @@ onBeforeUnmount(() => {
     padding-top: clamp(28px, calc(6.25vh - 17px), 58px);
   }
 
-  .signal-copy {
+  .signal-main {
     gap: clamp(28px, calc(5.833vh - 14px), 56px);
   }
 
@@ -524,9 +534,8 @@ onBeforeUnmount(() => {
   }
 
   .sparkline-wrap {
-    flex-basis: clamp(150px, 17vh, 240px);
-    min-height: clamp(150px, 17vh, 240px);
-    margin-top: clamp(-28px, calc(11vh - 110px), 20px);
+    height: clamp(120px, 14vh, 200px);
+    margin-top: calc(clamp(120px, 14vh, 200px) * -0.77);
   }
 
   .signal-footer {
@@ -558,10 +567,8 @@ onBeforeUnmount(() => {
   }
 
   .sparkline-wrap {
-    width: calc(100% + 40px);
-    flex-basis: 180px;
-    min-height: 180px;
-    margin: 22px -20px 0;
+    height: 150px;
+    margin-top: -115px;
   }
 
   .signal-footer {
