@@ -1,0 +1,515 @@
+/* ===== 设计系统变量 ===== */
+:root {
+  /* 统一语义枚举(告警 severity 与 KpiCard status 共用) */
+  --dc3d-normal: #16a34a;
+  --dc3d-info: #0a6cb2;
+  --dc3d-warning: #d97706;
+  --dc3d-critical: #dc2626;
+  --dc3d-ok: var(--dc3d-normal);
+  --dc3d-warn: var(--dc3d-warning);
+  --dc3d-danger: var(--dc3d-critical);
+
+  /* DataV 科技大屏(看板舞台,强制深色) */
+  --dc3d-stage-bg: #0a1428;
+  --dc3d-stage-bg-2: #0d1b35;
+  --dc3d-deep-black: #050912;
+  --dc3d-grid: rgba(0, 229, 255, 0.05);
+  --dc3d-grid-bold: rgba(0, 229, 255, 0.09);
+  --dc3d-neon-cyan: #00e5ff;
+  --dc3d-neon-blue: #2b9bff;
+  --dc3d-neon-purple: #7c4dff;
+  --dc3d-neon-green: #00e676;
+  --dc3d-neon-amber: #ffa726;
+  --dc3d-neon-red: #ff5252;
+  --dc3d-magenta: #ff2d9b;
+  --dc3d-magenta-soft: #ff66c4;
+  --dc3d-panel-bg: rgba(13, 35, 69, 0.55);
+  --dc3d-panel-bg-2: rgba(8, 22, 45, 0.72);
+  --dc3d-panel-border: rgba(0, 229, 255, 0.3);
+  --dc3d-panel-glow: rgba(0, 229, 255, 0.4);
+  --dc3d-text: #d4ecff;
+  --dc3d-text-dim: #6b8cae;
+  --dc3d-mono: 'JetBrains Mono', 'SFMono-Regular', 'Consolas', monospace;
+
+  --dc3d-radius: 4px;
+  --dc3d-gap: clamp(10px, 1vw, 16px);
+  --dc3d-clip: 12px;
+  --dc3d-scan-dur: 4.2s;
+  --dc3d-pulse-dur: 2.4s;
+  --dc3d-flow-dur: 16s;
+}
+
+/* @property:让 conic 渐变角度可动画(流光边框光弧真沿边框巡游) */
+@property --dc3d-conic {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* ===== 画廊(DashboardGallery):磨砂玻璃,复刻主页 header 胶囊(亮暗自适应) ===== */
+.dc3d-glass {
+  border-radius: var(--dc3-glass-radius);
+  border: 1px solid rgba(148, 216, 246, 0.34);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.82), transparent 38%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(115, 205, 241, 0.13) 52%, rgba(75, 88, 210, 0.08));
+  box-shadow:
+    0 10px 28px rgba(12, 89, 153, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86),
+    inset 0 -8px 18px rgba(55, 131, 203, 0.05);
+  backdrop-filter: blur(18px) saturate(1.45);
+  -webkit-backdrop-filter: blur(18px) saturate(1.45);
+}
+.dark .dc3d-glass {
+  border-color: rgba(139, 210, 250, 0.18);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(210, 247, 255, 0.14), transparent 38%),
+    linear-gradient(135deg, rgba(55, 130, 183, 0.12), rgba(21, 42, 62, 0.38) 52%, rgba(54, 55, 132, 0.16));
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(231, 251, 255, 0.12),
+    inset 0 -8px 18px rgba(0, 0, 0, 0.12);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .dc3d-glass {
+    background: var(--vp-c-bg-elv);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* ===== 看板舞台(DashboardShell):深空黑 + 双层网格 + 数据流粒子 ===== */
+/* 看板页强制深色:覆盖 VitePress 默认 nav/body 亮色,避免"一会暗一会亮"割裂 */
+.dc3d-stage ~ .VPFooter,
+.dc3d-stage {
+  --vp-c-bg: var(--dc3d-deep-black);
+  --vp-c-bg-alt: var(--dc3d-stage-bg);
+  --vp-c-bg-elv: var(--dc3d-panel-bg-2);
+  --vp-c-bg-soft: var(--dc3d-stage-bg-2);
+  --vp-c-text-1: var(--dc3d-text);
+  --vp-c-text-2: var(--dc3d-text-dim);
+  --vp-c-text-3: var(--dc3d-text-dim);
+  --vp-c-divider: var(--dc3d-panel-border);
+}
+/* 看板页整条祖先链上深色,彻底消除面板半透明 / backdrop-filter 透出白底("发白"根因)。
+   注意:dashboard.css 是普通全局 CSS,不能用 :global()(那是 CSS Modules/scoped 语法,会让规则失效)。 */
+html:has(.dc3d-stage),
+body:has(.dc3d-stage),
+body:has(.dc3d-stage) #app,
+body:has(.dc3d-stage) .Layout,
+body:has(.dc3d-stage) .VPContent,
+body:has(.dc3d-stage) .VPPage {
+  background: var(--dc3d-deep-black) !important;
+}
+.dc3d-stage {
+  position: relative;
+  min-height: 100vh;
+  padding: var(--dc3d-gap) var(--dc3d-gap) 0;
+  color: var(--dc3d-text);
+  background:
+    radial-gradient(ellipse at 50% -8%, rgba(0, 229, 255, 0.16), transparent 48%),
+    radial-gradient(ellipse at 50% 114%, rgba(255, 45, 155, 0.12), transparent 55%),
+    radial-gradient(ellipse at 2% 50%, rgba(43, 155, 255, 0.07), transparent 42%),
+    radial-gradient(ellipse at 98% 50%, rgba(255, 45, 155, 0.06), transparent 42%),
+    linear-gradient(180deg, var(--dc3d-deep-black), var(--dc3d-stage-bg) 28%, var(--dc3d-stage-bg-2) 72%, var(--dc3d-deep-black));
+  background-attachment: fixed;
+}
+/* 双层网格:粗主轴 84px + 细网格 21px,边缘渐隐 */
+.dc3d-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--dc3d-grid-bold) 1px, transparent 1px),
+    linear-gradient(90deg, var(--dc3d-grid-bold) 1px, transparent 1px),
+    linear-gradient(var(--dc3d-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--dc3d-grid) 1px, transparent 1px);
+  background-size: 84px 84px, 84px 84px, 21px 21px, 21px 21px;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 28%, transparent 90%);
+  mask-image: radial-gradient(ellipse at center, #000 28%, transparent 90%);
+  pointer-events: none;
+}
+/* 数据流粒子:青/品红/蓝光点沿对角缓慢流动 */
+.dc3d-stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle, rgba(0, 229, 255, 0.5) 0.7px, transparent 1.4px),
+    radial-gradient(circle, rgba(255, 45, 155, 0.45) 0.6px, transparent 1.3px),
+    radial-gradient(circle, rgba(43, 155, 255, 0.35) 0.5px, transparent 1.1px);
+  background-size: 320px 320px, 280px 280px, 240px 240px;
+  background-position: 0 0, 80px 120px, 200px 40px;
+  animation: dc3d-particle-flow var(--dc3d-flow-dur) linear infinite;
+  opacity: 0.55;
+}
+@keyframes dc3d-particle-flow {
+  to {
+    background-position: 320px 320px, -280px 160px, 440px -200px;
+  }
+}
+.dc3d-stage > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== DataV 大屏主标题:十字准星 + 流动光点装饰线 + 实时时间 ===== */
+.dc3d-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 18px 20px 10px;
+}
+/* 顶部居中十字准星(SVG data-uri,%3C 转义防 markdown 误解析) */
+.dc3d-hero::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 24px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Cg fill='none' stroke='%2300e5ff' stroke-width='1'%3E%3Ccircle cx='13' cy='13' r='4'/%3E%3Cpath d='M13 1v6M13 19v6M1 13h6M19 13h6'/%3E%3Ccircle cx='13' cy='13' r='1.5' fill='%2300e5ff'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
+  opacity: 0.75;
+  filter: drop-shadow(0 0 4px var(--dc3d-neon-cyan));
+  pointer-events: none;
+}
+.dc3d-hero-center {
+  text-align: center;
+  padding: 0 12px;
+}
+.dc3d-hero-title {
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 5px;
+  margin: 0;
+  text-shadow: 0 0 22px rgba(0, 229, 255, 0.85), 0 0 8px rgba(0, 229, 255, 1), 0 0 38px rgba(0, 229, 255, 0.4);
+  white-space: nowrap;
+}
+.dc3d-hero-sub {
+  font-size: 12px;
+  color: var(--dc3d-magenta-soft);
+  letter-spacing: 3px;
+  margin: 4px 0 0;
+  text-shadow: 0 0 6px rgba(255, 45, 155, 0.4);
+}
+.dc3d-hero-deco {
+  flex: 1;
+  height: 1px;
+  max-width: 28vw;
+  background: linear-gradient(90deg, transparent, var(--dc3d-neon-cyan) 30%, var(--dc3d-magenta) 70%, transparent);
+  box-shadow: 0 0 6px rgba(0, 229, 255, 0.5);
+  position: relative;
+}
+/* 装饰线流动光点 */
+.dc3d-hero-deco::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 8px var(--dc3d-neon-cyan), 0 0 16px var(--dc3d-neon-cyan);
+  transform: translateY(-50%);
+  animation: dc3d-deco-run 3.4s linear infinite;
+}
+@keyframes dc3d-deco-run {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+.dc3d-hero-meta {
+  position: absolute;
+  right: 20px;
+  top: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--dc3d-text-dim);
+  font-family: var(--dc3d-mono);
+}
+.dc3d-hero-time {
+  font-variant-numeric: tabular-nums;
+}
+.dc3d-hero-live {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--dc3d-neon-green);
+}
+.dc3d-hero-live i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--dc3d-neon-green);
+  box-shadow: 0 0 8px var(--dc3d-neon-green);
+  animation: dc3d-breathe 1.6s ease-in-out infinite;
+}
+.dc3d-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--dc3d-gap);
+}
+.dc3d-back,
+.dc3d-pause {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid var(--dc3d-panel-border);
+  background: rgba(0, 229, 255, 0.06);
+  color: var(--dc3d-text);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: var(--dc3d-mono);
+  /* 切角按钮 */
+  clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+  transition: all 0.2s;
+}
+.dc3d-back:hover,
+.dc3d-pause:hover {
+  background: rgba(0, 229, 255, 0.16);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+}
+.dc3d-pause[aria-pressed='true'] {
+  border-color: var(--dc3d-neon-amber);
+  color: var(--dc3d-neon-amber);
+  box-shadow: 0 0 12px rgba(255, 167, 38, 0.4);
+}
+@keyframes dc3d-breathe {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ===== 科技面板(ChartCard/KpiCard):切角 + conic 流光边框 + 斜边高亮 + 呼吸发光 ===== */
+.dc3d-panel {
+  position: relative;
+  border: 1px solid var(--dc3d-panel-border);
+  border-radius: 0;
+  background:
+    linear-gradient(135deg, rgba(0, 229, 255, 0.08), transparent 30%),
+    linear-gradient(315deg, rgba(255, 45, 155, 0.06), transparent 30%),
+    var(--dc3d-panel-bg);
+  backdrop-filter: blur(6px);
+  /* 切左上 + 右下两角,FUI 棱角 */
+  clip-path: polygon(0 var(--dc3d-clip), var(--dc3d-clip) 0, 100% 0, 100% calc(100% - var(--dc3d-clip)), calc(100% - var(--dc3d-clip)) 100%, 0 100%);
+  filter: drop-shadow(0 0 5px var(--dc3d-panel-glow));
+  animation: dc3d-panel-breathe var(--dc3d-pulse-dur) ease-in-out infinite;
+}
+@keyframes dc3d-panel-breathe {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 4px rgba(0, 229, 255, 0.28));
+  }
+  50% {
+    filter: drop-shadow(0 0 9px rgba(0, 229, 255, 0.55));
+  }
+}
+/* conic 流光边框:光弧(青→紫)沿边框周长巡游 7s 一圈 */
+.dc3d-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--dc3d-conic),
+    transparent 0deg,
+    var(--dc3d-neon-cyan) 40deg,
+    var(--dc3d-neon-purple) 100deg,
+    transparent 160deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  --dc3d-conic: 0deg;
+  animation: dc3d-conic 7s linear infinite;
+  pointer-events: none;
+  opacity: 0.85;
+  z-index: 3;
+}
+@keyframes dc3d-conic {
+  to {
+    --dc3d-conic: 360deg;
+  }
+}
+/* 左上切角斜边高亮线 */
+.dc3d-panel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, var(--dc3d-neon-cyan) 0 1.6px, transparent 1.6px);
+  filter: drop-shadow(0 0 3px var(--dc3d-neon-cyan));
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* 四角角标:直角处发光 L + 切角处呼吸光点 */
+.dc3d-corner {
+  position: absolute;
+  border-style: solid;
+  border-width: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+.dc3d-corner.tr {
+  top: -1px;
+  right: -1px;
+  width: 11px;
+  height: 11px;
+  border-top-width: 2px;
+  border-right-width: 2px;
+  border-color: var(--dc3d-neon-cyan);
+  box-shadow: 0 0 6px var(--dc3d-neon-cyan);
+  animation: dc3d-corner-pulse var(--dc3d-pulse-dur) ease-in-out infinite;
+}
+.dc3d-corner.bl {
+  bottom: -1px;
+  left: -1px;
+  width: 11px;
+  height: 11px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+  border-color: var(--dc3d-neon-cyan);
+  box-shadow: 0 0 6px var(--dc3d-neon-cyan);
+  animation: dc3d-corner-pulse var(--dc3d-pulse-dur) ease-in-out infinite;
+}
+.dc3d-corner.tl,
+.dc3d-corner.br {
+  width: 5px;
+  height: 5px;
+  border: none;
+  background: var(--dc3d-neon-cyan);
+  box-shadow: 0 0 6px var(--dc3d-neon-cyan), 0 0 12px rgba(0, 229, 255, 0.5);
+  animation: dc3d-corner-pulse var(--dc3d-pulse-dur) ease-in-out infinite;
+}
+.dc3d-corner.tl {
+  top: 4px;
+  left: 4px;
+}
+.dc3d-corner.br {
+  bottom: 4px;
+  right: 4px;
+}
+@keyframes dc3d-corner-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* 面板标题栏:竖装饰条 + SEC-XX 自动编号 */
+.factory-grid,
+.kpi-band {
+  counter-reset: sec;
+}
+.dc3d-panel-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--dc3d-panel-border);
+  background: linear-gradient(90deg, rgba(0, 229, 255, 0.1), transparent 60%);
+  counter-increment: sec;
+}
+.dc3d-panel-head::before {
+  content: '';
+  width: 3px;
+  height: 16px;
+  background: linear-gradient(180deg, var(--dc3d-neon-cyan), var(--dc3d-magenta));
+  box-shadow: 0 0 8px var(--dc3d-neon-cyan);
+  flex-shrink: 0;
+}
+.dc3d-panel-head::after {
+  content: 'SEC-' counter(sec, decimal-leading-zero);
+  font-family: var(--dc3d-mono);
+  font-size: 10px;
+  color: var(--dc3d-magenta);
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 6px rgba(255, 45, 155, 0.6);
+  opacity: 0.85;
+  margin-left: auto;
+}
+.dc3d-panel-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dc3d-text);
+  letter-spacing: 1.5px;
+  margin: 0;
+  flex: 1;
+  text-shadow: 0 0 6px rgba(0, 229, 255, 0.25);
+}
+.dc3d-panel-actions {
+  display: flex;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--dc3d-text-dim);
+  font-family: var(--dc3d-mono);
+}
+
+/* KPI 切角 + 底部双色流光状态条 */
+.kpi {
+  clip-path: polygon(0 6px, 6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
+}
+.kpi::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 5px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--dc3d-neon-cyan), var(--dc3d-magenta));
+  background-size: 200% 100%;
+  animation: dc3d-kpi-strip 3s linear infinite;
+  opacity: 0.7;
+  z-index: 6;
+}
+@keyframes dc3d-kpi-strip {
+  to {
+    background-position: 200% 0;
+  }
+}
+
+/* reduced-motion:关闭所有装饰动画(保留数据更新) */
+@media (prefers-reduced-motion: reduce) {
+  .dc3d-panel,
+  .dc3d-panel::before,
+  .dc3d-corner,
+  .dc3d-stage::after,
+  .dc3d-hero-deco::before,
+  .dc3d-hero-live i,
+  .kpi::after {
+    animation: none;
+  }
+}

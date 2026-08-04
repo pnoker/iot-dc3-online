@@ -23,8 +23,8 @@ const actions = computed(() => isEnglish.value ? [
   },
   {
     title: 'Demo',
-    description: 'Try device connectivity, data collection, and intelligent management online',
-    link: 'https://demo.dc3.site',
+    description: 'Explore live industrial IoT visualization dashboards across 12 domains',
+    link: '/en/demo/',
     icon: 'demo',
     cursorRgb: '91, 116, 235'
   }
@@ -45,8 +45,8 @@ const actions = computed(() => isEnglish.value ? [
   },
   {
     title: '演示',
-    description: '在线体验设备接入、数据采集与智能管理',
-    link: 'https://demo.dc3.site',
+    description: '在线体验 12 个工业领域的实时可视化看板大屏',
+    link: '/zh/demo/',
     icon: 'demo',
     cursorRgb: '91, 116, 235'
   }
