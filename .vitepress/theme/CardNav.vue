@@ -16,6 +16,11 @@
             <span class="signal-tag-mark" aria-hidden="true"></span>
             {{ capability }}
           </span>
+          <a class="signal-tag signal-tag-link" :href="content.dashboard.link">
+            <span class="signal-tag-mark signal-tag-mark-dashboard" aria-hidden="true"></span>
+            {{ content.dashboard.label }}
+            <span class="signal-tag-arrow" aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
 
@@ -48,6 +53,7 @@ const content = computed(() => isEnglish.value ? {
   description: 'From heterogeneous device access to AI-driven decisions, IoT DC3 turns every data change into a visible and controllable real-time loop.',
   capabilitiesLabel: 'Platform capabilities',
   capabilities: ['28 multi-protocol drivers', 'Spring AI intelligence loop', 'Distributed · Multi-tenant · Open source'],
+  dashboard: {label: '12 Industry Dashboards', link: '/en/demo/'},
   footer: 'A cloud-native, open-source industrial IoT platform with multi-protocol connectivity, powered by AI'
 } : {
   kicker: 'LIVE INDUSTRIAL DATA FLOW',
@@ -55,6 +61,7 @@ const content = computed(() => isEnglish.value ? {
   description: '从异构设备接入到 AI 决策执行，IoT DC3 将每一次数据变化汇入可感知、可控制的实时闭环。',
   capabilitiesLabel: '平台能力',
   capabilities: ['28 个多协议驱动', 'Spring AI 智能闭环', '分布式 · 多租户 · 全开源'],
+  dashboard: {label: '12 个行业看板', link: '/zh/demo/'},
   footer: '多协议接入、AI 赋能的云原生开源工业物联网平台'
 })
 
@@ -392,6 +399,37 @@ onBeforeUnmount(() => {
   border-radius: 50%;
   background: linear-gradient(135deg, #29c5df, #6773e5);
   box-shadow: 0 0 10px rgba(41, 197, 223, 0.54);
+}
+
+.signal-tag-link {
+  color: var(--vp-c-text-1);
+  text-decoration: none;
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+
+.signal-tag-link:hover {
+  border-color: rgba(91, 116, 235, 0.38);
+  color: var(--vp-c-text-1);
+  box-shadow: 0 16px 34px rgba(91, 116, 235, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  transform: translateY(-2px);
+}
+
+.signal-tag-link:focus-visible {
+  outline: 3px solid rgba(91, 116, 235, 0.24);
+  outline-offset: 3px;
+}
+
+.signal-tag-mark-dashboard {
+  background: linear-gradient(135deg, #29c5df, #6974e8, #c16ee8);
+}
+
+.signal-tag-arrow {
+  color: var(--vp-c-brand-1);
+  transition: transform 220ms ease;
+}
+
+.signal-tag-link:hover .signal-tag-arrow {
+  transform: translateX(3px);
 }
 
 .sparkline-wrap {

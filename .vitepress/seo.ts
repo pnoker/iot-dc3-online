@@ -15,7 +15,7 @@ const LOCALES = {
 } as const
 
 const HOME_DESCRIPTIONS = {
-  zh: 'IoT DC3 是一个多协议、云原生、AI 赋能的开源工业物联网平台，提供设备接入、数据采集、边云协同与智能运维能力。',
+  zh: 'IoT DC3 是一个多协议接入、云原生、开源的工业 AI 物联网平台，提供设备接入、数据采集、边云协同与智能运维能力。',
   en: 'IoT DC3 is a multi-protocol, cloud-native, AI-powered open-source industrial IoT platform for device connectivity, data acquisition, edge-to-cloud delivery, and intelligent operations.'
 } as const
 

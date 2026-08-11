@@ -30,6 +30,7 @@ import HeroActionCards from './HeroActionCards.vue'
 import HeroParticles from './HeroParticles.vue'
 import HeroWaves from './HeroWaves.vue'
 import CardNav from './CardNav.vue'
+import WeChatQr from './WeChatQr.vue'
 
 const theme: Theme = {
   extends: DefaultTheme,
@@ -40,6 +41,7 @@ const theme: Theme = {
       'home-hero-image': () => h(HeroLogo),
       'home-hero-actions-after': () => h(HeroActionCards),
       'home-features-after': () => h(CardNav),
+      'nav-bar-content-after': () => h(WeChatQr),
       'layout-bottom': () => h(GlobalCursor),
     })
   },
