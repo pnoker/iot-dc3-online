@@ -62,6 +62,8 @@
 
 html {
     background: var(--vp-c-bg);
+    /* CardNav 的 .signal-section 用 width:100vw 做全宽背景；100vw 含垂直滚动条宽度，会比可用宽度多出一条滚动条而向右溢出，产生水平滚动条。clip 不创建滚动容器、不破坏垂直滚动与 fixed 导航，最安全。 */
+    overflow-x: clip;
 }
 
 body {
