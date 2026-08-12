@@ -5,7 +5,10 @@ import type {HeadConfig, TransformContext} from 'vitepress'
 
 const SITE_URL = 'https://dc3.site'
 const SITE_ROOT = fileURLToPath(new URL('.', import.meta.url))
-const SITE_IMAGE = `${SITE_URL}/images/logo.svg`
+const LOGO_IMAGE = `${SITE_URL}/images/logo.svg`
+const OG_IMAGE = `${SITE_URL}/images/og.png`
+const OG_IMAGE_WIDTH = 1200
+const OG_IMAGE_HEIGHT = 630
 const ORGANIZATION_ID = `${SITE_URL}/#organization`
 const WEBSITE_ID = `${SITE_URL}/#website`
 
@@ -19,6 +22,11 @@ const HOME_DESCRIPTIONS = {
   en: 'IoT DC3 is a multi-protocol, cloud-native, AI-powered open-source industrial IoT platform for device connectivity, data acquisition, edge-to-cloud delivery, and intelligent operations.'
 } as const
 
+const KEYWORDS = {
+  zh: 'IoT,物联网,工业物联网,物联网平台,IIoT,DC3,开源,分布式,云原生,Spring Cloud,设备接入,数据采集,边云协同,智能运维,AI,可视化看板',
+  en: 'IoT,industrial IoT,IIoT,IoT platform,open source,cloud-native,device connectivity,data acquisition,edge-to-cloud,smart operations,AI,dashboard,DC3'
+} as const
+
 const ORGANIZATION = {
   '@type': 'Organization',
   '@id': ORGANIZATION_ID,
@@ -26,7 +34,7 @@ const ORGANIZATION = {
   url: SITE_URL,
   logo: {
     '@type': 'ImageObject',
-    url: SITE_IMAGE
+    url: LOGO_IMAGE
   },
   sameAs: [
     'https://github.com/pnoker/iot-dc3',
@@ -120,6 +128,7 @@ export function transformHead(context: TransformContext): HeadConfig[] {
 
   return [
     ['meta', {name: 'description', content: description}],
+    ['meta', {name: 'keywords', content: KEYWORDS[locale]}],
     ['meta', {name: 'robots', content: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'}],
     ['meta', {name: 'author', content: 'IoT DC3 Contributors'}],
     ['link', {rel: 'canonical', href: canonicalUrl}],
@@ -135,7 +144,10 @@ export function transformHead(context: TransformContext): HeadConfig[] {
     ['meta', {property: 'og:title', content: title}],
     ['meta', {property: 'og:description', content: description}],
     ['meta', {property: 'og:url', content: canonicalUrl}],
-    ['meta', {property: 'og:image', content: SITE_IMAGE}],
+    ['meta', {property: 'og:image', content: OG_IMAGE}],
+    ['meta', {property: 'og:image:width', content: String(OG_IMAGE_WIDTH)}],
+    ['meta', {property: 'og:image:height', content: String(OG_IMAGE_HEIGHT)}],
+    ['meta', {property: 'og:image:alt', content: `${title} - IoT DC3`}],
     ['meta', {property: 'og:locale', content: LOCALES[locale].hreflang.replace('-', '_')}],
     ...alternateLocales.map(alternateLocale => ['meta', {
       property: 'og:locale:alternate',
@@ -144,7 +156,7 @@ export function transformHead(context: TransformContext): HeadConfig[] {
     ['meta', {name: 'twitter:card', content: 'summary_large_image'}],
     ['meta', {name: 'twitter:title', content: title}],
     ['meta', {name: 'twitter:description', content: description}],
-    ['meta', {name: 'twitter:image', content: SITE_IMAGE}],
+    ['meta', {name: 'twitter:image', content: OG_IMAGE}],
     ['script', {type: 'application/ld+json'}, getStructuredData(locale, canonicalUrl, title, description)]
   ]
 }
