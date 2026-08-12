@@ -6,7 +6,10 @@ import type {HeadConfig, TransformContext} from 'vitepress'
 const SITE_URL = 'https://dc3.site'
 const SITE_ROOT = fileURLToPath(new URL('.', import.meta.url))
 const LOGO_IMAGE = `${SITE_URL}/images/logo.svg`
-const OG_IMAGE = `${SITE_URL}/images/og.png`
+const OG_IMAGE = {
+  zh: `${SITE_URL}/images/og-zh.png`,
+  en: `${SITE_URL}/images/og-en.png`
+} as const
 const OG_IMAGE_WIDTH = 1200
 const OG_IMAGE_HEIGHT = 630
 const ORGANIZATION_ID = `${SITE_URL}/#organization`
@@ -144,7 +147,7 @@ export function transformHead(context: TransformContext): HeadConfig[] {
     ['meta', {property: 'og:title', content: title}],
     ['meta', {property: 'og:description', content: description}],
     ['meta', {property: 'og:url', content: canonicalUrl}],
-    ['meta', {property: 'og:image', content: OG_IMAGE}],
+    ['meta', {property: 'og:image', content: OG_IMAGE[locale]}],
     ['meta', {property: 'og:image:width', content: String(OG_IMAGE_WIDTH)}],
     ['meta', {property: 'og:image:height', content: String(OG_IMAGE_HEIGHT)}],
     ['meta', {property: 'og:image:alt', content: `${title} - IoT DC3`}],
@@ -156,7 +159,7 @@ export function transformHead(context: TransformContext): HeadConfig[] {
     ['meta', {name: 'twitter:card', content: 'summary_large_image'}],
     ['meta', {name: 'twitter:title', content: title}],
     ['meta', {name: 'twitter:description', content: description}],
-    ['meta', {name: 'twitter:image', content: OG_IMAGE}],
+    ['meta', {name: 'twitter:image', content: OG_IMAGE[locale]}],
     ['script', {type: 'application/ld+json'}, getStructuredData(locale, canonicalUrl, title, description)]
   ]
 }
