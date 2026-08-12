@@ -11,7 +11,7 @@
   "devDependencies": {
     "playwright": "^1.62.1",
     "vitepress": "^1.6.4",
-    "vue": "^3.5.40"
+    "vue": "^3.5.41"
   },
   "dependencies": {
     "@kjgl77/datav-vue3": "^1.7.4",
