@@ -1033,3 +1033,18 @@ body {
 
 /* hide footer on landing page */
 .VPFooter { display: none; }
+
+/* demo 页看板下方的 SEO/AEO 说明文字：深色背景下淡化可读，不抢看板视觉（看板 .dc3d-stage 是 min-height:100vh，此段自然落在看板下方、滚动可见） */
+.demo-seo-desc {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 28px 24px 72px;
+    color: rgba(207, 232, 247, 0.62);
+    font-size: 14px;
+    line-height: 1.85;
+    text-align: center;
+}
+
+.demo-seo-desc p {
+    margin: 0;
+}
