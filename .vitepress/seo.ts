@@ -21,13 +21,13 @@ const LOCALES = {
 } as const
 
 const HOME_DESCRIPTIONS = {
-  zh: 'IoT DC3 是一个多协议接入、云原生、开源的工业 AI 物联网平台，提供设备接入、数据采集、边云协同与智能运维能力。',
-  en: 'IoT DC3 is a multi-protocol, cloud-native, AI-powered open-source industrial IoT platform for device connectivity, data acquisition, edge-to-cloud delivery, and intelligent operations.'
+  zh: 'IoT DC3 是一个多协议接入、云原生、AI 赋能的开源工业物联网平台，面向智能体演进，提供设备接入、数据采集、边云协同与智能运维能力。',
+  en: 'IoT DC3 is a multi-protocol, cloud-native, AI-powered, open-source industrial IoT platform evolving toward AI agents, for device connectivity, data acquisition, edge-to-cloud delivery, and intelligent operations.'
 } as const
 
 const KEYWORDS = {
-  zh: 'IoT,物联网,工业物联网,物联网平台,IIoT,DC3,开源,分布式,云原生,Spring Cloud,设备接入,数据采集,边云协同,智能运维,AI,可视化看板',
-  en: 'IoT,industrial IoT,IIoT,IoT platform,open source,cloud-native,device connectivity,data acquisition,edge-to-cloud,smart operations,AI,dashboard,DC3'
+  zh: 'IoT,物联网,工业物联网,物联网平台,IIoT,DC3,开源,云原生,Spring Cloud,设备接入,多协议,数据采集,边云协同,智能运维,AI,智能体,可视化看板',
+  en: 'IoT,industrial IoT,IIoT,IoT platform,open source,cloud-native,multi-protocol,device connectivity,data acquisition,edge-to-cloud,smart operations,AI,AI agents,dashboard,DC3'
 } as const
 
 const ORGANIZATION = {

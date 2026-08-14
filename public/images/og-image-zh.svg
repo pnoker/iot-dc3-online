@@ -42,7 +42,7 @@
   <text x="90" y="252" font-size="106" font-weight="800" letter-spacing="-2" fill="url(#word)">IoT DC3</text>
 
   <!-- 中文 tagline -->
-  <text x="94" y="322" font-size="36" font-weight="600" fill="#d6ecf7">多协议 · 云原生 · AI 驱动</text>
+  <text x="94" y="322" font-size="36" font-weight="600" fill="#d6ecf7">多协议 · 云原生 · AI 赋能</text>
   <text x="94" y="372" font-size="36" font-weight="600" fill="#9fb6c9">开源工业物联网平台</text>
 
   <!-- 能力点 -->

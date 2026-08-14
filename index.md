@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: IoT DC3
-  text: 分布式工业物联网平台
-  tagline: Distributed Industrial IoT Platform
+  text: 开源工业物联网平台
+  tagline: Open-source Industrial IoT Platform
   actions:
     - theme: brand
       text: 简体中文

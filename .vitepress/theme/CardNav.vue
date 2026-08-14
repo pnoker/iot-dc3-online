@@ -52,17 +52,17 @@ const content = computed(() => isEnglish.value ? {
   title: 'Keep devices, data and intelligence in motion',
   description: 'From heterogeneous device access to AI-driven decisions, IoT DC3 turns every data change into a visible and controllable real-time loop.',
   capabilitiesLabel: 'Platform capabilities',
-  capabilities: ['28 multi-protocol drivers', 'Spring AI intelligence loop', 'Distributed · Multi-tenant · Open source'],
+  capabilities: ['28 multi-protocol drivers', 'Spring AI intelligence loop', 'Cloud-native · Multi-tenant · Open source'],
   dashboard: {label: '12 Industry Dashboards', link: '/en/demo/'},
-  footer: 'A cloud-native, open-source industrial IoT platform with multi-protocol connectivity, powered by AI'
+  footer: 'A multi-protocol, cloud-native, AI-powered, open-source industrial IoT platform evolving toward AI agents'
 } : {
   kicker: 'LIVE INDUSTRIAL DATA FLOW',
   title: '让设备、数据与智能持续流动',
   description: '从异构设备接入到 AI 决策执行，IoT DC3 将每一次数据变化汇入可感知、可控制的实时闭环。',
   capabilitiesLabel: '平台能力',
-  capabilities: ['28 个多协议驱动', 'Spring AI 智能闭环', '分布式 · 多租户 · 全开源'],
+  capabilities: ['28 个多协议驱动', 'Spring AI 智能闭环', '云原生 · 多租户 · 全开源'],
   dashboard: {label: '12 个行业看板', link: '/zh/demo/'},
-  footer: '多协议接入、AI 赋能的云原生开源工业物联网平台'
+  footer: '多协议接入、云原生、AI 赋能的开源工业物联网平台，面向智能体演进'
 })
 
 const sparkCanvas = ref<HTMLCanvasElement | null>(null)

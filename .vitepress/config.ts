@@ -7,7 +7,7 @@ export default defineConfig({
   base: '/',
   lang: 'zh-CN',
   title: 'IoT DC3',
-  description: 'IoT DC3 is a multi-protocol, cloud-native, AI-powered open-source industrial IoT platform.',
+  description: 'IoT DC3 is a multi-protocol, cloud-native, AI-powered, open-source industrial IoT platform evolving toward AI agents.',
   cleanUrls: true,
   sitemap: {
     hostname: 'https://dc3.site',
