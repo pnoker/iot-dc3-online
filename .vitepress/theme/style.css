@@ -1038,7 +1038,7 @@ body {
 .demo-seo-desc {
     max-width: 760px;
     margin: 0 auto;
-    padding: 28px 24px 72px;
+    padding: 28px 24px 0;
     color: rgba(207, 232, 247, 0.62);
     font-size: 14px;
     line-height: 1.85;
@@ -1047,4 +1047,60 @@ body {
 
 .demo-seo-desc p {
     margin: 0;
+}
+
+/* demo 页看板下方的结构化说明章节（看板亮点 / 业务价值 / 落地路径 / 常见问题）：
+   供搜索引擎与 AI 引擎提取的实质文本，与看板深色视觉协调 */
+.demo-article {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 8px 24px 72px;
+    color: rgba(207, 232, 247, 0.72);
+    font-size: 14px;
+    line-height: 1.85;
+    text-align: left;
+}
+
+.demo-article h2 {
+    margin: 32px 0 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(64, 128, 168, 0.35);
+    color: rgba(230, 244, 255, 0.92);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.demo-article h3 {
+    margin: 18px 0 4px;
+    color: rgba(230, 244, 255, 0.85);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.demo-article p,
+.demo-article li {
+    color: rgba(207, 232, 247, 0.72);
+    font-size: 14px;
+    line-height: 1.85;
+}
+
+.demo-article ul {
+    margin: 6px 0 10px;
+    padding-left: 20px;
+    list-style: disc;
+}
+
+.demo-article li {
+    margin: 3px 0;
+}
+
+.demo-article a {
+    color: var(--vp-c-brand-1, #409eff);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(64, 158, 255, 0.45);
+}
+
+.demo-article a:hover {
+    border-bottom-style: solid;
 }
