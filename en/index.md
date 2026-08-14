@@ -1,6 +1,7 @@
 ---
 layout: home
 title: 'IoT DC3 · Open-Source Industrial IoT Platform'
+titleTemplate: false
 
 hero:
   name: IoT DC3

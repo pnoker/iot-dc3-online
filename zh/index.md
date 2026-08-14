@@ -1,6 +1,7 @@
 ---
 layout: home
 title: 'IoT DC3 · 多协议接入的开源工业物联网平台'
+titleTemplate: false
 
 hero:
   name: IoT DC3
