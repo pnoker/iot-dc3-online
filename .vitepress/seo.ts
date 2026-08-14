@@ -128,6 +128,7 @@ export function transformHead(context: TransformContext): HeadConfig[] {
   const canonicalUrl = getUrl(getRoutePath(context.pageData.relativePath))
   const availableLocales = getAvailableLocales(context.pageData.relativePath)
   const alternateLocales = availableLocales.filter(alternateLocale => alternateLocale !== locale)
+  const pathWithoutLocale = context.pageData.relativePath.replace(/^(zh|en)\//, '')
 
   return [
     ['meta', {name: 'description', content: description}],
@@ -139,7 +140,7 @@ export function transformHead(context: TransformContext): HeadConfig[] {
     ...availableLocales.map(alternateLocale => ['link', {
       rel: 'alternate',
       hreflang: LOCALES[alternateLocale].hreflang,
-      href: getUrl(getRoutePath(`${alternateLocale}/index.md`))
+      href: getUrl(getRoutePath(`${alternateLocale}/${pathWithoutLocale}`))
     }] as HeadConfig),
     ['link', {rel: 'alternate', hreflang: 'x-default', href: getUrl('/zh/')}],
     ['meta', {property: 'og:type', content: 'website'}],
