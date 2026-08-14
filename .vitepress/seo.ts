@@ -139,6 +139,7 @@ export function transformHead(context: TransformContext): HeadConfig[] {
     ['meta', {name: 'author', content: 'IoT DC3 Contributors'}],
     ['link', {rel: 'canonical', href: canonicalUrl}],
     ['link', {rel: 'alternate', type: 'text/plain', href: `${SITE_URL}/llms.txt`, title: 'AI-readable site summary'}],
+    ['link', {rel: 'alternate', type: 'text/plain', href: `${SITE_URL}/llms-full.txt`, title: 'AI-readable full content'}],
     ...availableLocales.map(alternateLocale => ['link', {
       rel: 'alternate',
       hreflang: LOCALES[alternateLocale].hreflang,

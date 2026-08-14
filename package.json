@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vitepress dev",
-    "build": "vitepress build",
+    "build": "vitepress build && node scripts/generate-llms-full.cjs",
     "preview": "vitepress preview",
     "gen:og": "node scripts/gen-og-images.mjs"
   },
