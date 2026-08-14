@@ -6,9 +6,11 @@ import type {HeadConfig, TransformContext} from 'vitepress'
 const SITE_URL = 'https://dc3.site'
 const SITE_ROOT = fileURLToPath(new URL('.', import.meta.url))
 const LOGO_IMAGE = `${SITE_URL}/images/logo.svg`
+// OG 图带版本号:微信/X 等平台按整条 URL 缓存卡片图,图片更新后必须换 URL 才会重新抓取(改图时同步 bump)
+const OG_IMAGE_VERSION = 'v2'
 const OG_IMAGE = {
-  zh: `${SITE_URL}/images/og-zh.png`,
-  en: `${SITE_URL}/images/og-en.png`
+  zh: `${SITE_URL}/images/og-zh.png?${OG_IMAGE_VERSION}`,
+  en: `${SITE_URL}/images/og-en.png?${OG_IMAGE_VERSION}`
 } as const
 const OG_IMAGE_WIDTH = 1200
 const OG_IMAGE_HEIGHT = 630
