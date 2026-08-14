@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import {provide, ref, computed, onMounted, onBeforeUnmount} from 'vue'
-import {useData, useRouter} from 'vitepress'
+import {useData} from 'vitepress'
 import {useI18n} from '../../composables/useI18n'
 
 defineProps<{title: string; subtitle?: string}>()
 
 const {en, t} = useI18n()
 const {page} = useData()
-const router = useRouter()
 const backTo = computed(() => (en.value ? '/en/demo/' : '/zh/demo/'))
-function goBack() {
-  router.go(backTo.value)
-}
 
 // 中英切换:手写 relativePath 语言前缀互换(cleanUrls 去 .md 不加 .html),zh/demo/xxx ↔ en/demo/xxx
 const otherLink = computed(() => {
@@ -19,9 +15,6 @@ const otherLink = computed(() => {
   const swapped = rel.startsWith('en/') ? rel.replace(/^en\//, 'zh/') : rel.replace(/^zh\//, 'en/')
   return '/' + swapped.replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, '')
 })
-function switchLang() {
-  router.go(otherLink.value)
-}
 
 // 保留 dc3d-paused provide(恒 false),子组件 inject 不报错;不再提供暂停按钮
 provide('dc3d-paused', ref(false))
@@ -55,16 +48,16 @@ onBeforeUnmount(() => timer && clearInterval(timer))
     </header>
 
     <div class="dc3d-toolbar">
-      <button class="dc3d-back" @click="goBack" aria-keyshortcuts="Alt+Left">
+      <a class="dc3d-back" :href="backTo" aria-keyshortcuts="Alt+Left">
         ‹ {{ t('返回看板画廊', 'Back to gallery') }}
-      </button>
-      <button
+      </a>
+      <a
         class="dc3d-back dc3d-lang"
-        @click="switchLang"
+        :href="otherLink"
         :title="t('切换语言', 'Switch language')"
       >
         🌐 {{ en ? '中文' : 'English' }}
-      </button>
+      </a>
     </div>
 
     <slot name="kpi" />

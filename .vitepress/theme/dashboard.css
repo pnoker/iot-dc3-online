@@ -280,6 +280,7 @@ body:has(.dc3d-stage) .VPPage {
   cursor: pointer;
   font-size: 13px;
   font-family: var(--dc3d-mono);
+  text-decoration: none;
   /* 切角按钮 */
   clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
   transition: all 0.2s;

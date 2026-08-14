@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import {useRouter} from 'vitepress'
 import {DOMAINS} from '../../mock/registry'
 import {useI18n} from '../../composables/useI18n'
 
 const {en, t} = useI18n()
-const router = useRouter()
 
 const vizLabel = (k: string) =>
   ({
@@ -16,21 +14,19 @@ const vizLabel = (k: string) =>
     '3d': '3D',
   }[k] ?? k)
 
-function enter(id: string) {
-  router.go((en.value ? '/en/demo/' : '/zh/demo/') + id)
-}
+const demoUrl = (id: string) => (en.value ? '/en/demo/' : '/zh/demo/') + id
 </script>
 
 <template>
   <div class="gallery">
     <div class="g-grid">
-      <button
+      <a
         v-for="d in DOMAINS"
         :key="d.id"
         class="g-card dc3d-glass"
         :style="{'--accent': d.accent}"
+        :href="demoUrl(d.id)"
         :aria-label="en ? d.name_en : d.name_zh"
-        @click="enter(d.id)"
       >
         <div
           class="g-cover"
@@ -50,7 +46,7 @@ function enter(id: string) {
             <span class="g-enter">{{ t('进入看板', 'Enter') }} →</span>
           </div>
         </div>
-      </button>
+      </a>
     </div>
   </div>
 </template>
@@ -96,6 +92,7 @@ function enter(id: string) {
   display: flex;
   flex-direction: column;
   text-align: left;
+  text-decoration: none;
   padding: 0;
   cursor: pointer;
   overflow: hidden;
