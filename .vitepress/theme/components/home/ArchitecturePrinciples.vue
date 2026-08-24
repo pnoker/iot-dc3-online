@@ -7,8 +7,10 @@ const isEnglish = computed(() => page.value.relativePath.startsWith('en/'))
 
 const copy = computed(() => isEnglish.value ? {
   kicker: 'Architecture Principles',
-  title: 'Two principles, all the way down',
-  description: 'Like every good harness: keep the surface simple and the execution observable.',
+  title: 'Two principles, from sensing to execution',
+  description: 'Keep the surface simple. Keep every execution observable.',
+  visionLink: 'Why these two? Read the full vision →',
+  visionHref: '/en/vision',
   principles: [
     {
       label: 'Everything is a Tool.',
@@ -25,8 +27,10 @@ const copy = computed(() => isEnglish.value ? {
   ]
 } : {
   kicker: '架构原则',
-  title: '两条原则，贯穿始终',
-  description: '像所有优秀的 Harness 一样：保持接口简单，让执行全程可观测。',
+  title: '两条原则，贯穿从感知到执行的整个闭环',
+  description: '接口保持简单，执行全程可观测。',
+  visionLink: '为什么是这两条？阅读完整愿景 →',
+  visionHref: '/zh/vision',
   principles: [
     {
       label: 'Everything is a Tool.',
@@ -69,6 +73,10 @@ const copy = computed(() => isEnglish.value ? {
           </div>
         </article>
       </div>
+
+      <p class="principles-vision">
+        <a :href="copy.visionHref">{{ copy.visionLink }}</a>
+      </p>
     </div>
   </section>
 </template>
@@ -225,6 +233,24 @@ const copy = computed(() => isEnglish.value ? {
 .principles-chip-arrow {
   color: rgb(var(--card-rgb));
   font-weight: 700;
+}
+
+.principles-vision {
+  margin: 28px 0 0;
+  text-align: center;
+}
+
+.principles-vision a {
+  color: var(--vp-c-brand-1);
+  font-size: 15px;
+  font-weight: 640;
+  text-decoration: none;
+  transition: opacity 220ms ease;
+}
+
+.principles-vision a:hover {
+  text-decoration: none;
+  opacity: 0.78;
 }
 
 :global(.dark .principles-card) {

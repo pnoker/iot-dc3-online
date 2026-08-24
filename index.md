@@ -4,9 +4,9 @@ layout: home
 hero:
   name: IoT DC3
   text: |-
-    连接物理世界与 AI
-    Connect the Physical World to AI
-  tagline: 开源工业物联网 Runtime · Open-source Industrial IoT Runtime
+    让 AI 进入物理世界
+    Connect AI to the Physical World
+  tagline: 开源 Physical AI Runtime · Open-source Physical AI Runtime
   actions:
     - theme: brand
       text: 简体中文

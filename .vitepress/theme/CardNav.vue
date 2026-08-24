@@ -54,7 +54,7 @@ const content = computed(() => isEnglish.value ? {
   capabilitiesLabel: 'Platform capabilities',
   capabilities: ['28 multi-protocol drivers', 'Spring AI intelligence loop', 'Cloud-native · Multi-tenant · Open source'],
   dashboard: {label: '12 Industry Dashboards', link: '/en/demo/'},
-  footer: 'An open-source Industrial IoT Runtime connecting AI agents to the physical world'
+  footer: 'An open-source Physical AI Runtime for industrial systems'
 } : {
   kicker: 'LIVE INDUSTRIAL DATA FLOW',
   title: '让设备、数据与智能持续流动',
@@ -62,7 +62,7 @@ const content = computed(() => isEnglish.value ? {
   capabilitiesLabel: '平台能力',
   capabilities: ['28 个多协议驱动', 'Spring AI 智能闭环', '云原生 · 多租户 · 全开源'],
   dashboard: {label: '12 个行业看板', link: '/zh/demo/'},
-  footer: '连接物理世界与 AI 的开源工业物联网 Runtime，面向智能体演进'
+  footer: '让 AI 进入物理世界的开源 Physical AI Runtime'
 })
 
 const sparkCanvas = ref<HTMLCanvasElement | null>(null)

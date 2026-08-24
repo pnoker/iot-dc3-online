@@ -11,14 +11,18 @@ const copy = computed(() => isEnglish.value ? {
   github: 'GitHub',
   start: 'Quick Start',
   startLink: 'https://docs.dc3.site/en/',
-  note: 'AGPL-3.0 · Apache-2.0'
+  note: 'AGPL-3.0 · Apache-2.0',
+  visionLink: 'Read the full vision →',
+  visionHref: '/en/vision'
 } : {
   title: '开始构建你的物理智能闭环',
   description: '开源、免费、可私有化部署。从文档的快速开始到一条 Docker Compose 命令，今天就能把设备接入智能体。',
   github: 'GitHub',
   start: '快速开始',
   startLink: 'https://docs.dc3.site/zh/',
-  note: 'AGPL-3.0 · Apache-2.0'
+  note: 'AGPL-3.0 · Apache-2.0',
+  visionLink: '阅读完整愿景 →',
+  visionHref: '/zh/vision'
 })
 </script>
 
@@ -42,6 +46,9 @@ const copy = computed(() => isEnglish.value ? {
       </div>
 
       <p class="cta-note">{{ copy.note }}</p>
+      <p class="cta-vision">
+        <a :href="copy.visionHref">{{ copy.visionLink }}</a>
+      </p>
     </div>
   </section>
 </template>
@@ -164,6 +171,23 @@ const copy = computed(() => isEnglish.value ? {
   color: var(--vp-c-text-3);
   font-size: 12.5px;
   letter-spacing: 0.06em;
+}
+
+.cta-vision {
+  margin: 10px 0 0;
+}
+
+.cta-vision a {
+  color: var(--vp-c-brand-1);
+  font-size: 14px;
+  font-weight: 640;
+  text-decoration: none;
+  transition: opacity 220ms ease;
+}
+
+.cta-vision a:hover {
+  text-decoration: none;
+  opacity: 0.78;
 }
 
 @media (max-width: 640px) {

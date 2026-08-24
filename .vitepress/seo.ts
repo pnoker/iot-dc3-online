@@ -23,13 +23,13 @@ const LOCALES = {
 } as const
 
 const HOME_DESCRIPTIONS = {
-  zh: 'IoT DC3 是一个连接物理世界与 AI 的开源工业物联网 Runtime：将设备、数据、工具与 AI 智能体连成同一个可控闭环，提供设备接入、数据采集、边云协同与智能运维能力。',
-  en: 'IoT DC3 is an open-source Industrial IoT Runtime that connects AI agents to the physical world — devices, data, tools and commands in one controllable loop, with device connectivity, data acquisition, edge-to-cloud delivery and intelligent operations.'
+  zh: 'IoT DC3 是面向工业系统的开源 Physical AI Runtime：让 AI 进入物理世界，连接设备、数据、工具与智能体，构建从感知、决策到执行与反馈的安全闭环。',
+  en: 'IoT DC3 is an open-source Physical AI Runtime for industrial systems: connect AI to the physical world — devices, data, tools and agents in one safe sense-decide-act-feedback loop.'
 } as const
 
 const KEYWORDS = {
-  zh: 'IoT,物联网,工业物联网,物联网平台,IIoT,DC3,开源,云原生,Spring Cloud,设备接入,多协议,数据采集,边云协同,智能运维,AI,智能体,物理智能,Physical AI,可视化看板',
-  en: 'IoT,industrial IoT,IIoT,IoT platform,open source,cloud-native,multi-protocol,device connectivity,data acquisition,edge-to-cloud,smart operations,AI,AI agents,physical AI,agent infrastructure,dashboard,DC3'
+  zh: 'IoT,物联网,工业物联网,物联网平台,IIoT,DC3,开源,云原生,Spring Cloud,设备接入,多协议,数据采集,边云协同,智能运维,AI,智能体,物理智能,Physical AI,Runtime,MCP,可视化看板',
+  en: 'IoT,industrial IoT,IIoT,IoT platform,open source,cloud-native,multi-protocol,device connectivity,data acquisition,edge-to-cloud,smart operations,AI,AI agents,physical AI,runtime,MCP,agent infrastructure,dashboard,DC3'
 } as const
 
 const ORGANIZATION = {

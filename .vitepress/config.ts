@@ -35,6 +35,11 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh-CN',
       themeConfig: {
+        nav: [
+          {text: '首页', link: '/zh/'},
+          {text: '愿景', link: '/zh/vision'},
+          {text: '演示', link: '/zh/demo/'},
+        ],
         socialLinks: [
           {icon: 'github', link: 'https://github.com/pnoker/iot-dc3'},
           {icon: 'gitee', link: 'https://gitee.com/pnoker/iot-dc3'},
@@ -46,6 +51,11 @@ export default defineConfig({
       label: 'English',
       lang: 'en-US',
       themeConfig: {
+        nav: [
+          {text: 'Home', link: '/en/'},
+          {text: 'Vision', link: '/en/vision'},
+          {text: 'Demo', link: '/en/demo/'},
+        ],
         socialLinks: [
           {icon: 'github', link: 'https://github.com/pnoker/iot-dc3'},
           {icon: 'gitee', link: 'https://gitee.com/pnoker/iot-dc3'},
