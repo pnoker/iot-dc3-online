@@ -25,8 +25,8 @@ The live demo site showcases 12 industry dashboards: smart factory (OEE), water 
 
 - [Chinese home](https://dc3.site/zh/): Chinese overview of the platform.
 - [English home](https://dc3.site/en/): English overview of the platform.
-- [Vision (zh)](https://dc3.site/zh/vision): the full worldview — how agents enter the physical world, and the positioning evolution.
-- [Vision (en)](https://dc3.site/en/vision): the full worldview in English.
+- [Vision and homepage (zh)](https://dc3.site/zh/): the full worldview — how agents enter the physical world, and the positioning evolution.
+- [Vision and homepage (en)](https://dc3.site/en/): the full worldview in English.
 - [Demo dashboards](https://dc3.site/zh/demo/): the 12 industry visualizations (mock data, illustrative).
 - [Documentation](https://docs.dc3.site/): full Chinese and English technical documentation — architecture, deployment, driver development. Authoritative for implementation details.
 - [Book](https://book.dc3.site/): "AIoT Technology & Practice".

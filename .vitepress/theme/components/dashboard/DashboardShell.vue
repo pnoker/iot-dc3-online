@@ -2,6 +2,7 @@
 import {provide, ref, computed, onMounted, onBeforeUnmount} from 'vue'
 import {useData} from 'vitepress'
 import {useI18n} from '../../composables/useI18n'
+import '../../dashboard.css'
 
 defineProps<{title: string; subtitle?: string}>()
 

@@ -36,9 +36,12 @@ function animateCursor() {
   placeCursor(cursorRing.value, ringX, ringY)
 
   const distance = Math.abs(targetX - ringX) + Math.abs(targetY - ringY)
-  if (cursorVisible.value || distance > 0.1) {
+  if (distance > 0.1) {
     cursorFrame = requestAnimationFrame(animateCursor)
   } else {
+    ringX = targetX
+    ringY = targetY
+    placeCursor(cursorRing.value, ringX, ringY)
     cursorFrame = 0
   }
 }

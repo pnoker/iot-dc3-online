@@ -68,11 +68,23 @@ const coreY = 210
               <stop class="loop-stop-core-a" offset="0" />
               <stop class="loop-stop-core-b" offset="1" />
             </linearGradient>
+            <radialGradient id="loop-packet-halo-gradient">
+              <stop offset="0" stop-color="#e4ffff" stop-opacity="0.82" />
+              <stop offset="0.28" stop-color="#5ae7f3" stop-opacity="0.44" />
+              <stop offset="1" stop-color="#1296db" stop-opacity="0" />
+            </radialGradient>
             <filter id="loop-node-shadow" x="-30%" y="-60%" width="160%" height="240%">
               <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="rgba(16, 96, 161, 0.18)" />
             </filter>
             <filter id="loop-core-glow" x="-60%" y="-60%" width="220%" height="220%">
               <feDropShadow dx="0" dy="0" stdDeviation="16" flood-color="rgba(24, 191, 220, 0.32)" />
+            </filter>
+            <filter id="loop-energy-glow" x="-80%" y="-160%" width="260%" height="420%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
             </filter>
             <marker id="loop-arrow" class="loop-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M0,0 L10,5 L0,10 z" />
@@ -101,9 +113,15 @@ const coreY = 210
           <path v-for="y in nodeY" :key="'l' + y" class="loop-stub" :d="`M${leftX + pillW / 2} ${y} L${trunkX} ${y}`" />
           <path v-for="y in nodeY" :key="'r' + y" class="loop-stub" :d="`M${trunkRightX} ${y} L${rightX - pillW / 2} ${y}`" />
 
+          <!-- runtime energy field -->
+          <g class="loop-core-field">
+            <rect class="loop-core-orbit loop-core-orbit-outer" x="444" y="122" width="312" height="176" rx="38" />
+            <rect class="loop-core-orbit loop-core-orbit-inner" x="458" y="136" width="284" height="148" rx="29" />
+          </g>
+
           <!-- core -->
           <g class="loop-node loop-node-core">
-            <rect x="472" y="150" width="256" height="120" rx="20" />
+            <rect class="loop-core-shell" x="472" y="150" width="256" height="120" rx="20" />
             <text class="loop-core-label" x="600" y="200" text-anchor="middle">{{ copy.coreLabel }}</text>
             <text class="loop-core-sub" x="600" y="228" text-anchor="middle">{{ copy.coreSub }}</text>
           </g>
@@ -114,6 +132,28 @@ const coreY = 210
           <path class="loop-line loop-line-h" d="M470 330 L330 330" />
           <path class="loop-line loop-line-h" d="M870 330 L730 330" />
 
+          <!-- circular light packets moving through every direction of the loop -->
+          <g class="loop-packet">
+            <circle class="loop-packet-halo" r="9" />
+            <circle class="loop-packet-core" r="2.8" />
+            <animateMotion dur="2.4s" repeatCount="indefinite" :path="`M${trunkX} 210 L470 210`" />
+          </g>
+          <g class="loop-packet">
+            <circle class="loop-packet-halo" r="9" />
+            <circle class="loop-packet-core" r="2.8" />
+            <animateMotion begin="-0.65s" dur="2.4s" repeatCount="indefinite" path="M730 210 L870 210" />
+          </g>
+          <g class="loop-packet">
+            <circle class="loop-packet-halo" r="9" />
+            <circle class="loop-packet-core" r="2.8" />
+            <animateMotion begin="-1.2s" dur="2.4s" repeatCount="indefinite" path="M470 330 L330 330" />
+          </g>
+          <g class="loop-packet">
+            <circle class="loop-packet-halo" r="9" />
+            <circle class="loop-packet-core" r="2.8" />
+            <animateMotion begin="-1.75s" dur="2.4s" repeatCount="indefinite" path="M870 330 L730 330" />
+          </g>
+
           <!-- direction labels -->
           <text class="loop-dir-label" x="401" y="198" text-anchor="middle">{{ copy.flow[0] }}</text>
           <text class="loop-dir-label" x="799" y="198" text-anchor="middle">{{ copy.flow[1] }}</text>
@@ -122,6 +162,11 @@ const coreY = 210
 
           <!-- feedback arc -->
           <path class="loop-line loop-line-feedback" d="M472 270 C300 270, 300 420, 600 420 C900 420, 900 270, 728 270" />
+          <g class="loop-packet loop-packet-feedback">
+            <circle class="loop-packet-halo" r="10" />
+            <circle class="loop-packet-core" r="3" />
+            <animateMotion begin="-1.4s" dur="5.2s" repeatCount="indefinite" path="M472 270 C300 270, 300 420, 600 420 C900 420, 900 270, 728 270" />
+          </g>
           <text class="loop-feedback-label" x="600" y="448" text-anchor="middle">{{ copy.flow[4] }}</text>
 
           <!-- flowing dots -->
@@ -134,22 +179,44 @@ const coreY = 210
 
         <!-- Mobile two-column chain -->
         <div class="loop-chain">
-          <p class="loop-chain-col">{{ copy.physicalLabel }}</p>
-          <ol class="loop-chain-list">
-            <li v-for="node in copy.physicalNodes" :key="node">{{ node }}</li>
-          </ol>
+          <div class="loop-chain-world loop-chain-world-physical">
+            <p class="loop-chain-col">
+              <span class="loop-chain-world-dot" aria-hidden="true"></span>
+              {{ copy.physicalLabel }}
+            </p>
+            <ol class="loop-chain-list">
+              <li v-for="node in copy.physicalNodes" :key="node">{{ node }}</li>
+            </ol>
+          </div>
+
+          <div class="loop-chain-channel">
+            <span>{{ copy.flow[0] }} ↓</span>
+            <span>↑ {{ copy.flow[3] }}</span>
+          </div>
+
           <div class="loop-chain-core">
             <span class="loop-chain-core-name">{{ copy.coreLabel }}</span>
             <span class="loop-chain-core-sub">{{ copy.coreSub }}</span>
           </div>
-          <ol class="loop-chain-list loop-chain-list-right">
-            <li v-for="node in copy.intelligenceNodes" :key="node">{{ node }}</li>
-          </ol>
-          <p class="loop-chain-col">{{ copy.intelligenceLabel }}</p>
-          <p class="loop-chain-flow">
-            <span v-for="(step, index) in copy.flow" :key="step">
-              {{ step }}<span v-if="index < copy.flow.length - 1" class="loop-chain-arrow">→</span>
-            </span>
+
+          <div class="loop-chain-channel loop-chain-channel-ai">
+            <span>{{ copy.flow[1] }} ↓</span>
+            <span>↑ {{ copy.flow[2] }}</span>
+          </div>
+
+          <div class="loop-chain-world loop-chain-world-ai">
+            <p class="loop-chain-col">
+              <span class="loop-chain-world-dot" aria-hidden="true"></span>
+              {{ copy.intelligenceLabel }}
+            </p>
+            <ol class="loop-chain-list">
+              <li v-for="node in copy.intelligenceNodes" :key="node">{{ node }}</li>
+            </ol>
+          </div>
+
+          <p class="loop-chain-feedback">
+            <span aria-hidden="true">↺</span>
+            {{ copy.flow[4] }}
           </p>
         </div>
       </div>
@@ -160,16 +227,19 @@ const coreY = 210
 <style scoped>
 .loop-section {
   position: relative;
-  width: 100%;
-  margin-top: 120px;
-  padding: 96px 32px 88px;
+  width: 100vw;
+  margin-top: 0;
+  margin-left: calc(-50vw + 50%);
+  padding: 112px 32px 104px;
   overflow: hidden;
   border-top: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 12%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 10%, transparent);
   background:
-    radial-gradient(circle at 12% 16%, rgba(18, 150, 219, 0.08), transparent 30%),
-    radial-gradient(circle at 86% 62%, rgba(91, 116, 235, 0.07), transparent 32%),
-    linear-gradient(180deg, transparent, color-mix(in srgb, var(--vp-c-bg-alt) 70%, transparent));
+    radial-gradient(circle at 12% 16%, rgba(18, 150, 219, 0.1), transparent 32%),
+    radial-gradient(circle at 86% 62%, rgba(91, 116, 235, 0.08), transparent 34%),
+    linear-gradient(180deg, color-mix(in srgb, var(--vp-c-bg-alt) 58%, transparent), color-mix(in srgb, var(--vp-c-bg-alt) 82%, transparent));
+  content-visibility: auto;
+  contain-intrinsic-size: auto 780px;
 }
 
 .loop-inner {
@@ -219,20 +289,48 @@ const coreY = 210
 }
 
 .loop-stage {
+  position: relative;
   margin-top: 42px;
+  padding: 18px 14px 8px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 18%, transparent);
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(41, 197, 223, 0.1), transparent 30%),
+    radial-gradient(circle at 12% 22%, rgba(18, 150, 219, 0.07), transparent 32%),
+    radial-gradient(circle at 88% 70%, rgba(91, 116, 235, 0.08), transparent 34%),
+    color-mix(in srgb, var(--vp-c-bg-elv) 56%, transparent);
+  box-shadow: 0 28px 80px rgba(16, 96, 161, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(18px) saturate(1.15);
+}
+
+.loop-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--vp-c-brand-1) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--vp-c-brand-1) 7%, transparent) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(ellipse at center, #000 12%, rgba(0, 0, 0, 0.72) 52%, transparent 88%);
+  pointer-events: none;
 }
 
 .loop-svg {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
   height: auto;
 }
 
-.loop-node rect {
+.loop-node-side rect {
   fill: url(#loop-node-bg);
   stroke: rgba(151, 219, 248, 0.3);
   stroke-width: 1.2;
   filter: url(#loop-node-shadow);
+  transition: stroke 280ms ease, filter 280ms ease;
 }
 
 .loop-node-ai rect {
@@ -240,11 +338,56 @@ const coreY = 210
   stroke: rgba(139, 128, 255, 0.28);
 }
 
-.loop-node-core rect {
+.loop-node-core .loop-core-shell {
   fill: url(#loop-node-bg-core);
   stroke: rgba(24, 191, 220, 0.5);
   stroke-width: 1.4;
   filter: url(#loop-core-glow);
+}
+
+.loop-node-side,
+.loop-node-core {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.loop-node-side:hover {
+  transform: translateY(-3px) scale(1.035);
+}
+
+.loop-node-side:hover rect {
+  stroke: rgba(69, 203, 235, 0.72);
+  filter: url(#loop-core-glow);
+}
+
+.loop-node-ai:hover rect {
+  stroke: rgba(126, 121, 244, 0.72);
+}
+
+.loop-node-core:hover {
+  transform: scale(1.025);
+}
+
+.loop-core-field {
+  pointer-events: none;
+}
+
+.loop-core-orbit {
+  fill: none;
+  stroke: rgba(41, 197, 223, 0.24);
+  stroke-width: 1;
+  stroke-dasharray: 8 10;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: loop-core-orbit 8s linear infinite;
+}
+
+.loop-core-orbit-inner {
+  stroke: rgba(91, 116, 235, 0.22);
+  stroke-dasharray: 5 8;
+  animation-direction: reverse;
+  animation-duration: 6s;
 }
 
 .loop-stop-a {
@@ -330,6 +473,26 @@ const coreY = 210
   animation-duration: 3.4s;
 }
 
+.loop-packet {
+  pointer-events: none;
+}
+
+.loop-packet-halo {
+  fill: url(#loop-packet-halo-gradient);
+  opacity: 0.78;
+}
+
+.loop-packet-core {
+  fill: #eaffff;
+  stroke: rgba(56, 211, 234, 0.7);
+  stroke-width: 0.8;
+  filter: url(#loop-energy-glow);
+}
+
+.loop-packet-feedback .loop-packet-halo {
+  opacity: 0.68;
+}
+
 .loop-arrow {
   fill: var(--vp-c-brand-1);
 }
@@ -363,7 +526,7 @@ const coreY = 210
   animation-delay: 1.2s;
 }
 
-:global(.dark .loop-node rect) {
+:global(.dark .loop-node-side rect) {
   stroke: rgba(143, 216, 250, 0.18);
 }
 
@@ -371,8 +534,12 @@ const coreY = 210
   stroke: rgba(151, 143, 255, 0.22);
 }
 
-:global(.dark .loop-node-core rect) {
+:global(.dark .loop-node-core .loop-core-shell) {
   stroke: rgba(96, 208, 240, 0.38);
+}
+
+:global(.dark .loop-stage) {
+  box-shadow: 0 30px 86px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(196, 239, 255, 0.07);
 }
 
 :global(.dark .loop-line) {
@@ -392,10 +559,20 @@ const coreY = 210
   50% { opacity: 1; transform: scale(1.25); }
 }
 
-@media (max-width: 960px) {
+@keyframes loop-core-orbit {
+  to { stroke-dashoffset: -72; }
+}
+
+@media (max-width: 839.98px) {
   .loop-section {
-    margin-top: 72px;
-    padding: 64px 20px 56px;
+    margin-top: 0;
+    padding: 72px 18px 68px;
+  }
+
+  .loop-stage {
+    margin-top: 34px;
+    padding: 16px 14px 18px;
+    border-radius: 26px;
   }
 
   .loop-svg {
@@ -403,67 +580,165 @@ const coreY = 210
   }
 
   .loop-chain {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 0;
+  }
+
+  .loop-chain-world {
+    width: 100%;
+    padding: 17px;
+    border: 1px solid rgba(151, 219, 248, 0.3);
+    border-radius: 19px;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.7), transparent 38%),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.42), rgba(18, 150, 219, 0.08), rgba(91, 116, 235, 0.04));
+    box-shadow: 0 15px 34px rgba(16, 96, 161, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.76);
+  }
+
+  .loop-chain-world-ai {
+    border-color: rgba(146, 139, 245, 0.26);
+    background:
+      radial-gradient(circle at 88% 0%, rgba(255, 255, 255, 0.68), transparent 38%),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.42), rgba(91, 116, 235, 0.09), rgba(18, 150, 219, 0.04));
   }
 
   .loop-chain-col {
-    margin: 10px 0 0;
-    color: var(--vp-c-text-3);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 13px;
+    color: var(--vp-c-text-2);
     font-size: 11px;
     font-weight: 720;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.18em;
+  }
+
+  .loop-chain-world-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #29c5df;
+    box-shadow: 0 0 12px rgba(41, 197, 223, 0.48);
+  }
+
+  .loop-chain-world-ai .loop-chain-world-dot {
+    background: #777eea;
+    box-shadow: 0 0 12px rgba(119, 126, 234, 0.44);
   }
 
   .loop-chain-list {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
-    width: min(300px, 100%);
+    width: 100%;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
   .loop-chain-list li {
-    padding: 9px 18px;
-    border: 1px solid rgba(151, 219, 248, 0.28);
-    border-radius: 12px;
-    background:
-      radial-gradient(circle at 16% 0%, rgba(255, 255, 255, 0.7), transparent 42%),
-      linear-gradient(135deg, rgba(255, 255, 255, 0.44), rgba(18, 150, 219, 0.08) 56%, rgba(91, 116, 235, 0.06));
-    box-shadow: 0 12px 28px rgba(16, 96, 161, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(16px) saturate(1.3);
+    display: grid;
+    place-items: center;
+    min-height: 40px;
+    padding: 8px 10px;
+    border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 14%, var(--vp-c-divider));
+    border-radius: 11px;
+    background: color-mix(in srgb, var(--vp-c-bg-elv) 72%, transparent);
     color: var(--vp-c-text-1);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 660;
     text-align: center;
   }
 
+  .loop-chain-list li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .loop-chain-channel {
+    position: relative;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 64px;
+  }
+
+  .loop-chain-channel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: linear-gradient(180deg, rgba(41, 197, 223, 0.08), rgba(41, 197, 223, 0.62), rgba(91, 116, 235, 0.12));
+  }
+
+  .loop-chain-channel span {
+    position: relative;
+    z-index: 1;
+    min-width: 84px;
+    padding: 6px 10px;
+    border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 18%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--vp-c-bg-elv) 88%, transparent);
+    color: var(--vp-c-brand-1);
+    font-size: 11px;
+    font-weight: 680;
+    text-align: center;
+  }
+
   .loop-chain-core {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 2px;
-    margin: 8px 0;
-    padding: 16px 34px;
+    width: min(300px, 88%);
+    min-height: 112px;
+    margin: 0;
+    padding: 18px 34px;
     border: 1px solid rgba(24, 191, 220, 0.44);
-    border-radius: 18px;
+    border-radius: 21px;
     background:
       radial-gradient(circle at 50% -10%, rgba(140, 240, 255, 0.26), transparent 55%),
       linear-gradient(160deg, rgba(255, 255, 255, 0.55), rgba(18, 150, 219, 0.13) 60%, rgba(91, 116, 235, 0.09));
     box-shadow: 0 18px 42px rgba(13, 114, 180, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.9);
   }
 
+  .loop-chain-core::before,
+  .loop-chain-core::after {
+    content: '';
+    position: absolute;
+    border: 1px dashed rgba(41, 197, 223, 0.25);
+    border-radius: 27px;
+    pointer-events: none;
+  }
+
+  .loop-chain-core::before { inset: -7px; }
+
+  .loop-chain-core::after {
+    inset: -13px;
+    border-color: rgba(91, 116, 235, 0.16);
+  }
+
   .loop-chain-core-name {
+    position: relative;
+    z-index: 1;
     color: var(--vp-c-text-1);
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 760;
   }
 
   .loop-chain-core-sub {
+    position: relative;
+    z-index: 1;
     color: var(--vp-c-brand-1);
     font-size: 11px;
     font-weight: 700;
@@ -471,28 +746,41 @@ const coreY = 210
     text-transform: uppercase;
   }
 
-  .loop-chain-flow {
+  .loop-chain-feedback {
     display: flex;
-    flex-wrap: wrap;
-    gap: 6px 10px;
+    gap: 8px;
+    align-items: center;
     justify-content: center;
-    margin: 12px 0 0;
-    color: var(--vp-c-text-2);
-    font-size: 12px;
-    font-weight: 640;
-  }
-
-  .loop-chain-arrow {
-    margin-left: 10px;
+    min-width: 128px;
+    margin: 16px 0 0;
+    padding: 8px 16px;
+    border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 18%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--vp-c-brand-soft) 48%, transparent);
     color: var(--vp-c-brand-1);
+    font-size: 12px;
+    font-weight: 700;
   }
 
-  :global(.dark .loop-chain-list li) {
+  .loop-chain-feedback > span {
+    font-size: 17px;
+    line-height: 1;
+  }
+
+  :global(.dark .loop-chain-world) {
     border-color: rgba(143, 216, 250, 0.16);
     background:
       radial-gradient(circle at 16% 0%, rgba(205, 245, 255, 0.11), transparent 42%),
       linear-gradient(135deg, rgba(22, 113, 169, 0.1), rgba(17, 35, 52, 0.3) 58%, rgba(61, 62, 143, 0.11));
     box-shadow: 0 14px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(232, 251, 255, 0.08);
+  }
+
+  :global(.dark .loop-chain-world-ai) {
+    border-color: rgba(151, 143, 255, 0.18);
+  }
+
+  :global(.dark .loop-chain-list li) {
+    background: rgba(14, 34, 51, 0.55);
   }
 
   :global(.dark .loop-chain-core) {
@@ -505,8 +793,34 @@ const coreY = 210
 
 @media (prefers-reduced-motion: reduce) {
   .loop-line,
-  .loop-dot {
+  .loop-dot,
+  .loop-core-orbit {
     animation: none;
   }
+
+  .loop-packet {
+    display: none;
+  }
+
+  .loop-node-side,
+  .loop-node-core {
+    transition: none;
+  }
+}
+
+@media (min-width: 560px) and (max-width: 839.98px) {
+  .loop-stage { padding: 22px; }
+
+  .loop-chain-world { padding: 20px; }
+
+  .loop-chain-list {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .loop-chain-list li:last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+
+  .loop-chain-core { width: 360px; }
 }
 </style>

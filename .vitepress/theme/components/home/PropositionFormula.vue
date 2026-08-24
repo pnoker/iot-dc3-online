@@ -7,12 +7,16 @@ const isEnglish = computed(() => page.value.relativePath.startsWith('en/'))
 
 const copy = computed(() => isEnglish.value ? {
   kicker: 'The Equation',
+  title: 'When intelligence becomes physical action',
+  description: 'AI agents reason and decide. IoT DC3 senses, connects and executes safely in the physical world.',
   agentSub: 'Reason · Plan · Remember',
   dc3Sub: 'Sense · Connect · Control',
   result: 'Physical AI',
   line: 'From intelligence to physical action.'
 } : {
   kicker: '核心命题',
+  title: '让智能体的推理，成为物理行动',
+  description: 'AI Agent 负责理解与决策，IoT DC3 负责感知、连接与安全执行。',
   agentSub: '推理 · 规划 · 记忆',
   dc3Sub: '感知 · 连接 · 控制',
   result: 'Physical AI',
@@ -28,6 +32,8 @@ const copy = computed(() => isEnglish.value ? {
           <span class="prop-kicker-dot" aria-hidden="true"></span>
           {{ copy.kicker }}
         </span>
+        <h2 class="prop-title">{{ copy.title }}</h2>
+        <p class="prop-description">{{ copy.description }}</p>
       </div>
 
       <div class="prop-formula" role="img" aria-label="AI Agent + IoT DC3 = Physical AI">
@@ -58,7 +64,7 @@ const copy = computed(() => isEnglish.value ? {
 <style scoped>
 .prop-section {
   width: 100%;
-  padding: 200px 0 190px;
+  padding: 120px 0 24px;
 }
 
 .prop-inner {
@@ -68,14 +74,18 @@ const copy = computed(() => isEnglish.value ? {
 }
 
 .prop-head {
-  display: flex;
-  justify-content: center;
+  text-align: center;
 }
 
 .prop-kicker {
   display: inline-flex;
   gap: 9px;
   align-items: center;
+  padding: 6px 11px;
+  border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 18%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--vp-c-brand-soft) 55%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
   color: var(--vp-c-brand-1);
   font-size: 12px;
   font-weight: 720;
@@ -90,12 +100,31 @@ const copy = computed(() => isEnglish.value ? {
   box-shadow: 0 0 12px rgba(41, 197, 223, 0.5);
 }
 
+.prop-title {
+  max-width: 760px;
+  margin: 16px auto 0;
+  border: none;
+  color: var(--vp-c-text-1);
+  font-size: clamp(28px, 3.2vw, 42px);
+  font-weight: 740;
+  line-height: 1.16;
+  letter-spacing: -0.035em;
+}
+
+.prop-description {
+  max-width: 680px;
+  margin: 14px auto 0;
+  color: var(--vp-c-text-2);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
 .prop-formula {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
   gap: 30px;
   align-items: center;
-  margin-top: 56px;
+  margin-top: 48px;
 }
 
 .prop-card {
@@ -105,7 +134,7 @@ const copy = computed(() => isEnglish.value ? {
   align-items: center;
   justify-content: center;
   gap: 14px;
-  padding: 76px 24px;
+  padding: 62px 24px;
   border: 1px solid rgba(151, 219, 248, 0.16);
   border-radius: var(--dc3-glass-radius);
   background:
@@ -184,7 +213,7 @@ const copy = computed(() => isEnglish.value ? {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 72px 24px;
+  padding: 58px 24px;
 }
 
 .prop-result-name {
@@ -206,7 +235,7 @@ const copy = computed(() => isEnglish.value ? {
 }
 
 .prop-line {
-  margin: 76px auto 0;
+  margin: 52px auto 0;
   color: var(--vp-c-text-2);
   font-size: 22px;
   font-weight: 620;
@@ -227,13 +256,13 @@ const copy = computed(() => isEnglish.value ? {
 
 @media (max-width: 960px) {
   .prop-section {
-    padding: 110px 0 104px;
+    padding: 80px 0 0;
   }
 
   .prop-formula {
     grid-template-columns: 1fr;
     gap: 14px;
-    margin-top: 40px;
+    margin-top: 36px;
   }
 
   .prop-op {
@@ -250,7 +279,7 @@ const copy = computed(() => isEnglish.value ? {
   }
 
   .prop-line {
-    margin-top: 40px;
+    margin-top: 36px;
     font-size: 18px;
   }
 }

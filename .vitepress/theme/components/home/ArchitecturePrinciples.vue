@@ -10,7 +10,7 @@ const copy = computed(() => isEnglish.value ? {
   title: 'Two principles, from sensing to execution',
   description: 'Keep the surface simple. Keep every execution observable.',
   visionLink: 'Why these two? Read the full vision →',
-  visionHref: '/en/vision',
+  visionHref: '/en/',
   principles: [
     {
       label: 'Everything is a Tool.',
@@ -28,7 +28,7 @@ const copy = computed(() => isEnglish.value ? {
   title: '两条原则，贯穿从感知到执行的整个闭环',
   description: '接口保持简单，执行全程可观测。',
   visionLink: '为什么是这两条？阅读完整愿景 →',
-  visionHref: '/zh/vision',
+  visionHref: '/zh/',
   principles: [
     {
       label: 'Everything is a Tool.',
@@ -76,7 +76,7 @@ const copy = computed(() => isEnglish.value ? {
 <style scoped>
 .principles-section {
   width: 100%;
-  padding-top: 160px;
+  padding-top: 96px;
 }
 
 .principles-inner {
@@ -92,6 +92,11 @@ const copy = computed(() => isEnglish.value ? {
   display: inline-flex;
   gap: 9px;
   align-items: center;
+  padding: 6px 11px;
+  border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 18%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--vp-c-brand-soft) 55%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
   color: var(--vp-c-brand-1);
   font-size: 12px;
   font-weight: 720;
@@ -210,7 +215,7 @@ const copy = computed(() => isEnglish.value ? {
 
 @media (max-width: 900px) {
   .principles-section {
-    padding-top: 120px;
+    padding-top: 72px;
   }
 
   .principles-stack {

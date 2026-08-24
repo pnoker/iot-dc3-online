@@ -1,6 +1,6 @@
 <template>
   <div class="cardnav-root">
-    <section class="signal-section" :aria-label="content.title" data-cursor-rgb="18, 150, 219">
+    <section class="signal-section" :class="{'is-active': active}" :aria-label="content.title" data-cursor-rgb="18, 150, 219">
       <div class="signal-copy">
         <div class="signal-heading">
           <span class="signal-kicker">
@@ -35,6 +35,7 @@
           IoT DC3
         </span>
         <span class="signal-footer-copy">{{ content.footer }}</span>
+        <span class="signal-footer-meta">{{ content.footerMeta }}</span>
       </div>
     </section>
   </div>
@@ -53,7 +54,8 @@ const content = computed(() => isEnglish.value ? {
   capabilitiesLabel: 'Platform capabilities',
   capabilities: ['28 multi-protocol drivers', 'Spring AI intelligence loop', 'Cloud-native · Multi-tenant · Open source'],
   dashboard: {label: '12 Industry Dashboards', link: '/en/demo/'},
-  footer: 'An open-source Industrial IoT Runtime for Physical AI'
+  footer: 'IoT DC3 · Connect the Physical World to AI · An open-source Industrial IoT Runtime for Physical AI',
+  footerMeta: 'AGPL-3.0 · Apache-2.0 · © 2016–2026'
 } : {
   kicker: 'LIVE INDUSTRIAL DATA FLOW',
   title: '让设备、数据与智能持续流动',
@@ -61,10 +63,12 @@ const content = computed(() => isEnglish.value ? {
   capabilitiesLabel: '平台能力',
   capabilities: ['28 个多协议驱动', 'Spring AI 智能闭环', '云原生 · 多租户 · 全开源'],
   dashboard: {label: '12 个行业看板', link: '/zh/demo/'},
-  footer: '面向 Physical AI 的开源工业物联网 Runtime'
+  footer: 'IoT DC3 · 连接物理世界与 AI · 面向 Physical AI 的开源工业物联网 Runtime',
+  footerMeta: 'AGPL-3.0 · Apache-2.0 · © 2016–2026'
 })
 
 const sparkCanvas = ref<HTMLCanvasElement | null>(null)
+const active = ref(false)
 let raf = 0
 let ctx: CanvasRenderingContext2D | null = null
 let running = false
@@ -72,6 +76,7 @@ let reduced = false
 let width = 0
 let height = 0
 let dpr = 1
+let lastPaintAt = 0
 
 function genPoints(count: number, time: number, frequency: number, amplitude: number, baseline: number): number[] {
   const points: number[] = []
@@ -216,6 +221,11 @@ function paint(time: number) {
 
 function frame(now: number) {
   if (!running || !ctx) return
+  if (lastPaintAt && now - lastPaintAt < 33) {
+    raf = requestAnimationFrame(frame)
+    return
+  }
+  lastPaintAt = now
   paint(now / 1000)
   raf = requestAnimationFrame(frame)
 }
@@ -224,7 +234,7 @@ function resize() {
   const canvas = sparkCanvas.value
   const parent = canvas?.parentElement
   if (!canvas || !parent) return
-  dpr = Math.min(window.devicePixelRatio || 1, 2)
+  dpr = Math.min(window.devicePixelRatio || 1, width < 700 ? 1.25 : 1.5)
   width = parent.clientWidth
   height = parent.clientHeight
   canvas.width = Math.round(width * dpr)
@@ -238,6 +248,7 @@ function resize() {
 function start() {
   if (running) return
   running = true
+  lastPaintAt = 0
   raf = requestAnimationFrame(frame)
 }
 
@@ -248,11 +259,12 @@ function stop() {
 }
 
 function handleVisibility() {
-  document.hidden ? stop() : start()
+  document.hidden || !active.value ? stop() : start()
 }
 
 let resizeObserver: ResizeObserver | null = null
 let themeObserver: MutationObserver | null = null
+let viewportObserver: IntersectionObserver | null = null
 
 onMounted(() => {
   reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
@@ -268,10 +280,19 @@ onMounted(() => {
   })
   themeObserver.observe(document.documentElement, {attributes: true, attributeFilter: ['class']})
 
+  viewportObserver = new IntersectionObserver(([entry]) => {
+    active.value = entry?.isIntersecting ?? true
+    if (active.value) {
+      if (reduced) paint(0)
+      else if (!document.hidden) start()
+    } else stop()
+  }, {rootMargin: '280px 0px', threshold: 0.01})
+  const section = sparkCanvas.value?.closest('.signal-section')
+  if (section) viewportObserver.observe(section)
+
   if (reduced) paint(0)
   else {
     document.addEventListener('visibilitychange', handleVisibility)
-    start()
   }
 
 })
@@ -280,6 +301,7 @@ onBeforeUnmount(() => {
   stop()
   resizeObserver?.disconnect()
   themeObserver?.disconnect()
+  viewportObserver?.disconnect()
   document.removeEventListener('visibilitychange', handleVisibility)
   ctx = null
 })
@@ -290,6 +312,8 @@ onBeforeUnmount(() => {
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 430px;
 }
 
 .signal-section {
@@ -475,8 +499,19 @@ onBeforeUnmount(() => {
   letter-spacing: 0.04em;
 }
 
-.signal-footer-year {
+.signal-section:not(.is-active) .signal-live-dot,
+.signal-section:not(.is-active) .signal-footer-dot,
+.signal-section:not(.is-active) .signal-scan {
+  animation-play-state: paused;
+}
+
+.signal-footer-meta {
+  justify-self: end;
+  color: var(--vp-c-text-3);
+  font-size: 11px;
+  letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 :global(.dark .signal-section) {
@@ -598,6 +633,10 @@ onBeforeUnmount(() => {
   .signal-footer-copy {
     grid-column: 1 / -1;
     grid-row: 2;
+  }
+
+  .signal-footer-meta {
+    justify-self: end;
   }
 }
 

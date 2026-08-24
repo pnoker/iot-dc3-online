@@ -6,9 +6,9 @@ const {page} = useData()
 const isEnglish = computed(() => page.value.relativePath.startsWith('en/'))
 
 const copy = computed(() => isEnglish.value ? {
-  kicker: 'Engineering Evidence',
-  title: 'The claim is bold. The receipts are below.',
-  description: '',
+  kicker: 'Engineering Foundation',
+  title: 'Engineering support from protocol access to safe execution',
+  description: 'Protocol drivers, agent tools, secure invocation and a decade of industrial IoT practice bring Physical AI into production.',
   stats: [
     {value: '28', label: 'Protocol Drivers', sub: 'Modbus · OPC UA · S7 · BACnet · MQTT'},
     {value: '330+', label: 'Agent Tools', sub: 'Auto-aggregated from OpenAPI operations as MCP tools'},
@@ -17,9 +17,9 @@ const copy = computed(() => isEnglish.value ? {
   ],
   stack: ['Spring AI', 'MCP', 'PostgreSQL', 'TimescaleDB', 'RabbitMQ', 'Kubernetes', 'Helm']
 } : {
-  kicker: '工程证据',
-  title: '主张很大，证据在这里。',
-  description: '',
+  kicker: '工程基础',
+  title: '从协议接入到安全执行，都有完整工程支撑',
+  description: '协议驱动、智能体工具、安全调用与十年工业物联网实践，共同支撑物理智能落地。',
   stats: [
     {value: '28', label: '协议驱动', sub: 'Modbus · OPC UA · S7 · BACnet · MQTT'},
     {value: '330+', label: '智能体工具', sub: '由 OpenAPI 操作自动聚合为 MCP Tool'},
@@ -60,7 +60,7 @@ const copy = computed(() => isEnglish.value ? {
 <style scoped>
 .grid-section {
   width: 100%;
-  padding-top: 160px;
+  padding-top: 96px;
 }
 
 .grid-inner {
@@ -76,6 +76,11 @@ const copy = computed(() => isEnglish.value ? {
   display: inline-flex;
   gap: 9px;
   align-items: center;
+  padding: 6px 11px;
+  border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 18%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--vp-c-brand-soft) 55%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
   color: var(--vp-c-brand-1);
   font-size: 12px;
   font-weight: 720;
@@ -144,6 +149,7 @@ const copy = computed(() => isEnglish.value ? {
 }
 
 .grid-card-value {
+  width: 100%;
   background: linear-gradient(112deg, #07549a 4%, #119bd6 42%, #1786d4 62%, #5558c9 96%);
   background-clip: text;
   -webkit-background-clip: text;
@@ -153,6 +159,7 @@ const copy = computed(() => isEnglish.value ? {
   font-weight: 800;
   line-height: 1.0;
   letter-spacing: -0.035em;
+  text-align: center;
   font-variant-numeric: tabular-nums;
 }
 
@@ -226,7 +233,7 @@ const copy = computed(() => isEnglish.value ? {
 
 @media (max-width: 640px) {
   .grid-section {
-    padding-top: 110px;
+    padding-top: 72px;
   }
 
   .grid-cards {

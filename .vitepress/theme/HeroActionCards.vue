@@ -15,8 +15,8 @@ const actions = computed(() => isEnglish.value ? [
     cursorRgb: '18, 150, 219'
   },
   {
-    title: 'Book',
-    description: 'AIoT Technology & Practice: from IoT platforms to intelligent agent applications',
+    title: 'Read Online',
+    description: '“From Industrial Software to AI Agents” — the path from industrial IoT to Physical AI',
     link: 'https://book.dc3.site',
     icon: 'book',
     cursorRgb: '27, 178, 165'
@@ -38,7 +38,7 @@ const actions = computed(() => isEnglish.value ? [
   },
   {
     title: '书籍',
-    description: '《AIoT 技术与实践》：从物联网平台到智能体应用',
+    description: '《从工业软件到 AI 智能体》——理解工业物联网如何走向 Physical AI',
     link: 'https://book.dc3.site',
     icon: 'book',
     cursorRgb: '27, 178, 165'

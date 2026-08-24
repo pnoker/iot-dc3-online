@@ -384,7 +384,7 @@ body {
         inset 0 -10px 24px rgba(0, 0, 0, 0.14);
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 1279.98px) {
     .VPNavBar .VPNavBarExtra {
         margin-right: 0;
     }
@@ -436,6 +436,169 @@ body {
             0 12px 30px rgba(0, 0, 0, 0.24),
             inset 0 1px 0 rgba(231, 251, 255, 0.12),
             inset 0 -8px 18px rgba(0, 0, 0, 0.12);
+    }
+}
+
+/* 愿景首页身份由 Layout 在 SSR 首屏直接输出，导航不再等待内容组件 mounted 后补 class。 */
+html:has(.dc3-vision-layout) {
+    scrollbar-gutter: stable;
+}
+
+.dc3-vision-layout .VPNavBar {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    background: transparent !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition: none;
+}
+
+.dc3-vision-layout .VPNavBar .wrapper {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+
+.dc3-vision-layout .VPNav {
+    position: fixed;
+    inset: 0 0 auto;
+    width: 100%;
+}
+
+/* 愿景首页使用自身的全宽章节叙事，不渲染 VitePress 中小屏本页目录，避免 empty 状态泄漏 Return to top 白条。 */
+.dc3-vision-layout .VPLocalNav {
+    display: none !important;
+}
+
+.dc3-vision-layout .VPNavBar .divider {
+    opacity: 0;
+}
+
+.dc3-vision-layout .VPNavBar > .wrapper > .container {
+    position: relative;
+    box-sizing: border-box;
+    width: var(--dc3-nav-width, calc(100% - 64px));
+    max-width: 1360px;
+    height: var(--dc3-nav-height, 64px);
+    margin: var(--dc3-nav-offset, 0) auto 0;
+    padding: 0 var(--dc3-nav-padding, 0);
+    border: 1px solid rgba(114, 204, 241, calc(var(--dc3-nav-progress, 0) * 0.3));
+    border-radius: 999px;
+    background: color-mix(
+        in srgb,
+        var(--vp-c-bg-elv) calc(var(--dc3-nav-progress, 0) * 72%),
+        transparent
+    );
+    box-shadow:
+        0 calc(var(--dc3-nav-progress, 0) * 18px) calc(var(--dc3-nav-progress, 0) * 50px)
+            rgba(11, 92, 153, calc(var(--dc3-nav-progress, 0) * 0.16)),
+        inset 0 1px 0 rgba(255, 255, 255, calc(var(--dc3-nav-progress, 0) * 0.82)),
+        inset 0 calc(var(--dc3-nav-progress, 0) * -10px) calc(var(--dc3-nav-progress, 0) * 26px)
+            rgba(56, 132, 205, calc(var(--dc3-nav-progress, 0) * 0.06));
+    backdrop-filter:
+        blur(calc(var(--dc3-nav-progress, 0) * 22px))
+        saturate(calc(1 + var(--dc3-nav-progress, 0) * 0.5));
+    -webkit-backdrop-filter:
+        blur(calc(var(--dc3-nav-progress, 0) * 22px))
+        saturate(calc(1 + var(--dc3-nav-progress, 0) * 0.5));
+}
+
+html.dc3-nav-animating .dc3-vision-layout .VPNavBar > .wrapper > .container {
+    will-change: width, height, margin, padding, backdrop-filter;
+}
+
+.dc3-vision-layout .VPNavBarTitle .title,
+.dc3-vision-layout .VPNavBar .content-body {
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition: none;
+}
+
+.dc3-vision-layout .VPNavBarTitle .title:hover,
+.dc3-vision-layout .VPNavBar .content-body:hover {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.dc3-vision-layout .VPNavBar > .wrapper > .container > .title,
+.dc3-vision-layout .VPNavBar > .wrapper > .container > .content {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.dc3-vision-layout .VPNavBar > .wrapper > .container > .content {
+    justify-content: flex-end;
+}
+
+.dc3-vision-layout .VPNavBarTitle {
+    height: 100%;
+}
+
+.dc3-vision-layout .VPNavBar .content-body {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.dc3-vision-layout .VPNavBar > .wrapper > .container::after {
+    content: '';
+    position: absolute;
+    right: 11%;
+    bottom: -1px;
+    width: 24%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(41, 197, 223, 0.84), rgba(91, 116, 235, 0.5), transparent);
+    filter: drop-shadow(0 0 5px rgba(41, 197, 223, 0.46));
+    opacity: clamp(0, calc((var(--dc3-nav-progress, 0) - 0.5) * 1.84), 0.92);
+    animation: dc3-header-scan 5.6s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+
+html.dark .dc3-vision-layout .VPNavBar > .wrapper > .container {
+    border-color: rgba(126, 213, 247, calc(var(--dc3-nav-progress, 0) * 0.18));
+    background: rgba(12, 27, 43, calc(var(--dc3-nav-progress, 0) * 0.72));
+    box-shadow:
+        0 calc(var(--dc3-nav-progress, 0) * 20px) calc(var(--dc3-nav-progress, 0) * 54px)
+            rgba(0, 0, 0, calc(var(--dc3-nav-progress, 0) * 0.34)),
+        inset 0 1px 0 rgba(220, 248, 255, calc(var(--dc3-nav-progress, 0) * 0.12)),
+        inset 0 calc(var(--dc3-nav-progress, 0) * -10px) calc(var(--dc3-nav-progress, 0) * 26px)
+            rgba(0, 0, 0, calc(var(--dc3-nav-progress, 0) * 0.16));
+}
+
+@keyframes dc3-header-scan {
+    from { transform: translateX(-250%); }
+    to { transform: translateX(22%); }
+}
+
+@media (min-width: 768px) and (max-width: 1279.98px) {
+    .dc3-vision-layout .VPNavBar > .wrapper > .container {
+        width: var(--dc3-nav-width, calc(100% - 48px));
+        max-width: none;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .dc3-vision-layout .VPNavBar > .wrapper > .container {
+        width: var(--dc3-nav-width, calc(100% - 24px));
+        max-width: none;
+        left: auto;
+    }
+
+    .dc3-vision-layout .VPNavBar > .wrapper > .container::after {
+        right: 9%;
+        width: 34%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dc3-vision-layout .VPNavBar > .wrapper > .container {
+        will-change: auto;
+    }
+
+    .dc3-vision-layout .VPNavBar > .wrapper > .container::after {
+        animation: none;
     }
 }
 
@@ -1032,7 +1195,11 @@ body {
     padding-right: 0 !important;
 }
 
-/* the VitePress footer now renders as the quiet page-end; styled at the bottom of this file */
+/* 首页把品牌、许可证和版权收束进最终的实时数据流章节；文档页保留 VitePress 页脚。 */
+body:has(.VPHome) .VPFooter,
+body:has(.vision-page .cardnav-root) .VPFooter {
+    display: none;
+}
 
 /* demo 页看板下方的 SEO/AEO 说明文字：深色背景下淡化可读，不抢看板视觉（看板 .dc3d-stage 是 min-height:100vh，此段自然落在看板下方、滚动可见） */
 .demo-seo-desc {

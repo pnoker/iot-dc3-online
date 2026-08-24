@@ -1,49 +1,62 @@
-import type {Theme} from 'vitepress'
-import {h} from 'vue'
+import {useData, type Theme} from 'vitepress'
+import {defineAsyncComponent, h, type App} from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import './style.css'
-import './dashboard.css'
-import GlobalCursor from './GlobalCursor.vue'
-import DashboardGallery from './components/panels/DashboardGallery.vue'
-import PlaceholderPanel from './components/dashboard/PlaceholderPanel.vue'
-import SmartFactoryPanel from './components/domains/SmartFactoryPanel.vue'
-import WaterNetworkPanel from './components/domains/WaterNetworkPanel.vue'
-import MicrogridPanel from './components/domains/MicrogridPanel.vue'
-import PrecisionAgriPanel from './components/domains/PrecisionAgriPanel.vue'
-import SmartBuildingPanel from './components/domains/SmartBuildingPanel.vue'
-import SmartTrafficPanel from './components/domains/SmartTrafficPanel.vue'
-import OilGasPanel from './components/domains/OilGasPanel.vue'
-import SmartMinePanel from './components/domains/SmartMinePanel.vue'
-import ColdChainPanel from './components/domains/ColdChainPanel.vue'
-import EcoMonitorPanel from './components/domains/EcoMonitorPanel.vue'
-import SmartPortPanel from './components/domains/SmartPortPanel.vue'
-import EvChargingPanel from './components/domains/EvChargingPanel.vue'
-import DataVPanel from './components/dashboard/DataVPanel.vue'
-import FactoryKpiFlops from './components/dashboard/FactoryKpiFlops.vue'
-import FactoryOeeRing from './components/dashboard/FactoryOeeRing.vue'
-import FactoryEventLog from './components/dashboard/FactoryEventLog.vue'
-import FactoryOutputRank from './components/dashboard/FactoryOutputRank.vue'
-import FactoryTankLevels from './components/dashboard/FactoryTankLevels.vue'
-import FactoryCompletionBars from './components/dashboard/FactoryCompletionBars.vue'
-import HeroLogo from './HeroLogo.vue'
-import HeroActionCards from './HeroActionCards.vue'
-import HeroParticles from './HeroParticles.vue'
-import HeroWaves from './HeroWaves.vue'
-import CardNav from './CardNav.vue'
-import WeChatQr from './WeChatQr.vue'
-import PropositionFormula from './components/home/PropositionFormula.vue'
-import PhysicalLoop from './components/home/PhysicalLoop.vue'
-import AgentCapabilities from './components/home/AgentCapabilities.vue'
-import ArchitecturePrinciples from './components/home/ArchitecturePrinciples.vue'
-import CapabilityGrid from './components/home/CapabilityGrid.vue'
-import PositioningTimeline from './components/home/PositioningTimeline.vue'
-import HomeCta from './components/home/HomeCta.vue'
+
+const lazy = (loader: () => Promise<any>) => defineAsyncComponent(loader)
+
+// 站点壳只保留轻量入口。首页叙事、行业看板和 DataV 均在真正渲染时再下载。
+const GlobalCursor = lazy(() => import('./GlobalCursor.vue'))
+const HeroLogo = lazy(() => import('./HeroLogo.vue'))
+const HeroActionCards = lazy(() => import('./HeroActionCards.vue'))
+const HeroParticles = lazy(() => import('./HeroParticles.vue'))
+const HeroWaves = lazy(() => import('./HeroWaves.vue'))
+const WeChatQr = lazy(() => import('./WeChatQr.vue'))
+
+function registerLazyComponents(app: App) {
+  app.component('CardNav', lazy(() => import('./CardNav.vue')))
+  app.component('PropositionFormula', lazy(() => import('./components/home/PropositionFormula.vue')))
+  app.component('PhysicalLoop', lazy(() => import('./components/home/PhysicalLoop.vue')))
+  app.component('AgentCapabilities', lazy(() => import('./components/home/AgentCapabilities.vue')))
+  app.component('ArchitecturePrinciples', lazy(() => import('./components/home/ArchitecturePrinciples.vue')))
+  app.component('CapabilityGrid', lazy(() => import('./components/home/CapabilityGrid.vue')))
+  app.component('PositioningTimeline', lazy(() => import('./components/home/PositioningTimeline.vue')))
+  app.component('HomeCta', lazy(() => import('./components/home/HomeCta.vue')))
+  app.component('VisionPage', lazy(() => import('./components/vision/VisionPage.vue')))
+
+  app.component('DashboardGallery', lazy(() => import('./components/panels/DashboardGallery.vue')))
+  app.component('SmartFactoryPanel', lazy(() => import('./components/domains/SmartFactoryPanel.vue')))
+  app.component('WaterNetworkPanel', lazy(() => import('./components/domains/WaterNetworkPanel.vue')))
+  app.component('MicrogridPanel', lazy(() => import('./components/domains/MicrogridPanel.vue')))
+  app.component('PrecisionAgriPanel', lazy(() => import('./components/domains/PrecisionAgriPanel.vue')))
+  app.component('SmartBuildingPanel', lazy(() => import('./components/domains/SmartBuildingPanel.vue')))
+  app.component('SmartTrafficPanel', lazy(() => import('./components/domains/SmartTrafficPanel.vue')))
+  app.component('OilGasPanel', lazy(() => import('./components/domains/OilGasPanel.vue')))
+  app.component('SmartMinePanel', lazy(() => import('./components/domains/SmartMinePanel.vue')))
+  app.component('ColdChainPanel', lazy(() => import('./components/domains/ColdChainPanel.vue')))
+  app.component('EcoMonitorPanel', lazy(() => import('./components/domains/EcoMonitorPanel.vue')))
+  app.component('SmartPortPanel', lazy(() => import('./components/domains/SmartPortPanel.vue')))
+  app.component('EvChargingPanel', lazy(() => import('./components/domains/EvChargingPanel.vue')))
+
+  const dataV = () => import('@kjgl77/datav-vue3')
+  app.component('DvBorderBox8', lazy(() => dataV().then((module) => module.BorderBox8)))
+  app.component('DvBorderBox13', lazy(() => dataV().then((module) => module.BorderBox13)))
+  app.component('DvCapsuleChart', lazy(() => dataV().then((module) => module.CapsuleChart)))
+  app.component('DvDigitalFlop', lazy(() => dataV().then((module) => module.DigitalFlop)))
+  app.component('DvPercentPond', lazy(() => dataV().then((module) => module.PercentPond)))
+  app.component('DvScrollBoard', lazy(() => dataV().then((module) => module.ScrollBoard)))
+  app.component('DvScrollRankingBoard', lazy(() => dataV().then((module) => module.ScrollRankingBoard)))
+  app.component('DvWaterLevelPond', lazy(() => dataV().then((module) => module.WaterLevelPond)))
+}
 
 const theme: Theme = {
   extends: DefaultTheme,
 
   Layout() {
-    return h(DefaultTheme.Layout, null, {
+    const {page} = useData()
+    const visionLayout = ['zh/index.md', 'en/index.md'].includes(page.value.relativePath)
+
+    return h(DefaultTheme.Layout, {class: {'dc3-vision-layout': visionLayout}}, {
       'home-hero-before': () => [h(HeroWaves), h(HeroParticles)],
       'home-hero-image': () => h(HeroLogo),
       'home-hero-actions-after': () => h(HeroActionCards),
@@ -52,41 +65,8 @@ const theme: Theme = {
     })
   },
 
-  async enhanceApp({app}) {
-    app.component('CardNav', CardNav)
-    app.component('PropositionFormula', PropositionFormula)
-    app.component('PhysicalLoop', PhysicalLoop)
-    app.component('AgentCapabilities', AgentCapabilities)
-    app.component('ArchitecturePrinciples', ArchitecturePrinciples)
-    app.component('CapabilityGrid', CapabilityGrid)
-    app.component('PositioningTimeline', PositioningTimeline)
-    app.component('HomeCta', HomeCta)
-    app.component('DashboardGallery', DashboardGallery)
-    app.component('PlaceholderPanel', PlaceholderPanel)
-    app.component('SmartFactoryPanel', SmartFactoryPanel)
-    app.component('DataVPanel', DataVPanel)
-    app.component('FactoryKpiFlops', FactoryKpiFlops)
-    app.component('FactoryOeeRing', FactoryOeeRing)
-    app.component('FactoryEventLog', FactoryEventLog)
-    app.component('FactoryOutputRank', FactoryOutputRank)
-    app.component('FactoryTankLevels', FactoryTankLevels)
-    app.component('FactoryCompletionBars', FactoryCompletionBars)
-    app.component('WaterNetworkPanel', WaterNetworkPanel)
-    app.component('MicrogridPanel', MicrogridPanel)
-    app.component('PrecisionAgriPanel', PrecisionAgriPanel)
-    app.component('SmartBuildingPanel', SmartBuildingPanel)
-    app.component('SmartTrafficPanel', SmartTrafficPanel)
-    app.component('OilGasPanel', OilGasPanel)
-    app.component('SmartMinePanel', SmartMinePanel)
-    app.component('ColdChainPanel', ColdChainPanel)
-    app.component('EcoMonitorPanel', EcoMonitorPanel)
-    app.component('SmartPortPanel', SmartPortPanel)
-    app.component('EvChargingPanel', EvChargingPanel)
-    // DataV Vue3(阿里 DataV):仅客户端注册,避免 SSR 期访问 DOM 崩溃
-    if (!import.meta.env.SSR) {
-      const DataVVue3 = (await import('@kjgl77/datav-vue3')).default
-      app.use(DataVVue3)
-    }
+  enhanceApp({app}) {
+    registerLazyComponents(app)
   }
 }
 

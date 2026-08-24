@@ -35,11 +35,7 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh-CN',
       themeConfig: {
-        nav: [
-          {text: '首页', link: '/zh/'},
-          {text: '愿景', link: '/zh/vision'},
-          {text: '演示', link: '/zh/demo/'},
-        ],
+        nav: [],
         footer: {
           message: 'IoT DC3 · 连接物理世界与 AI',
           copyright: '© 2016–2026'
@@ -55,11 +51,7 @@ export default defineConfig({
       label: 'English',
       lang: 'en-US',
       themeConfig: {
-        nav: [
-          {text: 'Home', link: '/en/'},
-          {text: 'Vision', link: '/en/vision'},
-          {text: 'Demo', link: '/en/demo/'},
-        ],
+        nav: [],
         footer: {
           message: 'IoT DC3 · Connect the Physical World to AI',
           copyright: '© 2016–2026'

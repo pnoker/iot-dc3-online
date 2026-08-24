@@ -46,14 +46,24 @@ const copy = computed(() => isEnglish.value ? {
         <p class="caps-description">{{ copy.description }}</p>
       </div>
 
-      <div class="caps-list" :class="{compact: isCompact}">
-        <div v-for="row in copy.rows" :key="row.keyword" class="caps-row" :class="{compact: isCompact}">
+      <div v-if="isCompact" class="caps-flow">
+        <article v-for="(row, index) in copy.rows" :key="row.keyword" class="caps-flow-card">
+          <div class="caps-flow-meta">
+            <span class="caps-flow-number">{{ String(index + 1).padStart(2, '0') }}</span>
+            <span class="caps-flow-keyword">{{ row.keyword }}</span>
+          </div>
+          <h3 class="caps-flow-title">{{ row.title }}</h3>
+          <p class="caps-flow-description">{{ row.short }}</p>
+        </article>
+      </div>
+
+      <div v-else class="caps-list">
+        <div v-for="row in copy.rows" :key="row.keyword" class="caps-row">
           <span class="caps-keyword">{{ row.keyword }}</span>
-          <div v-if="!isCompact" class="caps-row-copy">
+          <div class="caps-row-copy">
             <h3 class="caps-row-title">{{ row.title }}</h3>
             <p class="caps-row-description">{{ row.description }}</p>
           </div>
-          <p v-else class="caps-row-short">{{ row.short }}</p>
         </div>
       </div>
 
@@ -72,7 +82,7 @@ const copy = computed(() => isEnglish.value ? {
 }
 
 .caps-section.compact {
-  padding-top: 150px;
+  padding-top: 72px;
 }
 
 .caps-inner {
@@ -88,6 +98,11 @@ const copy = computed(() => isEnglish.value ? {
   display: inline-flex;
   gap: 9px;
   align-items: center;
+  padding: 6px 11px;
+  border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 18%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--vp-c-brand-soft) 55%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
   color: var(--vp-c-brand-1);
   font-size: 12px;
   font-weight: 720;
@@ -121,6 +136,110 @@ const copy = computed(() => isEnglish.value ? {
   line-height: 1.75;
 }
 
+.caps-flow {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 44px;
+}
+
+.caps-flow-card {
+  --flow-rgb: 18, 150, 219;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 224px;
+  padding: 24px 20px 22px;
+  overflow: hidden;
+  border: 1px solid rgba(151, 219, 248, 0.18);
+  border-radius: var(--dc3-glass-radius);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(var(--flow-rgb), 0.11), transparent 46%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.5), rgba(var(--flow-rgb), 0.05) 62%, rgba(77, 83, 199, 0.035));
+  box-shadow: 0 12px 30px rgba(16, 96, 161, 0.055), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  transition: transform 280ms ease, border-color 280ms ease, box-shadow 280ms ease;
+}
+
+.caps-flow-card:nth-child(2) { --flow-rgb: 41, 197, 223; }
+.caps-flow-card:nth-child(3) { --flow-rgb: 91, 116, 235; }
+.caps-flow-card:nth-child(4) { --flow-rgb: 27, 178, 165; }
+.caps-flow-card:nth-child(5) { --flow-rgb: 77, 83, 199; }
+
+.caps-flow-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 20px;
+  left: 20px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(var(--flow-rgb), 0), rgba(var(--flow-rgb), 0.8), rgba(var(--flow-rgb), 0));
+}
+
+.caps-flow-card:hover {
+  border-color: rgba(var(--flow-rgb), 0.3);
+  box-shadow: 0 20px 42px rgba(16, 96, 161, 0.11), inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  transform: translateY(-4px);
+}
+
+.caps-flow-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.caps-flow-number {
+  color: var(--vp-c-text-3);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  font-family: var(--vp-font-family-mono);
+}
+
+.caps-flow-keyword {
+  background: linear-gradient(112deg, #07549a 4%, #119bd6 46%, #5558c9 96%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  font-size: 13px;
+  font-weight: 760;
+  letter-spacing: 0.025em;
+  font-family: var(--vp-font-family-mono);
+}
+
+.caps-flow-title {
+  margin: 42px 0 0;
+  color: var(--vp-c-text-1);
+  font-size: 19px;
+  font-weight: 720;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+}
+
+.caps-flow-description {
+  margin: 12px 0 0;
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+:global(.dark .caps-flow-card) {
+  border-color: rgba(143, 216, 250, 0.13);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(var(--flow-rgb), 0.13), transparent 46%),
+    linear-gradient(160deg, rgba(22, 113, 169, 0.07), rgba(17, 35, 52, 0.3) 62%, rgba(61, 62, 143, 0.08));
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(232, 251, 255, 0.08);
+}
+
+:global(.dark .caps-flow-keyword) {
+  background: linear-gradient(112deg, #8edcff 4%, #d3fbff 46%, #a6a9ff 96%);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
 .caps-list {
   position: relative;
   display: flex;
@@ -138,15 +257,6 @@ const copy = computed(() => isEnglish.value ? {
   left: 8px;
   width: 2px;
   background: linear-gradient(180deg, rgba(18, 150, 219, 0.05), rgba(18, 150, 219, 0.42), rgba(91, 116, 235, 0.32), rgba(18, 150, 219, 0.05));
-}
-
-.caps-list.compact {
-  margin-top: 40px;
-  padding-left: 0;
-}
-
-.caps-list.compact::before {
-  display: none;
 }
 
 .caps-row {
@@ -178,36 +288,6 @@ const copy = computed(() => isEnglish.value ? {
   transform: translateX(4px);
 }
 
-.caps-row.compact {
-  display: flex;
-  gap: 34px;
-  align-items: baseline;
-  width: min(760px, 100%);
-  margin: 0 auto;
-  padding: 22px 8px;
-  border: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--vp-c-divider) 55%, transparent);
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
-  backdrop-filter: none;
-  transition: border-color 240ms ease;
-}
-
-.caps-row.compact + .caps-row.compact {
-  margin-top: 0;
-}
-
-.caps-row.compact::before {
-  display: none;
-}
-
-.caps-row.compact:hover {
-  transform: none;
-  background: none;
-  border-bottom-color: color-mix(in srgb, var(--vp-c-brand-1) 30%, transparent);
-}
-
 .caps-keyword {
   background: linear-gradient(112deg, #07549a 4%, #119bd6 42%, #1786d4 62%, #5558c9 96%);
   background-clip: text;
@@ -225,14 +305,6 @@ const copy = computed(() => isEnglish.value ? {
   background: linear-gradient(112deg, #8edcff 4%, #d3fbff 42%, #7fddff 60%, #a6a9ff 96%);
   background-clip: text;
   -webkit-background-clip: text;
-}
-
-.caps-row.compact .caps-keyword {
-  flex: none;
-  width: 168px;
-  font-size: 18px;
-  text-align: left;
-  letter-spacing: 0.02em;
 }
 
 .caps-row-copy {
@@ -255,13 +327,6 @@ const copy = computed(() => isEnglish.value ? {
   color: var(--vp-c-text-2);
   font-size: 15px;
   line-height: 1.7;
-}
-
-.caps-row-short {
-  margin: 0;
-  color: var(--vp-c-text-2);
-  font-size: 15.5px;
-  line-height: 1.65;
 }
 
 .caps-footer {
@@ -303,7 +368,23 @@ const copy = computed(() => isEnglish.value ? {
   }
 
   .caps-section.compact {
-    padding-top: 110px;
+    padding-top: 72px;
+  }
+
+  .caps-flow {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .caps-flow-card {
+    grid-column: span 2;
+  }
+
+  .caps-flow-card:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+
+  .caps-flow-card:last-child {
+    grid-column: 4 / span 2;
   }
 
   .caps-row {
@@ -322,8 +403,26 @@ const copy = computed(() => isEnglish.value ? {
     padding-left: 30px;
   }
 
-  .caps-list.compact {
-    padding-left: 0;
+  .caps-flow {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 36px;
+  }
+
+  .caps-flow-card,
+  .caps-flow-card:nth-child(4),
+  .caps-flow-card:last-child {
+    grid-column: auto;
+    min-height: 0;
+    padding: 20px 18px;
+  }
+
+  .caps-flow-card:hover {
+    transform: none;
+  }
+
+  .caps-flow-title {
+    margin-top: 28px;
   }
 
   .caps-row {
@@ -344,17 +443,5 @@ const copy = computed(() => isEnglish.value ? {
     font-size: 19px;
   }
 
-  .caps-row.compact {
-    flex-direction: column;
-    gap: 4px;
-    align-items: flex-start;
-    padding: 16px 4px;
-  }
-
-  .caps-row.compact .caps-keyword {
-    width: auto;
-    text-align: left;
-    font-size: 16px;
-  }
 }
 </style>
