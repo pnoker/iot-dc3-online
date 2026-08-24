@@ -1,29 +1,30 @@
 ---
 layout: home
-title: 'IoT DC3 · 让 AI 进入物理世界'
+title: 'IoT DC3 · 连接物理世界与 AI'
 titleTemplate: false
 
 hero:
   name: IoT DC3
   text: |-
-    让 AI 进入
-    物理世界
-  tagline: IoT DC3 是面向工业系统的开源 Physical AI Runtime。
+    连接物理世界与 AI
+  tagline: 面向 Physical AI 的开源工业物联网 Runtime —— 将设备、数据、工具与 AI 智能体连成一个安全、可控、可追溯的实时闭环。
   image:
     src: /images/logo.svg
     alt: IoT DC3
 
-description: IoT DC3 是面向工业系统的开源 Physical AI Runtime：让 AI 进入物理世界，连接设备、数据、工具与智能体，构建从感知、决策到执行与反馈的安全闭环。
+description: IoT DC3 是面向 Physical AI 的开源工业物联网 Runtime：连接物理世界与 AI，将设备、数据、工具与智能体连成一个安全、可控、可追溯的实时闭环。
 ---
+
+<CardNav />
 
 <PhysicalLoop />
 
 <PropositionFormula />
+
+<AgentCapabilities compact />
 
 <ArchitecturePrinciples />
 
 <CapabilityGrid />
 
 <HomeCta />
-
-<CardNav />

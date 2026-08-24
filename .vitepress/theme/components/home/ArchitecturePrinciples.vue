@@ -15,14 +15,14 @@ const copy = computed(() => isEnglish.value ? {
     {
       label: 'Everything is a Tool.',
       local: '一切皆工具',
-      description: 'Devices, points, commands and APIs can all be exposed as agent-callable tools — over MCP and Tool Calling, with OAuth2.1, tool whitelists and risk tiers guarding every call.',
-      chips: ['MCP', 'Tool Calling', 'OAuth2.1', 'Tool Whitelist', 'Risk Tiers']
+      description: 'Devices, points, commands and APIs — every surface can be exposed as an agent-callable tool.',
+      chips: ['Device', 'Point', 'Command', 'API']
     },
     {
       label: 'Every Action is Traceable.',
       local: '每次执行皆可追溯',
-      description: 'For industrial agents the bar isn\'t just “can call” — every step must be observable, auditable and replayable, from intent to effect.',
-      chips: ['Authorize', 'Guard', 'Execute', 'Audit', 'Feedback']
+      description: 'Authorize, guard, execute, audit, feedback — every step observable, auditable and replayable.',
+      chips: ['Auth', 'Risk', 'Execute', 'Audit', 'Feedback']
     }
   ]
 } : {
@@ -35,14 +35,14 @@ const copy = computed(() => isEnglish.value ? {
     {
       label: 'Everything is a Tool.',
       local: '一切皆工具',
-      description: '设备、点位、指令、API，都可以被抽象为智能体可调用的工具 —— 通过 MCP / Tool Calling 暴露，并以 OAuth2.1、工具白名单与风险分级守住每一次调用。',
-      chips: ['MCP', 'Tool Calling', 'OAuth2.1', '工具白名单', '风险分级']
+      description: '设备、点位、指令与 API —— 每一个表面都可以被抽象为智能体可调用的工具。',
+      chips: ['设备', '点位', '指令', 'API']
     },
     {
       label: 'Every Action is Traceable.',
       local: '每次执行皆可追溯',
-      description: '工业智能体的价值不只是“能调用”，更是每一步都可观测、可审计、可回放 —— 从意图到效果，全程留痕。',
-      chips: ['授权', '风险控制', '执行', '审计', '反馈']
+      description: '授权 → 风险 → 执行 → 审计 → 反馈，每一步都可观测、可审计、可回放。',
+      chips: ['授权', '风险', '执行', '审计', '反馈']
     }
   ]
 })

@@ -6,25 +6,25 @@ const {page} = useData()
 const isEnglish = computed(() => page.value.relativePath.startsWith('en/'))
 
 const copy = computed(() => isEnglish.value ? {
-  kicker: 'Built for the Real World',
-  title: 'Vision first, engineering evidence second',
-  description: 'The claim is bold. The receipts are below.',
+  kicker: 'Engineering Evidence',
+  title: 'The claim is bold. The receipts are below.',
+  description: '',
   stats: [
     {value: '28', label: 'Protocol Drivers', sub: 'Modbus · OPC UA · S7 · BACnet · MQTT'},
     {value: '330+', label: 'Agent Tools', sub: 'Auto-aggregated from OpenAPI operations as MCP tools'},
     {value: 'OAuth 2.1', label: 'Secure MCP', sub: 'RBAC ∩ tool whitelist ∩ risk tiers on every call'},
-    {value: '10', label: 'Built-in Agentic Tools', sub: 'Devices, points, commands and alarms, out of the box'}
+    {value: '10', label: 'Years · Industrial IoT', sub: 'A decade of industrial IoT engineering'}
   ],
   stack: ['Spring AI', 'MCP', 'PostgreSQL', 'TimescaleDB', 'RabbitMQ', 'Kubernetes', 'Helm']
 } : {
-  kicker: '为真实世界而生',
-  title: '先用愿景立论，再用工程证据收实',
-  description: '主张很大，证据在这里。',
+  kicker: '工程证据',
+  title: '主张很大，证据在这里。',
+  description: '',
   stats: [
     {value: '28', label: '协议驱动', sub: 'Modbus · OPC UA · S7 · BACnet · MQTT'},
     {value: '330+', label: '智能体工具', sub: '由 OpenAPI 操作自动聚合为 MCP Tool'},
     {value: 'OAuth 2.1', label: '安全的 MCP', sub: '每次调用过 RBAC ∩ 白名单 ∩ 风险分级'},
-    {value: '10', label: '内置智能体工具', sub: '设备、点位、指令、告警，开箱即用'}
+    {value: '10', label: '年 · 工业物联网', sub: '十年工业 IoT 工程基本盘'}
   ],
   stack: ['Spring AI', 'MCP', 'PostgreSQL', 'TimescaleDB', 'RabbitMQ', 'Kubernetes', 'Helm']
 })
@@ -39,7 +39,7 @@ const copy = computed(() => isEnglish.value ? {
           {{ copy.kicker }}
         </span>
         <h2 class="grid-title">{{ copy.title }}</h2>
-        <p class="grid-description">{{ copy.description }}</p>
+        <p v-if="copy.description" class="grid-description">{{ copy.description }}</p>
       </div>
 
       <div class="grid-cards">

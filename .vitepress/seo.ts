@@ -23,8 +23,8 @@ const LOCALES = {
 } as const
 
 const HOME_DESCRIPTIONS = {
-  zh: 'IoT DC3 是面向工业系统的开源 Physical AI Runtime：让 AI 进入物理世界，连接设备、数据、工具与智能体，构建从感知、决策到执行与反馈的安全闭环。',
-  en: 'IoT DC3 is an open-source Physical AI Runtime for industrial systems: connect AI to the physical world — devices, data, tools and agents in one safe sense-decide-act-feedback loop.'
+  zh: 'IoT DC3 是面向 Physical AI 的开源工业物联网 Runtime：连接物理世界与 AI，将设备、数据、工具与智能体连成一个安全、可控、可追溯的实时闭环。',
+  en: 'IoT DC3 is an open-source Industrial IoT Runtime for Physical AI: connect the physical world to AI — devices, data, tools and agents in one safe, controllable, traceable real-time loop.'
 } as const
 
 const KEYWORDS = {

@@ -35,7 +35,6 @@
           IoT DC3
         </span>
         <span class="signal-footer-copy">{{ content.footer }}</span>
-        <span class="signal-footer-year">© 2016–2026</span>
       </div>
     </section>
   </div>
@@ -54,7 +53,7 @@ const content = computed(() => isEnglish.value ? {
   capabilitiesLabel: 'Platform capabilities',
   capabilities: ['28 multi-protocol drivers', 'Spring AI intelligence loop', 'Cloud-native · Multi-tenant · Open source'],
   dashboard: {label: '12 Industry Dashboards', link: '/en/demo/'},
-  footer: 'An open-source Physical AI Runtime for industrial systems'
+  footer: 'An open-source Industrial IoT Runtime for Physical AI'
 } : {
   kicker: 'LIVE INDUSTRIAL DATA FLOW',
   title: '让设备、数据与智能持续流动',
@@ -62,7 +61,7 @@ const content = computed(() => isEnglish.value ? {
   capabilitiesLabel: '平台能力',
   capabilities: ['28 个多协议驱动', 'Spring AI 智能闭环', '云原生 · 多租户 · 全开源'],
   dashboard: {label: '12 个行业看板', link: '/zh/demo/'},
-  footer: '让 AI 进入物理世界的开源 Physical AI Runtime'
+  footer: '面向 Physical AI 的开源工业物联网 Runtime'
 })
 
 const sparkCanvas = ref<HTMLCanvasElement | null>(null)

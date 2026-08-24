@@ -40,6 +40,10 @@ export default defineConfig({
           {text: '愿景', link: '/zh/vision'},
           {text: '演示', link: '/zh/demo/'},
         ],
+        footer: {
+          message: 'IoT DC3 · 连接物理世界与 AI',
+          copyright: '© 2016–2026'
+        },
         socialLinks: [
           {icon: 'github', link: 'https://github.com/pnoker/iot-dc3'},
           {icon: 'gitee', link: 'https://gitee.com/pnoker/iot-dc3'},
@@ -56,6 +60,10 @@ export default defineConfig({
           {text: 'Vision', link: '/en/vision'},
           {text: 'Demo', link: '/en/demo/'},
         ],
+        footer: {
+          message: 'IoT DC3 · Connect the Physical World to AI',
+          copyright: '© 2016–2026'
+        },
         socialLinks: [
           {icon: 'github', link: 'https://github.com/pnoker/iot-dc3'},
           {icon: 'gitee', link: 'https://gitee.com/pnoker/iot-dc3'},

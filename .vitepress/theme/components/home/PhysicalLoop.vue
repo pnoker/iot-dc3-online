@@ -8,7 +8,7 @@ const isEnglish = computed(() => page.value.relativePath.startsWith('en/'))
 const copy = computed(() => isEnglish.value ? {
   kicker: 'The Physical AI Loop',
   title: 'Two worlds, one runtime',
-  description: 'Devices on the left, intelligence on the right. IoT DC3 is the single layer in between — telemetry flows up, context, tools and commands flow down, and feedback closes the loop.',
+  description: 'Devices on the left, intelligence on the right, IoT DC3 in between.',
   physicalLabel: 'PHYSICAL WORLD',
   intelligenceLabel: 'INTELLIGENCE',
   physicalNodes: ['PLC', 'Sensor', 'Robot', 'CNC', 'Camera'],
@@ -19,7 +19,7 @@ const copy = computed(() => isEnglish.value ? {
 } : {
   kicker: '物理智能闭环',
   title: '两个世界，一个 Runtime',
-  description: '左边是设备，右边是智能。IoT DC3 是它们之间唯一的中介层 —— 遥测上行，上下文、工具与指令下行，反馈闭环。',
+  description: '左边是设备，右边是智能，中间是 IoT DC3。',
   physicalLabel: '物理世界',
   intelligenceLabel: '智能世界',
   physicalNodes: ['PLC', '传感器', '机器人', '机床', '摄像头'],
