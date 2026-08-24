@@ -60,8 +60,19 @@ const coreY = 210
               <stop class="loop-stop-a" offset="0" />
               <stop class="loop-stop-b" offset="1" />
             </linearGradient>
+            <linearGradient id="loop-node-bg-ai" x1="0" y1="0" x2="0" y2="1">
+              <stop class="loop-stop-ai-a" offset="0" />
+              <stop class="loop-stop-ai-b" offset="1" />
+            </linearGradient>
+            <linearGradient id="loop-node-bg-core" x1="0" y1="0" x2="0" y2="1">
+              <stop class="loop-stop-core-a" offset="0" />
+              <stop class="loop-stop-core-b" offset="1" />
+            </linearGradient>
             <filter id="loop-node-shadow" x="-30%" y="-60%" width="160%" height="240%">
               <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="rgba(16, 96, 161, 0.18)" />
+            </filter>
+            <filter id="loop-core-glow" x="-60%" y="-60%" width="220%" height="220%">
+              <feDropShadow dx="0" dy="0" stdDeviation="16" flood-color="rgba(24, 191, 220, 0.32)" />
             </filter>
             <marker id="loop-arrow" class="loop-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M0,0 L10,5 L0,10 z" />
@@ -79,7 +90,7 @@ const coreY = 210
           </g>
 
           <!-- right world pills -->
-          <g v-for="(label, index) in copy.intelligenceNodes" :key="'i' + label" class="loop-node loop-node-side">
+          <g v-for="(label, index) in copy.intelligenceNodes" :key="'i' + label" class="loop-node loop-node-side loop-node-ai">
             <rect :x="rightX - pillW / 2" :y="nodeY[index] - pillH / 2" :width="pillW" :height="pillH" rx="13" />
             <text class="loop-node-label" :x="rightX" :y="nodeY[index] + 5" text-anchor="middle">{{ label }}</text>
           </g>
@@ -150,8 +161,8 @@ const coreY = 210
 .loop-section {
   position: relative;
   width: 100%;
-  margin-top: 28px;
-  padding: 84px 32px 78px;
+  margin-top: 120px;
+  padding: 96px 32px 88px;
   overflow: hidden;
   border-top: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 12%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 10%, transparent);
@@ -162,7 +173,7 @@ const coreY = 210
 }
 
 .loop-inner {
-  width: min(1152px, 100%);
+  width: min(var(--dc3-container), 100%);
   margin: 0 auto;
 }
 
@@ -224,9 +235,16 @@ const coreY = 210
   filter: url(#loop-node-shadow);
 }
 
+.loop-node-ai rect {
+  fill: url(#loop-node-bg-ai);
+  stroke: rgba(139, 128, 255, 0.28);
+}
+
 .loop-node-core rect {
-  stroke: rgba(24, 191, 220, 0.46);
+  fill: url(#loop-node-bg-core);
+  stroke: rgba(24, 191, 220, 0.5);
   stroke-width: 1.4;
+  filter: url(#loop-core-glow);
 }
 
 .loop-stop-a {
@@ -234,7 +252,23 @@ const coreY = 210
 }
 
 .loop-stop-b {
-  stop-color: var(--vp-c-brand-soft);
+  stop-color: color-mix(in srgb, #1296db 11%, var(--vp-c-bg-elv));
+}
+
+.loop-stop-ai-a {
+  stop-color: var(--vp-c-bg-elv);
+}
+
+.loop-stop-ai-b {
+  stop-color: color-mix(in srgb, #6c7bf0 13%, var(--vp-c-bg-elv));
+}
+
+.loop-stop-core-a {
+  stop-color: var(--vp-c-bg-elv);
+}
+
+.loop-stop-core-b {
+  stop-color: color-mix(in srgb, #17b9c9 15%, var(--vp-c-bg-elv));
 }
 
 .loop-col-label {
@@ -252,7 +286,7 @@ const coreY = 210
 }
 
 .loop-core-label {
-  fill: var(--vp-c-text-1);
+  fill: var(--vp-c-brand-1);
   font-size: 24px;
   font-weight: 760;
   letter-spacing: -0.01em;
@@ -333,6 +367,10 @@ const coreY = 210
   stroke: rgba(143, 216, 250, 0.18);
 }
 
+:global(.dark .loop-node-ai rect) {
+  stroke: rgba(151, 143, 255, 0.22);
+}
+
 :global(.dark .loop-node-core rect) {
   stroke: rgba(96, 208, 240, 0.38);
 }
@@ -356,7 +394,7 @@ const coreY = 210
 
 @media (max-width: 960px) {
   .loop-section {
-    margin-top: 24px;
+    margin-top: 72px;
     padding: 64px 20px 56px;
   }
 

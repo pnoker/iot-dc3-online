@@ -108,7 +108,7 @@ const copy = computed(() => isEnglish.value ? {
 }
 
 .positioning-inner {
-  width: min(1152px, 100%);
+  width: min(var(--dc3-container), 100%);
   margin: 0 auto;
 }
 

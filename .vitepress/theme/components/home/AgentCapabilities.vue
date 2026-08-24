@@ -72,11 +72,11 @@ const copy = computed(() => isEnglish.value ? {
 }
 
 .caps-section.compact {
-  padding-top: 96px;
+  padding-top: 150px;
 }
 
 .caps-inner {
-  width: min(1152px, 100%);
+  width: min(var(--dc3-container), 100%);
   margin: 0 auto;
 }
 
@@ -180,22 +180,22 @@ const copy = computed(() => isEnglish.value ? {
 
 .caps-row.compact {
   display: flex;
-  gap: 22px;
+  gap: 34px;
   align-items: baseline;
   width: min(760px, 100%);
   margin: 0 auto;
-  padding: 13px 22px;
-  border: 1px solid rgba(151, 219, 248, 0.2);
-  border-radius: 16px;
-  background:
-    radial-gradient(circle at 16% 0%, rgba(255, 255, 255, 0.66), transparent 42%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.38), rgba(18, 150, 219, 0.07) 56%, rgba(91, 116, 235, 0.05));
-  box-shadow: 0 12px 30px rgba(16, 96, 161, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.76);
-  backdrop-filter: blur(16px) saturate(1.3);
+  padding: 22px 8px;
+  border: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--vp-c-divider) 55%, transparent);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  transition: border-color 240ms ease;
 }
 
 .caps-row.compact + .caps-row.compact {
-  margin-top: 10px;
+  margin-top: 0;
 }
 
 .caps-row.compact::before {
@@ -204,9 +204,8 @@ const copy = computed(() => isEnglish.value ? {
 
 .caps-row.compact:hover {
   transform: none;
-  background:
-    radial-gradient(circle at 16% 0%, rgba(255, 255, 255, 0.72), transparent 42%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.44), rgba(18, 150, 219, 0.1) 56%, rgba(91, 116, 235, 0.07));
+  background: none;
+  border-bottom-color: color-mix(in srgb, var(--vp-c-brand-1) 30%, transparent);
 }
 
 .caps-keyword {
@@ -230,9 +229,10 @@ const copy = computed(() => isEnglish.value ? {
 
 .caps-row.compact .caps-keyword {
   flex: none;
-  width: 132px;
-  font-size: 17px;
-  text-align: right;
+  width: 168px;
+  font-size: 18px;
+  text-align: left;
+  letter-spacing: 0.02em;
 }
 
 .caps-row-copy {
@@ -289,8 +289,7 @@ const copy = computed(() => isEnglish.value ? {
   font-weight: 700;
 }
 
-:global(.dark .caps-footer),
-:global(.dark .caps-row.compact) {
+:global(.dark .caps-footer) {
   border-color: rgba(143, 216, 250, 0.14);
   background:
     radial-gradient(circle at 16% 0%, rgba(205, 245, 255, 0.11), transparent 42%),
@@ -304,7 +303,7 @@ const copy = computed(() => isEnglish.value ? {
   }
 
   .caps-section.compact {
-    padding-top: 76px;
+    padding-top: 110px;
   }
 
   .caps-row {
@@ -347,8 +346,9 @@ const copy = computed(() => isEnglish.value ? {
 
   .caps-row.compact {
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
     align-items: flex-start;
+    padding: 16px 4px;
   }
 
   .caps-row.compact .caps-keyword {

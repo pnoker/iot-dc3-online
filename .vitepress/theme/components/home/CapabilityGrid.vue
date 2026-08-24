@@ -60,11 +60,11 @@ const copy = computed(() => isEnglish.value ? {
 <style scoped>
 .grid-section {
   width: 100%;
-  padding-top: 108px;
+  padding-top: 160px;
 }
 
 .grid-inner {
-  width: min(1152px, 100%);
+  width: min(var(--dc3-container), 100%);
   margin: 0 auto;
 }
 
@@ -122,21 +122,17 @@ const copy = computed(() => isEnglish.value ? {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-height: 236px;
+  min-height: 216px;
   padding: 30px 26px 24px;
   overflow: hidden;
-  border: 1px solid rgba(151, 219, 248, 0.28);
+  border: 1px solid rgba(151, 219, 248, 0.18);
   border-radius: var(--dc3-glass-radius);
   background:
-    radial-gradient(circle at 16% 0%, rgba(255, 255, 255, 0.74), transparent 42%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.44), rgba(var(--card-rgb), 0.11) 56%, rgba(77, 83, 199, 0.07));
-  box-shadow:
-    0 20px 46px rgba(16, 96, 161, 0.09),
-    inset 0 1px 0 rgba(255, 255, 255, 0.84),
-    inset 0 -12px 28px rgba(57, 119, 196, 0.05);
-  backdrop-filter: blur(20px) saturate(1.35);
-  -webkit-backdrop-filter: blur(20px) saturate(1.35);
-  transition: transform 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
+    linear-gradient(160deg, rgba(255, 255, 255, 0.3), rgba(var(--card-rgb), 0.05) 60%, rgba(77, 83, 199, 0.03));
+  box-shadow: 0 10px 30px rgba(16, 96, 161, 0.05);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  transition: border-color 300ms ease;
 }
 
 .grid-card:nth-child(2) { --card-rgb: 91, 116, 235; }
@@ -144,13 +140,7 @@ const copy = computed(() => isEnglish.value ? {
 .grid-card:nth-child(4) { --card-rgb: 18, 150, 219; }
 
 .grid-card:hover {
-  border-color: rgba(var(--card-rgb), 0.34);
-  box-shadow:
-    0 26px 58px rgba(16, 96, 161, 0.15),
-    0 10px 28px rgba(var(--card-rgb), 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.92),
-    inset 0 -12px 28px rgba(var(--card-rgb), 0.07);
-  transform: translateY(-5px);
+  border-color: rgba(var(--card-rgb), 0.3);
 }
 
 .grid-card-value {
@@ -159,10 +149,10 @@ const copy = computed(() => isEnglish.value ? {
   -webkit-background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  font-size: clamp(34px, 3.2vw, 44px);
+  font-size: clamp(42px, 4.6vw, 58px);
   font-weight: 800;
-  line-height: 1.02;
-  letter-spacing: -0.03em;
+  line-height: 1.0;
+  letter-spacing: -0.035em;
   font-variant-numeric: tabular-nums;
 }
 
@@ -174,17 +164,20 @@ const copy = computed(() => isEnglish.value ? {
 
 .grid-card-label {
   margin: 0;
-  color: var(--vp-c-text-1);
-  font-size: 17px;
-  font-weight: 720;
+  color: var(--vp-c-text-2);
+  font-size: 13px;
+  font-weight: 700;
   line-height: 1.3;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .grid-card-sub {
   margin: auto 0 0;
   color: var(--vp-c-text-3);
-  font-size: 13px;
+  font-size: 12.5px;
   line-height: 1.65;
+  font-family: var(--vp-font-family-mono);
 }
 
 .grid-stack {
@@ -211,14 +204,10 @@ const copy = computed(() => isEnglish.value ? {
 }
 
 :global(.dark .grid-card) {
-  border-color: rgba(143, 216, 250, 0.16);
+  border-color: rgba(143, 216, 250, 0.13);
   background:
-    radial-gradient(circle at 16% 0%, rgba(205, 245, 255, 0.13), transparent 42%),
-    linear-gradient(135deg, rgba(var(--card-rgb), 0.11), rgba(17, 35, 52, 0.3) 58%, rgba(61, 62, 143, 0.12));
-  box-shadow:
-    0 22px 50px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(232, 251, 255, 0.1),
-    inset 0 -12px 28px rgba(0, 0, 0, 0.12);
+    linear-gradient(160deg, rgba(22, 113, 169, 0.07), rgba(17, 35, 52, 0.3) 60%, rgba(61, 62, 143, 0.08));
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
 }
 
 :global(.dark .grid-stack-chip) {
@@ -237,7 +226,7 @@ const copy = computed(() => isEnglish.value ? {
 
 @media (max-width: 640px) {
   .grid-section {
-    padding-top: 84px;
+    padding-top: 110px;
   }
 
   .grid-cards {

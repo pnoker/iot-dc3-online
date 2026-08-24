@@ -39,6 +39,7 @@
     --vp-button-brand-text: #ffffff;
     --vp-layout-max-width: 1504px;
     --dc3-glass-radius: 20px;
+    --dc3-container: 1152px;
     font-synthesis-weight: none;
 }
 
@@ -1031,8 +1032,7 @@ body {
     padding-right: 0 !important;
 }
 
-/* hide footer on landing page */
-.VPFooter { display: none; }
+/* the VitePress footer now renders as the quiet page-end; styled at the bottom of this file */
 
 /* demo 页看板下方的 SEO/AEO 说明文字：深色背景下淡化可读，不抢看板视觉（看板 .dc3d-stage 是 min-height:100vh，此段自然落在看板下方、滚动可见） */
 .demo-seo-desc {
@@ -1103,4 +1103,23 @@ body {
 
 .demo-article a:hover {
     border-bottom-style: solid;
+}
+
+/* ===== Quiet footer: the page ends with the CTA, the footer is the fade-out ===== */
+.VPFooter {
+    border-top: 1px solid color-mix(in srgb, var(--vp-c-divider) 55%, transparent);
+    background: transparent;
+    padding: 30px 24px 40px;
+}
+
+.VPFooter .container {
+    color: var(--vp-c-text-3);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.VPFooter .message,
+.VPFooter .copyright {
+    color: var(--vp-c-text-3);
+    font-size: 12px;
 }

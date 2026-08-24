@@ -185,11 +185,11 @@ function resetPointer(event: PointerEvent) {
     transparent 152deg,
     transparent 360deg
   );
-  opacity: 0.36;
+  opacity: 0.2;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  animation: border-orbit 7s linear infinite;
+  animation: border-orbit 12s linear infinite;
   pointer-events: none;
 }
 

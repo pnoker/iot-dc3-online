@@ -57,8 +57,8 @@ const copy = computed(() => isEnglish.value ? {
 .cta-section {
   position: relative;
   width: 100%;
-  margin-top: 108px;
-  padding: 88px 32px 96px;
+  margin-top: 200px;
+  padding: 120px 32px 128px;
   overflow: hidden;
   border-top: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 12%, transparent);
   background:
@@ -69,7 +69,7 @@ const copy = computed(() => isEnglish.value ? {
 }
 
 .cta-inner {
-  width: min(1152px, 100%);
+  width: min(var(--dc3-container), 100%);
   margin: 0 auto;
   text-align: center;
 }
@@ -78,9 +78,9 @@ const copy = computed(() => isEnglish.value ? {
   margin: 0;
   border: none;
   color: var(--vp-c-text-1);
-  font-size: clamp(30px, 3.4vw, 46px);
+  font-size: clamp(34px, 4vw, 54px);
   font-weight: 760;
-  line-height: 1.14;
+  line-height: 1.12;
   letter-spacing: -0.035em;
 }
 
@@ -125,12 +125,12 @@ const copy = computed(() => isEnglish.value ? {
 .cta-button-brand {
   border: 1px solid rgba(255, 255, 255, 0.22);
   background: linear-gradient(150deg, #07549a, #0d8fd0 52%, #4f52bf 120%);
-  box-shadow: 0 18px 42px rgba(13, 114, 180, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.26);
+  box-shadow: 0 14px 34px rgba(13, 114, 180, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.26);
   color: #ffffff;
 }
 
 .cta-button-brand:hover {
-  box-shadow: 0 24px 52px rgba(13, 114, 180, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.34);
+  box-shadow: 0 20px 42px rgba(13, 114, 180, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.34);
   color: #ffffff;
 }
 
@@ -192,8 +192,8 @@ const copy = computed(() => isEnglish.value ? {
 
 @media (max-width: 640px) {
   .cta-section {
-    margin-top: 84px;
-    padding: 68px 20px 76px;
+    margin-top: 140px;
+    padding: 84px 20px 96px;
   }
 
   .cta-actions {

@@ -300,24 +300,12 @@ onBeforeUnmount(() => {
   width: 100vw;
   min-height: 340px;
   margin-left: calc(-50vw + 50%);
-  padding: 58px 32px 0;
+  padding: 40px 32px 0;
   overflow: hidden;
-  border-top: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 12%, transparent);
   background:
-    radial-gradient(circle at 18% 18%, rgba(18, 150, 219, 0.1), transparent 28%),
-    radial-gradient(circle at 82% 34%, rgba(91, 116, 235, 0.08), transparent 30%),
-    linear-gradient(180deg, transparent, color-mix(in srgb, var(--vp-c-bg-alt) 76%, transparent));
-}
-
-.signal-section::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: 12%;
-  width: 76%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(102, 217, 255, 0.68), rgba(159, 164, 255, 0.56), transparent);
-  box-shadow: 0 0 24px rgba(18, 150, 219, 0.34);
+    radial-gradient(circle at 18% 18%, rgba(18, 150, 219, 0.06), transparent 30%),
+    radial-gradient(circle at 82% 34%, rgba(91, 116, 235, 0.05), transparent 32%),
+    linear-gradient(180deg, transparent 62%, color-mix(in srgb, var(--vp-c-bg-alt) 42%, transparent));
 }
 
 .signal-copy {
@@ -327,7 +315,7 @@ onBeforeUnmount(() => {
   grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
   gap: 56px;
   align-items: end;
-  width: min(1152px, 100%);
+  width: min(var(--dc3-container), 100%);
   margin: 0 auto;
 }
 
@@ -466,7 +454,7 @@ onBeforeUnmount(() => {
   grid-template-columns: auto 1fr auto;
   gap: 18px;
   align-items: center;
-  width: min(1152px, 100%);
+  width: min(var(--dc3-container), 100%);
   margin: 0 auto;
   padding: 20px 0 28px;
   border-top: 1px solid color-mix(in srgb, var(--vp-c-divider) 72%, transparent);

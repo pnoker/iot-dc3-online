@@ -15,13 +15,11 @@ const copy = computed(() => isEnglish.value ? {
     {
       label: 'Everything is a Tool.',
       local: '一切皆工具',
-      description: 'Devices, points, commands and APIs — every surface can be exposed as an agent-callable tool.',
       chips: ['Device', 'Point', 'Command', 'API']
     },
     {
       label: 'Every Action is Traceable.',
       local: '每次执行皆可追溯',
-      description: 'Authorize, guard, execute, audit, feedback — every step observable, auditable and replayable.',
       chips: ['Auth', 'Risk', 'Execute', 'Audit', 'Feedback']
     }
   ]
@@ -35,13 +33,11 @@ const copy = computed(() => isEnglish.value ? {
     {
       label: 'Everything is a Tool.',
       local: '一切皆工具',
-      description: '设备、点位、指令与 API —— 每一个表面都可以被抽象为智能体可调用的工具。',
       chips: ['设备', '点位', '指令', 'API']
     },
     {
       label: 'Every Action is Traceable.',
       local: '每次执行皆可追溯',
-      description: '授权 → 风险 → 执行 → 审计 → 反馈，每一步都可观测、可审计、可回放。',
       chips: ['授权', '风险', '执行', '审计', '反馈']
     }
   ]
@@ -60,16 +56,12 @@ const copy = computed(() => isEnglish.value ? {
         <p class="principles-description">{{ copy.description }}</p>
       </div>
 
-      <div class="principles-grid">
-        <article v-for="principle in copy.principles" :key="principle.label" class="principles-card">
+      <div class="principles-stack">
+        <article v-for="principle in copy.principles" :key="principle.label" class="principles-manifesto">
           <h3 class="principles-label">{{ principle.label }}</h3>
           <p class="principles-local">{{ principle.local }}</p>
-          <p class="principles-copy">{{ principle.description }}</p>
           <div class="principles-chips" aria-hidden="true">
-            <span v-for="(chip, index) in principle.chips" :key="chip" class="principles-chip">
-              <span v-if="index > 0" class="principles-chip-arrow">→</span>
-              {{ chip }}
-            </span>
+            <span v-for="chip in principle.chips" :key="chip" class="principles-chip">{{ chip }}</span>
           </div>
         </article>
       </div>
@@ -84,11 +76,11 @@ const copy = computed(() => isEnglish.value ? {
 <style scoped>
 .principles-section {
   width: 100%;
-  padding-top: 108px;
+  padding-top: 160px;
 }
 
 .principles-inner {
-  width: min(1152px, 100%);
+  width: min(var(--dc3-container), 100%);
   margin: 0 auto;
 }
 
@@ -133,47 +125,19 @@ const copy = computed(() => isEnglish.value ? {
   line-height: 1.75;
 }
 
-.principles-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px;
-  margin-top: 44px;
-}
-
-.principles-card {
-  --card-rgb: 18, 150, 219;
-  position: relative;
+.principles-stack {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 34px 34px 30px;
-  overflow: hidden;
-  border: 1px solid rgba(151, 219, 248, 0.28);
-  border-radius: var(--dc3-glass-radius);
-  background:
-    radial-gradient(circle at 16% 0%, rgba(255, 255, 255, 0.74), transparent 42%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.44), rgba(var(--card-rgb), 0.11) 56%, rgba(77, 83, 199, 0.07));
-  box-shadow:
-    0 20px 46px rgba(16, 96, 161, 0.09),
-    inset 0 1px 0 rgba(255, 255, 255, 0.84),
-    inset 0 -12px 28px rgba(57, 119, 196, 0.05);
-  backdrop-filter: blur(20px) saturate(1.35);
-  -webkit-backdrop-filter: blur(20px) saturate(1.35);
-  transition: transform 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
+  gap: 120px;
+  margin-top: 96px;
 }
 
-.principles-card:nth-child(2) {
-  --card-rgb: 91, 116, 235;
-}
-
-.principles-card:hover {
-  border-color: rgba(var(--card-rgb), 0.34);
-  box-shadow:
-    0 26px 58px rgba(16, 96, 161, 0.15),
-    0 10px 28px rgba(var(--card-rgb), 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.92),
-    inset 0 -12px 28px rgba(var(--card-rgb), 0.07);
-  transform: translateY(-5px);
+.principles-manifesto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
 }
 
 .principles-label {
@@ -183,10 +147,10 @@ const copy = computed(() => isEnglish.value ? {
   -webkit-background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  font-size: clamp(22px, 2.4vw, 28px);
-  font-weight: 780;
-  line-height: 1.18;
-  letter-spacing: -0.02em;
+  font-size: clamp(36px, 5.2vw, 72px);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
 }
 
 :global(.dark .principles-label) {
@@ -198,45 +162,36 @@ const copy = computed(() => isEnglish.value ? {
 .principles-local {
   margin: 0;
   color: var(--vp-c-text-3);
-  font-size: 14px;
-  font-weight: 640;
-}
-
-.principles-copy {
-  margin: 0;
-  color: var(--vp-c-text-2);
   font-size: 15px;
-  line-height: 1.75;
+  font-weight: 640;
+  letter-spacing: 0.04em;
 }
 
 .principles-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  align-items: center;
-  margin-top: 8px;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 12px;
 }
 
 .principles-chip {
-  display: inline-flex;
-  gap: 6px;
-  align-items: center;
-  padding: 5px 12px;
-  border: 1px solid rgba(var(--card-rgb), 0.24);
+  padding: 6px 15px;
+  border: 1px solid rgba(151, 219, 248, 0.2);
   border-radius: 999px;
-  background: color-mix(in srgb, rgb(var(--card-rgb)) 8%, transparent);
+  background: color-mix(in srgb, var(--vp-c-bg-soft) 60%, transparent);
   color: var(--vp-c-text-2);
-  font-size: 12.5px;
-  font-weight: 640;
+  font-size: 13px;
+  font-weight: 620;
+  font-family: var(--vp-font-family-mono);
 }
 
-.principles-chip-arrow {
-  color: rgb(var(--card-rgb));
-  font-weight: 700;
+:global(.dark .principles-chip) {
+  border-color: rgba(143, 216, 250, 0.14);
 }
 
 .principles-vision {
-  margin: 28px 0 0;
+  margin: 96px 0 0;
   text-align: center;
 }
 
@@ -253,30 +208,24 @@ const copy = computed(() => isEnglish.value ? {
   opacity: 0.78;
 }
 
-:global(.dark .principles-card) {
-  border-color: rgba(143, 216, 250, 0.16);
-  background:
-    radial-gradient(circle at 16% 0%, rgba(205, 245, 255, 0.13), transparent 42%),
-    linear-gradient(135deg, rgba(var(--card-rgb), 0.11), rgba(17, 35, 52, 0.3) 58%, rgba(61, 62, 143, 0.12));
-  box-shadow:
-    0 22px 50px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(232, 251, 255, 0.1),
-    inset 0 -12px 28px rgba(0, 0, 0, 0.12);
-}
-
 @media (max-width: 900px) {
   .principles-section {
-    padding-top: 84px;
+    padding-top: 120px;
   }
 
-  .principles-grid {
-    grid-template-columns: 1fr;
+  .principles-stack {
+    gap: 88px;
+    margin-top: 72px;
+  }
+
+  .principles-vision {
+    margin-top: 72px;
   }
 }
 
 @media (max-width: 640px) {
-  .principles-card {
-    padding: 26px 24px 24px;
+  .principles-label {
+    font-size: clamp(30px, 9vw, 40px);
   }
 }
 </style>

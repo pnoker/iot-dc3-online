@@ -58,11 +58,11 @@ const copy = computed(() => isEnglish.value ? {
 <style scoped>
 .prop-section {
   width: 100%;
-  padding: 140px 0 132px;
+  padding: 200px 0 190px;
 }
 
 .prop-inner {
-  width: min(1152px, 100%);
+  width: min(var(--dc3-container), 100%);
   margin: 0 auto;
   text-align: center;
 }
@@ -105,16 +105,16 @@ const copy = computed(() => isEnglish.value ? {
   align-items: center;
   justify-content: center;
   gap: 14px;
-  padding: 64px 24px;
-  border: 1px solid rgba(151, 219, 248, 0.24);
+  padding: 76px 24px;
+  border: 1px solid rgba(151, 219, 248, 0.16);
   border-radius: var(--dc3-glass-radius);
   background:
-    radial-gradient(circle at 16% 0%, rgba(255, 255, 255, 0.7), transparent 42%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.42), rgba(var(--card-rgb), 0.09) 56%, rgba(77, 83, 199, 0.06));
+    radial-gradient(circle at 16% 0%, rgba(255, 255, 255, 0.58), transparent 42%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.34), rgba(var(--card-rgb), 0.07) 56%, rgba(77, 83, 199, 0.04));
   box-shadow:
-    0 20px 46px rgba(16, 96, 161, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.82),
-    inset 0 -12px 28px rgba(57, 119, 196, 0.04);
+    0 14px 34px rgba(16, 96, 161, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    inset 0 -12px 28px rgba(57, 119, 196, 0.03);
   backdrop-filter: blur(20px) saturate(1.35);
   -webkit-backdrop-filter: blur(20px) saturate(1.35);
   transition: transform 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
@@ -139,10 +139,10 @@ const copy = computed(() => isEnglish.value ? {
   -webkit-background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  font-size: clamp(30px, 3.4vw, 44px);
+  font-size: clamp(34px, 4vw, 56px);
   font-weight: 780;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
 }
 
 .prop-card-dc3 .prop-card-name {
@@ -175,7 +175,7 @@ const copy = computed(() => isEnglish.value ? {
   display: grid;
   place-items: center;
   color: var(--vp-c-text-3);
-  font-size: 34px;
+  font-size: 40px;
   font-weight: 300;
   font-family: var(--vp-font-family-mono);
 }
@@ -193,10 +193,10 @@ const copy = computed(() => isEnglish.value ? {
   -webkit-background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  font-size: clamp(38px, 4.4vw, 58px);
+  font-size: clamp(46px, 6vw, 88px);
   font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
 }
 
 :global(.dark .prop-result-name) {
@@ -206,9 +206,9 @@ const copy = computed(() => isEnglish.value ? {
 }
 
 .prop-line {
-  margin: 58px auto 0;
+  margin: 76px auto 0;
   color: var(--vp-c-text-2);
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 620;
   line-height: 1.6;
   letter-spacing: 0.01em;
@@ -227,7 +227,7 @@ const copy = computed(() => isEnglish.value ? {
 
 @media (max-width: 960px) {
   .prop-section {
-    padding: 96px 0 92px;
+    padding: 110px 0 104px;
   }
 
   .prop-formula {
