@@ -31,6 +31,13 @@ import HeroParticles from './HeroParticles.vue'
 import HeroWaves from './HeroWaves.vue'
 import CardNav from './CardNav.vue'
 import WeChatQr from './WeChatQr.vue'
+import PropositionFormula from './components/home/PropositionFormula.vue'
+import PhysicalLoop from './components/home/PhysicalLoop.vue'
+import AgentCapabilities from './components/home/AgentCapabilities.vue'
+import ArchitecturePrinciples from './components/home/ArchitecturePrinciples.vue'
+import CapabilityGrid from './components/home/CapabilityGrid.vue'
+import PositioningTimeline from './components/home/PositioningTimeline.vue'
+import HomeCta from './components/home/HomeCta.vue'
 
 const theme: Theme = {
   extends: DefaultTheme,
@@ -40,7 +47,6 @@ const theme: Theme = {
       'home-hero-before': () => [h(HeroWaves), h(HeroParticles)],
       'home-hero-image': () => h(HeroLogo),
       'home-hero-actions-after': () => h(HeroActionCards),
-      'home-features-after': () => h(CardNav),
       'nav-bar-content-after': () => h(WeChatQr),
       'layout-bottom': () => h(GlobalCursor),
     })
@@ -48,6 +54,13 @@ const theme: Theme = {
 
   async enhanceApp({app}) {
     app.component('CardNav', CardNav)
+    app.component('PropositionFormula', PropositionFormula)
+    app.component('PhysicalLoop', PhysicalLoop)
+    app.component('AgentCapabilities', AgentCapabilities)
+    app.component('ArchitecturePrinciples', ArchitecturePrinciples)
+    app.component('CapabilityGrid', CapabilityGrid)
+    app.component('PositioningTimeline', PositioningTimeline)
+    app.component('HomeCta', HomeCta)
     app.component('DashboardGallery', DashboardGallery)
     app.component('PlaceholderPanel', PlaceholderPanel)
     app.component('SmartFactoryPanel', SmartFactoryPanel)
