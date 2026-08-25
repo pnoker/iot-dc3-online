@@ -63,6 +63,7 @@ const accessibleTitle = computed(() => t('功率因数与充电履约达成率',
   width: 100%;
   height: 100%;
   min-height: 0;
+  overflow: hidden;
   gap: 14px;
   box-sizing: border-box;
   justify-content: center;
@@ -72,4 +73,9 @@ const accessibleTitle = computed(() => t('功率因数与充电履约达成率',
 .ep-label { font-size: 12px; letter-spacing: 0.5px; color: var(--dc3d-text-dim); text-align: center; }
 .ep-bar { width: 100%; height: 14px; border-radius: 7px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
 .ep-fill { display: block; height: 100%; background: linear-gradient(90deg, #00e5ff, #2b9bff); box-shadow: 0 0 8px rgba(0, 229, 255, 0.5); }
+@media (max-width: 720px) {
+  .ep { gap: 8px; }
+  .ep-item { gap: 5px; min-height: 0; }
+  .ep-item :deep(.dv-percent-pond) { height: 42px; }
+}
 </style>

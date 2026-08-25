@@ -109,9 +109,9 @@ const accessibleTitle = computed(() => t('台区配变负载率与顶层油温�
 </template>
 
 <style scoped>
-.txg { display: flex; gap: 8px; width: 100%; height: 100%; box-sizing: border-box; }
+.txg { display: flex; gap: 8px; width: 100%; height: 100%; min-height: 0; overflow: hidden; box-sizing: border-box; }
 .txg-gauge { flex: 1.4; min-width: 0; height: 100%; }
-.txg-side { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; justify-content: center; }
+.txg-side { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; min-height: 0; justify-content: center; }
 .txg-row { display: flex; justify-content: space-between; align-items: baseline; padding: 3px 6px; border-bottom: 1px solid rgba(0,229,255,0.12); }
 .txg-k { font-size: 11px; color: var(--dc3d-text-dim); }
 .txg-v { font-size: 15px; font-weight: 700; font-family: var(--dc3d-mono, monospace); color: #d4ecff; }
@@ -130,6 +130,10 @@ const accessibleTitle = computed(() => t('台区配变负载率与顶层油温�
 @keyframes txg-blink { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
 @media (max-width: 720px) {
   .txg { flex-direction: column; }
-  .txg-gauge { flex: none; height: 60%; }
+  .txg-gauge { flex: none; height: 55%; }
+  .txg-side { gap: 3px; }
+  .txg-row { padding-block: 2px; }
+  .txg-level { padding-block: 4px; margin-top: 2px; }
+  .txg-action { padding-block: 3px; }
 }
 </style>

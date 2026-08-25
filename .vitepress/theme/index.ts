@@ -55,8 +55,13 @@ const theme: Theme = {
   Layout() {
     const {page} = useData()
     const visionLayout = ['zh/index.md', 'en/index.md'].includes(page.value.relativePath)
+    const demoGalleryLayout = ['zh/demo/index.md', 'en/demo/index.md'].includes(page.value.relativePath)
+    const immersiveLayout = visionLayout || demoGalleryLayout
 
-    return h(DefaultTheme.Layout, {class: {'dc3-vision-layout': visionLayout}}, {
+    return h(DefaultTheme.Layout, {class: {
+      'dc3-vision-layout': immersiveLayout,
+      'dc3-demo-layout': demoGalleryLayout,
+    }}, {
       'home-hero-before': () => [h(HeroWaves), h(HeroParticles)],
       'home-hero-image': () => h(HeroLogo),
       'home-hero-actions-after': () => h(HeroActionCards),

@@ -1201,6 +1201,16 @@ body:has(.vision-page .cardnav-root) .VPFooter {
     display: none;
 }
 
+/* 行业画廊拥有完整的宽屏收束，不叠加默认页脚和 page 容器留白。 */
+body:has(.demo-gallery-page) .VPFooter {
+    display: none;
+}
+
+.dc3-demo-layout .VPContent,
+.dc3-demo-layout .VPPage {
+    padding: 0 !important;
+}
+
 /* demo 页看板下方的 SEO/AEO 说明文字：深色背景下淡化可读，不抢看板视觉（看板 .dc3d-stage 是 min-height:100vh，此段自然落在看板下方、滚动可见） */
 .demo-seo-desc {
     max-width: 760px;

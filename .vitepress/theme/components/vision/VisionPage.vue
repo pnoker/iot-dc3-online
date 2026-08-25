@@ -4,17 +4,16 @@ import {useData} from 'vitepress'
 import HeroActionCards from '../../HeroActionCards.vue'
 import CardNav from '../../CardNav.vue'
 import PhysicalLoop from '../home/PhysicalLoop.vue'
+import {useImmersiveHeader} from '../../composables/useImmersiveHeader'
 import VisionAtmosphere from './VisionAtmosphere.vue'
 
 const {page} = useData()
 const isEnglish = computed(() => page.value.relativePath.startsWith('en/'))
 const isHome = computed(() => ['zh/index.md', 'en/index.md'].includes(page.value.relativePath))
 
-let headerFrame = 0
-let headerProgress = 0
-let headerTargetProgress = 0
-let headerExpandedWidth = 0
 let interactiveCards: HTMLElement[] = []
+
+useImmersiveHeader({contentSelector: '.vision-container'})
 
 const interactiveCardSelector = [
   '.vision-formula-card',
@@ -57,101 +56,12 @@ function unbindInteractiveCards() {
   interactiveCards = []
 }
 
-function easedHeaderProgress(scrollY: number) {
-  const progress = Math.min(1, Math.max(0, (scrollY - 4) / 96))
-  return progress * progress * (3 - 2 * progress)
-}
-
-function applyHeaderProgress(progress: number) {
-  const root = document.documentElement
-  root.style.setProperty('--dc3-nav-progress', progress.toFixed(4))
-
-  // 顶部状态使用 CSS 自适应宽度，避免异步内容引发滚动条时机变化后把首帧宽度写死。
-  if (progress < 0.0001) {
-    ;['--dc3-nav-width', '--dc3-nav-height', '--dc3-nav-offset', '--dc3-nav-padding']
-      .forEach((property) => root.style.removeProperty(property))
-    return
-  }
-
-  const viewportWidth = document.querySelector<HTMLElement>('.dc3-vision-layout')?.getBoundingClientRect().width
-    || document.documentElement.clientWidth
-  const compact = viewportWidth < 768
-  const medium = viewportWidth >= 768 && viewportWidth < 1280
-  const startGutter = compact ? 24 : medium ? 48 : 64
-  const endGutter = compact ? 40 : 64
-  const responsiveStartWidth = compact || medium
-    ? viewportWidth - startGutter
-    : Math.min(1360, viewportWidth - startGutter)
-  const startWidth = headerExpandedWidth || responsiveStartWidth
-  const contentWidth = document.querySelector<HTMLElement>('.vision-container')?.getBoundingClientRect().width
-  const endWidth = contentWidth || Math.min(1152, viewportWidth - endGutter)
-  const endPadding = compact ? 8 : medium ? 10 : 12
-
-  root.style.setProperty('--dc3-nav-width', `${startWidth + (endWidth - startWidth) * progress}px`)
-  root.style.setProperty('--dc3-nav-height', `${64 - 12 * progress}px`)
-  root.style.setProperty('--dc3-nav-offset', `${6 * progress}px`)
-  root.style.setProperty('--dc3-nav-padding', `${endPadding * progress}px`)
-}
-
-function animateHeader() {
-  const delta = headerTargetProgress - headerProgress
-  headerProgress += delta * 0.18
-
-  if (Math.abs(delta) < 0.001) headerProgress = headerTargetProgress
-  applyHeaderProgress(headerProgress)
-
-  if (headerProgress !== headerTargetProgress) {
-    headerFrame = requestAnimationFrame(animateHeader)
-  } else {
-    headerFrame = 0
-    document.documentElement.classList.remove('dc3-nav-animating')
-  }
-}
-
-function syncHeaderState() {
-  const nextProgress = easedHeaderProgress(window.scrollY)
-  if (!headerExpandedWidth && headerProgress < 0.0001 && nextProgress > 0) {
-    headerExpandedWidth = document.querySelector<HTMLElement>('.VPNavBar > .wrapper > .container')
-      ?.getBoundingClientRect().width || 0
-  }
-  headerTargetProgress = nextProgress
-  if (!headerFrame) {
-    document.documentElement.classList.add('dc3-nav-animating')
-    headerFrame = requestAnimationFrame(animateHeader)
-  }
-}
-
-function syncHeaderViewport() {
-  headerExpandedWidth = 0
-  applyHeaderProgress(headerProgress)
-  if (headerProgress < 0.0001) {
-    headerExpandedWidth = document.querySelector<HTMLElement>('.VPNavBar > .wrapper > .container')
-      ?.getBoundingClientRect().width || 0
-  }
-}
-
 onMounted(() => {
-  headerProgress = easedHeaderProgress(window.scrollY)
-  headerTargetProgress = headerProgress
-  applyHeaderProgress(headerProgress)
-  if (headerProgress < 0.0001) {
-    headerExpandedWidth = document.querySelector<HTMLElement>('.VPNavBar > .wrapper > .container')
-      ?.getBoundingClientRect().width || 0
-  }
   bindInteractiveCards()
-  window.addEventListener('scroll', syncHeaderState, {passive: true})
-  window.addEventListener('resize', syncHeaderViewport, {passive: true})
 })
 
 onBeforeUnmount(() => {
-  cancelAnimationFrame(headerFrame)
   unbindInteractiveCards()
-  window.removeEventListener('scroll', syncHeaderState)
-  window.removeEventListener('resize', syncHeaderViewport)
-  document.documentElement.classList.remove('dc3-nav-animating')
-  headerExpandedWidth = 0
-  ;['--dc3-nav-progress', '--dc3-nav-width', '--dc3-nav-height', '--dc3-nav-offset', '--dc3-nav-padding']
-    .forEach((property) => document.documentElement.style.removeProperty(property))
 })
 
 const copy = computed(() => isEnglish.value ? {

@@ -92,7 +92,7 @@ const {t} = useI18n()
   gap: var(--dc3d-gap);
   margin-bottom: var(--dc3d-gap);
 }
-@media (min-width: 1024px) {
+@media (min-width: 1180px) {
   .cc-top {
     grid-template-columns: 3fr 1fr;
   }
@@ -111,7 +111,7 @@ const {t} = useI18n()
   grid-template-columns: 1fr;
   gap: var(--dc3d-gap);
 }
-@media (min-width: 1024px) {
+@media (min-width: 1180px) {
   .cc-grid {
     grid-template-columns: repeat(12, 1fr);
     grid-auto-rows: 200px;

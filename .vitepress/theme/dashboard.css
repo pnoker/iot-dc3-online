@@ -502,6 +502,150 @@ body:has(.dc3d-stage) .VPPage {
   }
 }
 
+/* ===== 看板响应式骨架 =====
+   大屏保留各行业专属 12 栅格；中屏使用稳定的双列阅读流；小屏单列并给图表明确高度。
+   这里集中约束公共壳，避免 12 个行业页面各自修补后再次漂移。 */
+body:has(.dc3d-stage) .VPFooter {
+  display: none !important;
+}
+
+body:has(.dc3d-stage),
+body:has(.dc3d-stage) #app,
+body:has(.dc3d-stage) .Layout,
+body:has(.dc3d-stage) .VPContent,
+body:has(.dc3d-stage) .VPPage,
+.dc3d-stage {
+  overflow-x: hidden;
+}
+
+.dc3d-stage .dvp,
+.dc3d-stage .dvp-body,
+.dc3d-stage .dvp-body > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (min-width: 720px) and (max-width: 1179.98px) {
+  .dc3d-stage > [class$='-top'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dc3d-stage > [class$='-top'] > .dvp {
+    min-height: 260px;
+  }
+
+  .dc3d-stage main > [class$='-grid'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dc3d-stage main > [class$='-grid'] > .dvp {
+    min-height: 410px;
+  }
+}
+
+@media (max-width: 719.98px) {
+  .dc3d-stage {
+    min-height: auto;
+    padding: 10px 10px 0;
+    background-attachment: scroll;
+  }
+
+  .dc3d-stage::after {
+    animation: none;
+    opacity: 0.24;
+  }
+
+  .dc3d-hero {
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px 4px 12px;
+  }
+
+  .dc3d-hero::before {
+    top: -2px;
+    width: 19px;
+    height: 19px;
+  }
+
+  .dc3d-hero-deco {
+    display: none;
+  }
+
+  .dc3d-hero-center {
+    width: 100%;
+    min-width: 0;
+    padding: 0 4px;
+  }
+
+  .dc3d-hero-title {
+    max-width: 100%;
+    font-size: clamp(21px, 6.4vw, 27px);
+    line-height: 1.22;
+    letter-spacing: 2px;
+    white-space: normal;
+    text-wrap: balance;
+  }
+
+  .dc3d-hero-sub {
+    margin-top: 6px;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 1px;
+  }
+
+  .dc3d-hero-meta {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    font-size: 10px;
+  }
+
+  .dc3d-toolbar {
+    gap: 8px;
+    margin: 2px 0 10px;
+  }
+
+  .dc3d-back,
+  .dc3d-pause {
+    min-width: 0;
+    padding: 6px 10px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .dc3d-stage > [class$='-top'] > .dvp {
+    min-height: 300px;
+  }
+
+  .dc3d-stage > [class$='-top'] > .dvp:first-child {
+    min-height: 330px;
+  }
+
+  .dc3d-stage main > [class$='-grid'] > .dvp {
+    min-height: 430px;
+  }
+
+  .dc3d-stage .dvp-inner {
+    inset: 12px 14px 14px;
+  }
+
+  .dc3d-stage .dvp-title {
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .dc3d-stage .dvp-head {
+    gap: 6px;
+    padding: 6px 0;
+  }
+
+  .dc3d-stage .dvp-body {
+    overflow: hidden;
+  }
+}
+
 /* reduced-motion:关闭所有装饰动画(保留数据更新) */
 @media (prefers-reduced-motion: reduce) {
   .dc3d-panel,
