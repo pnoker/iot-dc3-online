@@ -47,6 +47,7 @@ import {useData} from 'vitepress'
 
 const {page} = useData()
 const isEnglish = computed(() => page.value.relativePath.startsWith('en/'))
+const currentYear = new Date().getFullYear()
 const content = computed(() => isEnglish.value ? {
   kicker: 'LIVE INDUSTRIAL DATA FLOW',
   title: 'Keep devices, data and intelligence in motion',
@@ -55,7 +56,7 @@ const content = computed(() => isEnglish.value ? {
   capabilities: ['28 multi-protocol drivers', 'Spring AI intelligence loop', 'Cloud-native · Multi-tenant · Open source'],
   dashboard: {label: '12 Industry Dashboards', link: '/en/demo/'},
   footer: 'IoT DC3 · Connect the Physical World to AI · An open-source Industrial IoT Runtime for Physical AI',
-  footerMeta: 'AGPL-3.0 · Apache-2.0 · © 2016–2026'
+  footerMeta: `AGPL-3.0 · © 2016–${currentYear}`
 } : {
   kicker: 'LIVE INDUSTRIAL DATA FLOW',
   title: '让设备、数据与智能持续流动',
@@ -64,7 +65,7 @@ const content = computed(() => isEnglish.value ? {
   capabilities: ['28 个多协议驱动', 'Spring AI 智能闭环', '云原生 · 多租户 · 全开源'],
   dashboard: {label: '12 个行业看板', link: '/zh/demo/'},
   footer: 'IoT DC3 · 连接物理世界与 AI · 面向 Physical AI 的开源工业物联网 Runtime',
-  footerMeta: 'AGPL-3.0 · Apache-2.0 · © 2016–2026'
+  footerMeta: `AGPL-3.0 · © 2016–${currentYear}`
 })
 
 const sparkCanvas = ref<HTMLCanvasElement | null>(null)

@@ -3,6 +3,17 @@ import {transformHead} from './seo'
 
 const LANG_DETECT = `(function(){var K='dc3-lang',B='/';var p;try{p=localStorage.getItem(K);}catch(e){}var r=location.pathname;if(r.length&&r[r.length-1]!=='/')r=r+'/';var rel=r.indexOf(B)===0?r.slice(B.length):r;var onEn=rel.indexOf('en/')===0;var onZh=rel.indexOf('zh/')===0;if(!onEn&&!onZh){if(!p){p=/^en/i.test(navigator.language)?'en':'zh';try{localStorage.setItem(K,p);}catch(e){}}location.replace(B+p+'/');}})();`
 
+const WECHAT_ICON = {
+  svg: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.67 4.24c-4.06 0-7.35 2.7-7.35 6.04 0 1.91 1.09 3.62 2.79 4.73l-.72 2.17 2.54-1.27c.86.27 1.78.41 2.74.41.32 0 .64-.02.95-.05a5.82 5.82 0 0 1-.25-1.65c0-3.33 3.16-6.03 7.05-6.03.1 0 .2 0 .3.01-.91-2.52-4.08-4.36-8.05-4.36Zm-2.5 3.2a.88.88 0 1 1 0 1.76.88.88 0 0 1 0-1.76Zm4.92 0a.88.88 0 1 1 0 1.76.88.88 0 0 1 0-1.76Z"/><path d="M21.68 14.62c0-2.75-2.77-4.98-6.18-4.98s-6.18 2.23-6.18 4.98 2.77 4.98 6.18 4.98c.81 0 1.58-.13 2.29-.35l2.13 1.06-.6-1.81c1.43-.92 2.36-2.34 2.36-3.88Zm-8.24-.89a.74.74 0 1 1 0-1.48.74.74 0 0 1 0 1.48Zm4.12 0a.74.74 0 1 1 0-1.48.74.74 0 0 1 0 1.48Z"/></svg>'
+}
+
+const createSocialLinks = (wechatLabel: string) => [
+  {icon: 'github', link: 'https://github.com/pnoker/iot-dc3', ariaLabel: 'GitHub'},
+  {icon: 'gitee', link: 'https://gitee.com/pnoker/iot-dc3', ariaLabel: 'Gitee'},
+  {icon: 'x', link: 'https://x.com/IoTDC3', ariaLabel: 'X'},
+  {icon: WECHAT_ICON, link: '/images/wechat-qr.png', ariaLabel: wechatLabel},
+]
+
 export default defineConfig({
   base: '/',
   lang: 'zh-CN',
@@ -36,15 +47,14 @@ export default defineConfig({
       lang: 'zh-CN',
       themeConfig: {
         nav: [],
+        darkModeSwitchLabel: '外观',
+        darkModeSwitchTitle: '切换到深色模式',
+        lightModeSwitchTitle: '切换到浅色模式',
         footer: {
           message: 'IoT DC3 · 连接物理世界与 AI',
           copyright: '© 2016–2026'
         },
-        socialLinks: [
-          {icon: 'github', link: 'https://github.com/pnoker/iot-dc3'},
-          {icon: 'gitee', link: 'https://gitee.com/pnoker/iot-dc3'},
-          {icon: 'x', link: 'https://x.com/IoTDC3'},
-        ],
+        socialLinks: createSocialLinks('查看微信二维码'),
       }
     },
     en: {
@@ -52,15 +62,14 @@ export default defineConfig({
       lang: 'en-US',
       themeConfig: {
         nav: [],
+        darkModeSwitchLabel: 'Appearance',
+        darkModeSwitchTitle: 'Switch to dark theme',
+        lightModeSwitchTitle: 'Switch to light theme',
         footer: {
           message: 'IoT DC3 · Connect the Physical World to AI',
           copyright: '© 2016–2026'
         },
-        socialLinks: [
-          {icon: 'github', link: 'https://github.com/pnoker/iot-dc3'},
-          {icon: 'gitee', link: 'https://gitee.com/pnoker/iot-dc3'},
-          {icon: 'x', link: 'https://x.com/IoTDC3'},
-        ],
+        socialLinks: createSocialLinks('View WeChat QR code'),
       }
     }
   },

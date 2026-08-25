@@ -11,7 +11,6 @@ const HeroLogo = lazy(() => import('./HeroLogo.vue'))
 const HeroActionCards = lazy(() => import('./HeroActionCards.vue'))
 const HeroParticles = lazy(() => import('./HeroParticles.vue'))
 const HeroWaves = lazy(() => import('./HeroWaves.vue'))
-const WeChatQr = lazy(() => import('./WeChatQr.vue'))
 
 function registerLazyComponents(app: App) {
   app.component('CardNav', lazy(() => import('./CardNav.vue')))
@@ -65,7 +64,6 @@ const theme: Theme = {
       'home-hero-before': () => [h(HeroWaves), h(HeroParticles)],
       'home-hero-image': () => h(HeroLogo),
       'home-hero-actions-after': () => h(HeroActionCards),
-      'nav-bar-content-after': () => h(WeChatQr),
       'layout-bottom': () => h(GlobalCursor),
     })
   },
