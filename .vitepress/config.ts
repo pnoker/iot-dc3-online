@@ -1,3 +1,5 @@
+import {execSync} from 'node:child_process'
+import {fileURLToPath} from 'node:url'
 import {defineConfig} from 'vitepress'
 import {transformHead} from './seo'
 
@@ -14,6 +16,29 @@ const createSocialLinks = (wechatLabel: string) => [
   {icon: WECHAT_ICON, link: '/images/wechat-qr.png', ariaLabel: wechatLabel},
 ]
 
+const lastmodCache = new Map<string, string | undefined>()
+
+// sitemap 的 lastmod 取源文件最后一次实质提交日期，取不到则省略该字段
+function gitLastmod(url: string): string | undefined {
+  if (lastmodCache.has(url)) return lastmodCache.get(url)
+  let result: string | undefined
+  try {
+    const path = url.replace(/^\/+/, '')
+    const sourceFile = !/^(zh|en)\//.test(path)
+      ? 'index.md'
+      : path.endsWith('/') ? `${path}index.md` : `${path}.md`
+    const date = execSync(`git log -1 --format=%cs -- "${sourceFile}"`, {
+      encoding: 'utf8',
+      cwd: fileURLToPath(new URL('..', import.meta.url))
+    }).trim()
+    result = /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : undefined
+  } catch {
+    result = undefined
+  }
+  lastmodCache.set(url, result)
+  return result
+}
+
 export default defineConfig({
   base: '/',
   lang: 'zh-CN',
@@ -22,7 +47,23 @@ export default defineConfig({
   cleanUrls: true,
   sitemap: {
     hostname: 'https://dc3.site',
-    transformItems: items => items.filter(item => item.url !== '' && item.url !== '/')
+    transformItems: items => items
+      .map(item => {
+        // VitePress 内部 url 无前导斜杠（'zh/demo/cold-chain'，根为 ''）
+        const path = item.url.startsWith('/') ? item.url : `/${item.url}`
+        // links 里指向根路径 '' 的是默认 locale（noindex 的语言跳转页），剔除
+        const links = item.links?.filter(link => link.url !== '' && link.url !== '/')
+        return {
+          ...item,
+          ...(links ? {links} : {}),
+          lastmod: gitLastmod(item.url)
+        }
+      })
+      // 根路径与 vision 页均为 noindex 跳转页，不应出现在 sitemap
+      .filter(item => {
+        const path = item.url.startsWith('/') ? item.url : `/${item.url}`
+        return path !== '/' && !/^\/(zh|en)\/vision$/.test(path)
+      })
   },
 
   srcExclude: ['AGENTS.md'],

@@ -41,3 +41,5 @@ This page runs on mock data; with real sensors connected, the moisture and clima
 Yes — the point model is scenario-agnostic: field weather stations, soil probes and valve controllers onboard the same way.
 
 </div>
+
+<DemoCrossLinks />

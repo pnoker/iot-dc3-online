@@ -40,3 +40,5 @@ This page runs on mock data; connect monitoring stations to get the same single-
 The point model is factor-agnostic: air pollutants, VOCs, water parameters, noise and stack emissions all onboard as points with alarms.
 
 </div>
+
+<DemoCrossLinks />

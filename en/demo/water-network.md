@@ -41,3 +41,5 @@ This page runs on mock data; in production the source-to-tap pipeline looks exac
 District metering with night-minimum-flow analysis is the common approach — the platform provides zone-metered points and history, and the quadrant rules evaluate leakage continuously.
 
 </div>
+
+<DemoCrossLinks />

@@ -2,52 +2,60 @@
 
 ## Project Overview
 
-This repository hosts the official documentation site for **IoT DC3** — an open-source, distributed IoT platform built on Spring Cloud. The site is generated with [VuePress 1.9.10](https://v1.vuepress.vuejs.org/) and deployed via GitHub Pages to [dc3.site](https://dc3.site).
+This repository hosts the source of **dc3.site** — the official landing/showcase site for **IoT DC3**, an open-source industrial IoT platform (Physical AI Runtime) built on Spring Cloud.
 
-The `docs/` directory contains the static build output (HTML, JS, CSS, assets) served to users. Documentation covers architecture, configuration, driver development, operation guides, FAQ, and contributor resources — all in Chinese.
+The site is built with **VitePress 1.6** and deployed to GitHub Pages (custom domain `dc3.site`) by `.github/workflows/deploy.yml` on every push to `main`.
+
+> Technical documentation lives on a separate site (`docs.dc3.site`, source in the main [iot-dc3](https://github.com/pnoker/iot-dc3) repo). This repo is the marketing/demo landing site.
 
 ## Project Structure
 
 ```
 .
-├── docs/                  # Built static site (deployed by GitHub Pages)
-│   ├── index.html         # Landing page
-│   ├── 404.html           # Custom 404 page
-│   ├── CNAME              # Custom domain: dc3.site
-│   ├── assets/            # Bundled JS, CSS, images, fonts
-│   ├── config/            # Configuration reference pages
-│   ├── contributor/       # Contributor guide page
-│   ├── docs/              # Core documentation (guide, code, driver, cluster, etc.)
-│   ├── faq/               # Frequently asked questions
-│   └── video/             # Video tutorial pages
-├── LICENSE                # Project license
-└── AGENTS.md              # This file
+├── .vitepress/
+│   ├── config.ts          # VitePress config: locales (zh/en), sitemap rules, analytics, verifications
+│   ├── seo.ts             # transformHead: canonical, hreflang, OG/Twitter, JSON-LD (@graph), FAQPage extraction
+│   ├── theme/             # Custom theme: site shell, VisionPage (home), DashboardGallery, 12 industry panels
+│   │   └── components/    #   DemoCrossLinks.vue = breadcrumb + cross links on every demo page
+│   └── dist/              # Build output (gitignored)
+├── zh/                    # Chinese content (index, vision, demo/<12 industries>)
+├── en/                    # English content — paths must mirror zh/ 1:1
+├── public/                # Static files copied to dist root:
+│   ├── CNAME              # dc3.site (must not be removed)
+│   ├── robots.txt         # Welcomes AI/answer-engine crawlers (GPTBot, ClaudeBot, PerplexityBot, ...)
+│   ├── llms.txt           # Curated AI-readable site summary (AEO)
+│   ├── ads.txt            # AdSense authorization
+│   └── <hex>.txt          # IndexNow key file — key is referenced by deploy.yml; do not delete
+├── scripts/
+│   ├── generate-llms-full.cjs  # Post-build: extracts SSR HTML text into dist/llms-full.txt (AEO)
+│   └── gen-og-images.mjs       # Regenerates public/images/og-{zh,en}.png from SVG (run locally, commit PNGs)
+└── .github/workflows/deploy.yml  # Build + GitHub Pages deploy + IndexNow ping
 ```
-
-> **Note:** VuePress source Markdown files are maintained in the main [iot-dc3](https://github.com/pnoker/iot-dc3) repository. This repo only receives the final build output.
 
 ## Build & Deploy
 
-The static site is built externally and the output is committed to this repository for GitHub Pages deployment. No local build toolchain is required here.
+- `pnpm install` then `pnpm dev` for local dev; `pnpm build` runs `vitepress build && node scripts/generate-llms-full.cjs`.
+- Deployment is automatic on push to `main`; no manual build output is committed.
 
-- **Build** happens in the main `iot-dc3` repo via VuePress CLI.
-- **Deploy** is handled by copying the VuePress output into this repo's `docs/` directory and pushing to `main`. GitHub Pages serves from the `docs/` folder.
+## Content Conventions
 
-## File Naming & Conventions
+- All page content is **Simplified Chinese** (`zh/`) with a 1:1 **English** mirror (`en/`) — every page must exist in both locales with identical paths, each having its own `title` and `description` frontmatter.
+- Demo pages follow a fixed structure: frontmatter (title + description) → industry panel component → `demo-seo-desc` intro → `demo-article` sections (看板亮点 / 业务价值 / 如何基于 IoT DC3 落地 / 常见问题) → `<DemoCrossLinks />`.
+- A `## 常见问题` / `## FAQ` section with `### question` headings is **required on demo pages**: seo.ts extracts it at build time into FAQPage structured data.
+- Root `index.md` and `zh|en/vision.md` are noindex redirect pages; vision pages are excluded from the sitemap by config.
 
-- All content and page titles are in **Simplified Chinese**.
-- Static HTML files use lowercase kebab-case naming (e.g., `update-log.html`).
-- Directory names mirror the documentation section they represent (`config/`, `faq/`, `video/`).
-- Favicon and logo reside under `docs/assets/images/`.
+## SEO/AEO Invariants (do not regress)
 
-## Commit & Pull Request Guidelines
-
-- **Commits:** Use concise, descriptive commit messages. No strict convention (no Conventional Commits), but keep them clear and in English or Chinese.
-- **Pull Requests:** Reference the upstream documentation change in the main `iot-dc3` repo. Link related issues or PRs. Include before/after screenshots for visual or layout changes.
-- **Review focus:** Verify that all links work after deployment, the CNAME is intact, and no regressions on mobile viewport.
+- Every indexable page gets exactly one canonical, hreflang alternates (`zh-CN`/`en-US`/`x-default` → zh), OG/Twitter tags and JSON-LD (`Organization`, `WebSite`, `WebPage`, `BreadcrumbList`, plus `SoftwareApplication` on locale homes and `FAQPage` where FAQ content exists) — all generated in `.vitepress/seo.ts`; do not add competing tags in frontmatter `head` except on redirect pages.
+- The sitemap (config.ts `transformItems`) must exclude noindex pages (root `/`, vision) and must not contain alternates pointing at the root redirect.
+- `robots.txt`, `llms.txt`, `llms-full.txt` (generated), and the IndexNow ping in deploy.yml together form the AEO pipeline; keep them consistent when adding pages.
 
 ## Security & Configuration
 
-- Never commit secrets, API keys, or analytics tokens. The site uses Google Analytics and Baidu Tongji — these IDs are already configured in `docs/index.html`.
-- The `CNAME` file must remain at `docs/CNAME` with the value `dc3.site` for the custom domain to resolve.
-- Do not add or remove tracker scripts without explicit approval.
+- Never commit secrets or API keys. Tracking IDs (GA4, Baidu Tongji, AdSense, search-engine verification metas) live in `.vitepress/config.ts` and are intentional — do not add/remove tracker scripts without explicit approval.
+- `public/CNAME` must remain `dc3.site`.
+
+## Commits & Pull Requests
+
+- Concise descriptive commit messages, English or Chinese.
+- PRs: link related upstream changes in the main `iot-dc3` repo; include before/after screenshots for visual changes; verify links, CNAME, and mobile viewport after deployment.

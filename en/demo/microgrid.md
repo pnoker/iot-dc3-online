@@ -41,3 +41,5 @@ This page runs on mock data with PV output following a day/night profile; connec
 Yes — IoT DC3 has a command channel (including edge execution), so dispatch strategies can be issued to storage or load devices as command templates.
 
 </div>
+
+<DemoCrossLinks />

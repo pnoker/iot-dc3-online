@@ -42,6 +42,29 @@ jobs:
       - uses: actions/deploy-pages@v4
         id: deployment
 
+      # 部署完成后向 IndexNow（Bing/Seznam/Naver 等）推送全站 URL，加速收录
+      - name: Ping IndexNow
+        env:
+          KEY: 9c79e159fe7e19203bd15a74050e2fa3
+        run: |
+          sleep 20
+          URLS=$(curl -fsS --retry 3 "https://dc3.site/sitemap.xml" \
+            | grep -oE '<loc>[^<]+</loc>' \
+            | sed -E 's#</?loc>##g' \
+            | jq -Rsc 'split("\n") | map(select(length > 0))')
+          if [ -z "$URLS" ] || [ "$URLS" = "[]" ]; then
+            echo "No URLs extracted from sitemap, skip IndexNow ping"
+            exit 0
+          fi
+          jq -n --arg key "$KEY" --argjson urls "$URLS" \
+            '{host: "dc3.site", key: $key, keyLocation: ("https://dc3.site/" + $key + ".txt"), urlList: $urls}' \
+            > indexnow-payload.json
+          STATUS=$(curl -fsS -o /dev/null -w "%{http_code}" --retry 2 \
+            -X POST "https://api.indexnow.org/IndexNow" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            --data @indexnow-payload.json) || STATUS="request-failed"
+          echo "IndexNow responded: $STATUS (202/200 = accepted)"
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

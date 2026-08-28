@@ -1,68 +1,103 @@
 #!/usr/bin/env node
 /**
  * 生成 llms-full.txt —— llms.txt 的全量正文版，供 LLM 深度索引（AEO）。
- * 在 `vitepress build` 之后运行：遍历源 Markdown，逐页输出「标题 + 正文全文」。
- * 输出到 dist（随站点部署），源 Markdown 是单一事实来源，无需另维护。
+ * 在 `vitepress build` 之后运行：遍历 dist 中的 SSR HTML，逐页提取「标题 + 渲染正文」。
+ *
+ * 为什么从构建产物 HTML 提取而不是源 Markdown：
+ * 1. 搜索引擎与答案引擎消费的是渲染后的页面；首页/画廊的正文都在 Vue 组件里，
+ *    读源 md 会拿到空的 <VisionPage /> 占位，读渲染产物才能覆盖全部真实文本。
+ * 2. 顺带剥离所有组件标签与 HTML 噪音，输出即所见文本。
  */
 const {readFileSync, writeFileSync, readdirSync, statSync, mkdirSync} = require('node:fs')
-const {join, relative, resolve, dirname} = require('node:path')
+const {join, relative, dirname, resolve} = require('node:path')
 
 const SITE_URL = 'https://dc3.site'
 const ROOT = resolve(__dirname, '..')
-const CONTENT_DIRS = ["zh","en"]
-const CONTENT_BASE = resolve(__dirname, "..")
-const OUT = join(ROOT, ".vitepress/dist/llms-full.txt")
+const DIST = join(ROOT, '.vitepress/dist')
+const OUT = join(DIST, 'llms-full.txt')
 
-const EXCLUDE_FILES = new Set(['README.md', 'AGENTS.md', 'CLAUDE.md'])
-const EXCLUDE_DIRS = new Set(['.vitepress', 'public', 'node_modules', '.github', ])
+// VitePress 站点壳的纯 UI 文案，单独成行时对 LLM 无意义，剔除
+const UI_NOISE_LINES = new Set([
+  '简体中文', 'English', '外观', 'Appearance',
+  '切换到深色模式', '切换到浅色模式',
+  'Switch to dark theme', 'Switch to light theme',
+  'Skip to content', '跳到主要内容',
+  'Skip to content Return to top', '跳到主要内容 返回顶部',
+  'Return to top', '返回顶部',
+  '© 2016–2026',
+  'IoT DC3 · 连接物理世界与 AI', 'IoT DC3 · Connect the Physical World to AI'
+])
 
-function walk(dir, out = []) {
+function walkHtml(dir, out = []) {
   let entries = []
   try { entries = readdirSync(dir) } catch { return out }
   entries.sort()
   for (const name of entries) {
-    if (name.startsWith('.') || EXCLUDE_DIRS.has(name)) continue
     const full = join(dir, name)
     const st = statSync(full)
-    if (st.isDirectory()) walk(full, out)
-    else if (name.endsWith('.md') && !EXCLUDE_FILES.has(name)) out.push(full)
+    if (st.isDirectory()) walkHtml(full, out)
+    else if (name.endsWith('.html')) out.push(full)
   }
   return out
 }
 
-function urlOf(file) {
-  let rel = relative(CONTENT_BASE, file).replace(/\\/g, '/').replace(/\.md$/, '')
-  if (rel === 'index') return `${SITE_URL}/`
-  if (rel.endsWith('/index')) return `${SITE_URL}/${rel.slice(0, -6)}/`
-  return `${SITE_URL}/${rel}`
+function urlOf(htmlPath) {
+  const rel = relative(DIST, htmlPath).replace(/\\/g, '/')
+  if (rel === 'index.html') return `${SITE_URL}/`
+  if (rel.endsWith('/index.html')) return `${SITE_URL}/${rel.slice(0, -'index.html'.length)}`
+  return `${SITE_URL}/${rel.replace(/\.html$/, '')}`
 }
 
-function parse(src) {
-  let title = ''
-  let body = src
-  const fm = src.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/)
-  if (fm) {
-    const t = fm[1].match(/^title:\s*(.+)$/m)
-    if (t) title = t[1].trim().replace(/^['"]|['"]$/g, '')
-    body = src.slice(fm[0].length)
-  }
-  body = body.trim()
-  if (!title) {
-    const h = body.match(/^#\s+(.+)$/m)
-    if (h) title = h[1].trim()
-  }
-  // 去掉与标题重复的首个 H1，避免正文里再出现一次标题
-  body = body.replace(/^#\s+[^\n]*\n?/, '').trim()
-  return {title: title || 'Untitled', body}
+function decodeEntities(str) {
+  return str
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#x27;/g, "'")
+    .replace(/&nbsp;/g, ' ').replace(/&copy;/g, '©')
 }
 
-const files = CONTENT_DIRS.flatMap(d => walk(d))
+function extractText(html) {
+  const title = html.match(/<title>([^<]*)<\/title>/)?.[1].trim() || 'Untitled'
+  let body = html.slice(html.indexOf('</head>') + 7)
+    // 站点壳：导航、侧边栏、页脚、脚本样式与图标对 LLM 是噪音
+    .replace(/<script[\s\S]*?<\/script>/g, ' ')
+    .replace(/<style[\s\S]*?<\/style>/g, ' ')
+    .replace(/<svg[\s\S]*?<\/svg>/g, ' ')
+    .replace(/<header[\s\S]*?<\/header>/g, ' ')
+    .replace(/<aside[\s\S]*?<\/aside>/g, ' ')
+    .replace(/<footer[\s\S]*?<\/footer>/g, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/(p|div|li|h[1-6]|tr|section|article)>/gi, '\n')
+    .replace(/<[^>]+>/g, ' ')
+
+  const lines = body
+    .split('\n')
+    .map(line => decodeEntities(line).replace(/\s+/g, ' ').trim())
+    .filter(line => line && !UI_NOISE_LINES.has(line))
+  return {title, body: lines.join('\n')}
+}
+
+const files = walkHtml(DIST)
+  // 根路径与 404 是 noindex 的语言跳转/错误页，不进入 AI 语料
+  .filter(file => {
+    const rel = relative(DIST, file).replace(/\\/g, '/')
+    return rel !== 'index.html' && rel !== '404.html'
+  })
+  // 中文页在前，与 llms.txt 的阅读顺序一致
+  .sort((a, b) => {
+    const relA = relative(DIST, a).replace(/\\/g, '/')
+    const relB = relative(DIST, b).replace(/\\/g, '/')
+    const ordA = relA.startsWith('zh') ? 0 : 1
+    const ordB = relB.startsWith('zh') ? 0 : 1
+    return ordA - ordB || relA.localeCompare(relB)
+  })
+
 const parts = []
 for (const file of files) {
-  const {title, body} = parse(readFileSync(file, 'utf8'))
+  const {title, body} = extractText(readFileSync(file, 'utf8'))
   parts.push(`# ${title}\n\nURL: ${urlOf(file)}\n\n${body}\n\n---\n`)
 }
 
 mkdirSync(dirname(OUT), {recursive: true})
 writeFileSync(OUT, parts.join('\n'), 'utf8')
-console.log(`  ✅ llms-full.txt generated: ${files.length} pages → ${OUT}`)
+console.log(`  ✅ llms-full.txt generated: ${files.length} pages (from SSR HTML) → ${OUT}`)

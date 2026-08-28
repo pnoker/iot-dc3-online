@@ -41,3 +41,5 @@ This page runs on mock data with morning/evening peaks simulated; connect real d
 IoT DC3 provides a command channel for issuing timing plans to controllers; the decision loop belongs to your traffic system while the platform supplies data and execution.
 
 </div>
+
+<DemoCrossLinks />

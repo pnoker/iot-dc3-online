@@ -40,3 +40,5 @@ This page runs on mock data; connect your SCADA to get the same pressure and lin
 Edge aggregation and downsampling plus cloud time-series storage partitioned by point — backed by TimescaleDB — sustain large point counts over long horizons.
 
 </div>
+
+<DemoCrossLinks />

@@ -1,18 +1,22 @@
 import {useData, type Theme} from 'vitepress'
 import {defineAsyncComponent, h, type App} from 'vue'
 import DefaultTheme from 'vitepress/theme'
+import DemoCrossLinks from './components/DemoCrossLinks.vue'
 import './style.css'
 
 const lazy = (loader: () => Promise<any>) => defineAsyncComponent(loader)
 
 // 站点壳只保留轻量入口。首页叙事、行业看板和 DataV 均在真正渲染时再下载。
 const GlobalCursor = lazy(() => import('./GlobalCursor.vue'))
+const WeChatQRModal = lazy(() => import('./components/WeChatQRModal.vue'))
 const HeroLogo = lazy(() => import('./HeroLogo.vue'))
 const HeroActionCards = lazy(() => import('./HeroActionCards.vue'))
 const HeroParticles = lazy(() => import('./HeroParticles.vue'))
 const HeroWaves = lazy(() => import('./HeroWaves.vue'))
 
 function registerLazyComponents(app: App) {
+  // 轻量静态组件,直接注册(SSR 即渲染,承担看板页之间的内链)
+  app.component('DemoCrossLinks', DemoCrossLinks)
   app.component('CardNav', lazy(() => import('./CardNav.vue')))
   app.component('PropositionFormula', lazy(() => import('./components/home/PropositionFormula.vue')))
   app.component('PhysicalLoop', lazy(() => import('./components/home/PhysicalLoop.vue')))
@@ -64,7 +68,7 @@ const theme: Theme = {
       'home-hero-before': () => [h(HeroWaves), h(HeroParticles)],
       'home-hero-image': () => h(HeroLogo),
       'home-hero-actions-after': () => h(HeroActionCards),
-      'layout-bottom': () => h(GlobalCursor),
+      'layout-bottom': () => [h(GlobalCursor), h(WeChatQRModal)],
     })
   },
 

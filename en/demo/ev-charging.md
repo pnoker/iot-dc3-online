@@ -40,3 +40,5 @@ This page runs on mock data; connect your charger network and order system to go
 Yes — the platform provides the real-time load data foundation plus a command channel, so smart-charging strategies can be dispatched per station and time window.
 
 </div>
+
+<DemoCrossLinks />

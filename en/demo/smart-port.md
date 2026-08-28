@@ -40,3 +40,5 @@ This page runs on mock data; connect your TOS and equipment feeds to reproduce i
 Yes — the ODBC driver pulls operational data from TOS databases, while PLC drivers add real-time equipment state.
 
 </div>
+
+<DemoCrossLinks />

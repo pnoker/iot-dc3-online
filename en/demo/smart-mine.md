@@ -40,3 +40,5 @@ This page runs on mock data including occasional gas surges; connect the mine sa
 Edge gateways sit on the underground ring network, buffering during outages and resuming automatically — critical data is not lost.
 
 </div>
+
+<DemoCrossLinks />

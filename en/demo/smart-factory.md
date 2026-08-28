@@ -42,3 +42,5 @@ This page runs on mock data to demonstrate the visualization and metric definiti
 Drivers are pluggable: beyond the 28+ built-ins, IoT DC3 supports custom TCP/UDP driver development — see the driver-development guide in the docs.
 
 </div>
+
+<DemoCrossLinks />
