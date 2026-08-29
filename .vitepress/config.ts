@@ -74,6 +74,7 @@ export default defineConfig({
     ['meta', {name: 'baidu-site-verification', content: 'codeva-sdVaJjqMyt'}],
     ['meta', {name: 'google-site-verification', content: 'usDnZo6QlDGIDaJP9mQPRxoNeOQpwCjiT1gQAjGU_4Q'}],
     ['meta', {name: 'google-adsense-account', content: 'ca-pub-7573143232245283'}],
+    ['script', {async: 'true', src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7573143232245283', crossorigin: 'anonymous'}],
     ['script', {async: 'true', src: 'https://www.googletagmanager.com/gtag/js?id=G-2QGF1Y0WBE'}],
     ['script', {}, `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-2QGF1Y0WBE');`],
     ['script', {}, `var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?32c28f6454ac3d0332773a40a2cc4f84";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s)})();`],
