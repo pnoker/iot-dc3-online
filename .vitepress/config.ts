@@ -5,9 +5,33 @@ import {transformHead} from './seo'
 
 const LANG_DETECT = `(function(){var K='dc3-lang',B='/';var p;try{p=localStorage.getItem(K);}catch(e){}var r=location.pathname;if(r.length&&r[r.length-1]!=='/')r=r+'/';var rel=r.indexOf(B)===0?r.slice(B.length):r;var onEn=rel.indexOf('en/')===0;var onZh=rel.indexOf('zh/')===0;if(!onEn&&!onZh){if(!p){p=/^en/i.test(navigator.language)?'en':'zh';try{localStorage.setItem(K,p);}catch(e){}}location.replace(B+p+'/');}})();`
 
+// 微信公众号：官方双气泡标识（simple-icons），与 book.dc3.site 同一图形源；
+// fill=currentColor 跟随圆钮的微信品牌绿（style.css 按 href$=/images/wechat-qr.png 着色）
 const WECHAT_ICON = {
-  svg: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.67 4.24c-4.06 0-7.35 2.7-7.35 6.04 0 1.91 1.09 3.62 2.79 4.73l-.72 2.17 2.54-1.27c.86.27 1.78.41 2.74.41.32 0 .64-.02.95-.05a5.82 5.82 0 0 1-.25-1.65c0-3.33 3.16-6.03 7.05-6.03.1 0 .2 0 .3.01-.91-2.52-4.08-4.36-8.05-4.36Zm-2.5 3.2a.88.88 0 1 1 0 1.76.88.88 0 0 1 0-1.76Zm4.92 0a.88.88 0 1 1 0 1.76.88.88 0 0 1 0-1.76Z"/><path d="M21.68 14.62c0-2.75-2.77-4.98-6.18-4.98s-6.18 2.23-6.18 4.98 2.77 4.98 6.18 4.98c.81 0 1.58-.13 2.29-.35l2.13 1.06-.6-1.81c1.43-.92 2.36-2.34 2.36-3.88Zm-8.24-.89a.74.74 0 1 1 0-1.48.74.74 0 0 1 0 1.48Zm4.12 0a.74.74 0 1 1 0-1.48.74.74 0 0 1 0 1.48Z"/></svg>'
+  svg: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/></svg>'
 }
+
+// 与 book.dc3.site 同源的导航品牌标题：主标题 + 星芒 + AGENTIC 徽标，副行 slogan。
+// VitePress 用 v-html 渲染 siteTitle；.dc3-brand-a11y 为读屏完整文案。
+const BRAND_SPARK = '<svg class="dc3-brand-spark" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 .8c.35 3.05 2.15 4.85 5.2 5.2C8.15 6.35 6.35 8.15 6 11.2 5.65 8.15 3.85 6.35.8 6 3.85 5.65 5.65 3.85 6 .8Z"/></svg>'
+
+const navSiteTitle = ({title, signal, accessible}: {
+  title: string
+  signal: string
+  accessible: string
+}) => `<span class="dc3-brand-copy" aria-hidden="true"><span class="dc3-brand-title"><strong>${title}</strong>${BRAND_SPARK}<span class="dc3-brand-agentic">AGENTIC</span></span><span class="dc3-brand-signal">${signal}</span></span><span class="dc3-brand-a11y">${accessible}</span>`
+
+const NAV_SITE_TITLE_ZH = navSiteTitle({
+  title: 'IoT DC3',
+  signal: '感知、推理、行动、进化',
+  accessible: 'IoT DC3，AGENTIC：感知、推理、行动、进化',
+})
+
+const NAV_SITE_TITLE_EN = navSiteTitle({
+  title: 'IoT DC3',
+  signal: 'Sense · Reason · Act · Evolve',
+  accessible: 'IoT DC3, AGENTIC: Sense, Reason, Act, Evolve',
+})
 
 const createSocialLinks = (wechatLabel: string) => [
   {icon: 'github', link: 'https://github.com/pnoker/iot-dc3', ariaLabel: 'GitHub'},
@@ -96,7 +120,7 @@ export default defineConfig({
           message: 'IoT DC3 · 连接物理世界与 AI',
           copyright: '© 2016–2026'
         },
-        socialLinks: createSocialLinks('查看微信二维码'),
+        socialLinks: createSocialLinks('微信公众号'),
       }
     },
     en: {
@@ -104,6 +128,7 @@ export default defineConfig({
       lang: 'en-US',
       themeConfig: {
         nav: [],
+        siteTitle: NAV_SITE_TITLE_EN,
         darkModeSwitchLabel: 'Appearance',
         darkModeSwitchTitle: 'Switch to dark theme',
         lightModeSwitchTitle: 'Switch to light theme',
@@ -111,13 +136,14 @@ export default defineConfig({
           message: 'IoT DC3 · Connect the Physical World to AI',
           copyright: '© 2016–2026'
         },
-        socialLinks: createSocialLinks('View WeChat QR code'),
+        socialLinks: createSocialLinks('WeChat Official Account'),
       }
     }
   },
 
   themeConfig: {
     logo: '/images/logo.svg',
-    siteTitle: 'IoT DC3',
+    // zh locale 继承此配置；en 在自己的 themeConfig 里覆盖
+    siteTitle: NAV_SITE_TITLE_ZH,
   },
 })

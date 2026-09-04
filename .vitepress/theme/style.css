@@ -102,7 +102,8 @@ body {
 
 .VPNavBarTitle .title {
     width: auto;
-    height: 40px;
+    /* 两行品牌（主标题+slogan）需要比单行标题更高的胶囊 */
+    height: 44px;
     padding: 5px 13px 5px 6px;
     border: 1px solid rgba(148, 216, 246, 0.34);
     border-radius: var(--dc3-glass-radius);
@@ -130,18 +131,118 @@ body {
 }
 
 .VPNavBarTitle .logo {
-    width: 30px;
-    height: 30px;
-    margin-right: 8px;
+    width: 32px;
+    height: 32px;
+    margin-right: 9px;
     filter: drop-shadow(0 4px 7px rgba(13, 82, 157, 0.2));
 }
 
+.VPNavBarTitle .title {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* v-html siteTitle 的外层 span 还原为普通容器：渐变由内部 .dc3-brand-title strong 承担 */
 .VPNavBarTitle .title > span {
-    background: linear-gradient(112deg, #07549a, #149ed7 46%, #4f52bf);
+    display: block;
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    color: inherit;
+    -webkit-text-fill-color: currentColor;
+}
+
+/* ── 与 book.dc3.site 同源的导航品牌：主标题(渐变) + 星芒 + AGENTIC / 副行 slogan ── */
+.dc3-brand-copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.dc3-brand-title {
+    display: flex;
+    min-width: 0;
+    align-items: baseline;
+    gap: 4px;
+    overflow: hidden;
+    color: var(--vp-c-brand-1);
+    font-size: 13px;
+    font-weight: 680;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.dc3-brand-title strong {
+    flex: none;
+    background: linear-gradient(105deg, #5656c8, #009fc9);
+    background-clip: text;
+    color: transparent;
+    font-weight: 720;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dc3-brand-spark {
+    display: block;
+    width: 10px;
+    height: 10px;
+    overflow: visible;
+    flex: none;
+    align-self: center;
+    fill: #5656c8;
+    filter: drop-shadow(0 0 3px rgba(0, 159, 201, 0.42));
+}
+
+.dc3-brand-agentic {
+    flex: none;
+    align-self: center;
+    color: #5656c8;
+    font-size: 9px;
+    font-weight: 680;
+    letter-spacing: 0.04em;
+    line-height: 1;
+}
+
+.dc3-brand-signal {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--vp-c-text-3);
+    font-size: 10px;
+    font-weight: 520;
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dc3-brand-a11y {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+    white-space: nowrap;
+}
+
+.dark .dc3-brand-title strong {
+    background: linear-gradient(105deg, #aaaaff, #61def4);
     background-clip: text;
     -webkit-background-clip: text;
-    color: transparent;
     -webkit-text-fill-color: transparent;
+}
+
+.dark .dc3-brand-spark {
+    fill: #aaaaff;
+    filter: drop-shadow(0 0 3px rgba(97, 222, 244, 0.52));
+}
+
+.dark .dc3-brand-agentic {
+    color: #aaaaff;
 }
 
 .dark .VPNavBarTitle .title {
@@ -155,11 +256,41 @@ body {
         inset 0 -8px 18px rgba(0, 0, 0, 0.12);
 }
 
-.dark .VPNavBarTitle .title > span {
-    background: linear-gradient(112deg, #8edcff, #d3fbff 46%, #a5a8ff);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+/* 移动端：品牌随 40px 胶囊缩小，并给右侧按钮组让位 */
+@media (max-width: 767.98px) {
+    .VPNavBarTitle {
+        min-width: 0;
+        flex-shrink: 1;
+        overflow: hidden;
+    }
+
+    .VPNavBarTitle .title {
+        height: 40px;
+        max-width: calc(100vw - 148px);
+        padding: 4px 10px 4px 5px;
+    }
+
+    .VPNavBarTitle .logo {
+        width: 28px;
+        height: 28px;
+        margin-right: 7px;
+    }
+
+    .dc3-brand-copy {
+        gap: 3px;
+    }
+
+    .dc3-brand-title {
+        font-size: 12px;
+    }
+
+    .dc3-brand-agentic {
+        font-size: 8px;
+    }
+
+    .dc3-brand-signal {
+        font-size: 9px;
+    }
 }
 
 @media (min-width: 1280px) {
@@ -363,20 +494,27 @@ body {
     margin: 0;
 }
 
-/* 微信与其他社交入口走同一套 VitePress socialLinks 渲染；二维码卡片只是链接的渐进增强，不参与三端布局。 */
+/* 微信与其他社交入口走同一套 VitePress socialLinks 渲染；二维码卡片只是链接的渐进增强，不参与三端布局。
+   卡片与 book.dc3.site 同款：上二维码、下账号名（取自 aria-label，中英随 locale 配置切换），白底保证任何主题下可扫。 */
 .VPSocialLink[href$="/images/wechat-qr.png"]::after {
-    content: '';
+    content: attr(aria-label);
     position: absolute;
-    top: calc(100% + 14px);
-    right: -8px;
+    top: calc(100% + 10px);
+    right: -6px;
     z-index: 120;
     box-sizing: border-box;
-    width: 196px;
-    height: 196px;
-    border: 10px solid #fff;
-    border-radius: 20px;
-    background: #fff url('/images/wechat-qr.png') center / cover no-repeat;
-    box-shadow: 0 22px 56px rgba(8, 64, 111, 0.24), 0 0 0 1px rgba(132, 207, 239, 0.38);
+    width: 148px;
+    padding: 140px 8px 9px;
+    border: 1px solid rgba(var(--social-rgb), 0.4);
+    border-radius: 12px;
+    background: #fff url('/images/wechat-qr.png') center 8px / 132px 132px no-repeat;
+    color: #374151;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 17px;
+    text-align: center;
+    white-space: normal;
+    box-shadow: 0 12px 30px rgba(8, 64, 111, 0.2), 0 0 0 1px rgba(132, 207, 239, 0.3);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
