@@ -74,7 +74,7 @@ const copy = computed(() => isEnglish.value ? {
     {label: 'Physical World', title: 'State & action', sub: 'Device · Point · Command'}
   ],
   stats: [
-    {value: '28', label: 'Protocol drivers'},
+    {value: '36', label: 'Protocol drivers'},
     {value: '330+', label: 'Agent tools'},
     {value: 'OAuth 2.1', label: 'Secure MCP'},
     {value: '10 years', label: 'Industrial IoT engineering'}
@@ -165,7 +165,7 @@ const copy = computed(() => isEnglish.value ? {
     {label: '物理世界', title: '状态与行动', sub: '设备 · 点位 · 指令'}
   ],
   stats: [
-    {value: '28', label: '协议驱动'},
+    {value: '36', label: '协议驱动'},
     {value: '330+', label: '智能体工具'},
     {value: 'OAuth 2.1', label: '安全 MCP'},
     {value: '10 年', label: '工业物联网工程积累'}

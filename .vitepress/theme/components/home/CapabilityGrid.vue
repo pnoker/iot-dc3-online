@@ -10,7 +10,7 @@ const copy = computed(() => isEnglish.value ? {
   title: 'Engineering support from protocol access to safe execution',
   description: 'Protocol drivers, agent tools, secure invocation and a decade of industrial IoT practice bring Physical AI into production.',
   stats: [
-    {value: '28', label: 'Protocol Drivers', sub: 'Modbus · OPC UA · S7 · BACnet · MQTT'},
+    {value: '36', label: 'Protocol Drivers', sub: 'Modbus · OPC UA · S7 · BACnet · MQTT'},
     {value: '330+', label: 'Agent Tools', sub: 'Auto-aggregated from OpenAPI operations as MCP tools'},
     {value: 'OAuth 2.1', label: 'Secure MCP', sub: 'RBAC ∩ tool whitelist ∩ risk tiers on every call'},
     {value: '10', label: 'Years · Industrial IoT', sub: 'A decade of industrial IoT engineering'}
@@ -21,7 +21,7 @@ const copy = computed(() => isEnglish.value ? {
   title: '从协议接入到安全执行，都有完整工程支撑',
   description: '协议驱动、智能体工具、安全调用与十年工业物联网实践，共同支撑物理智能落地。',
   stats: [
-    {value: '28', label: '协议驱动', sub: 'Modbus · OPC UA · S7 · BACnet · MQTT'},
+    {value: '36', label: '协议驱动', sub: 'Modbus · OPC UA · S7 · BACnet · MQTT'},
     {value: '330+', label: '智能体工具', sub: '由 OpenAPI 操作自动聚合为 MCP Tool'},
     {value: 'OAuth 2.1', label: '安全的 MCP', sub: '每次调用过 RBAC ∩ 白名单 ∩ 风险分级'},
     {value: '10', label: '年 · 工业物联网', sub: '十年工业 IoT 工程基本盘'}

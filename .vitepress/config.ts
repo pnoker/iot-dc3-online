@@ -40,6 +40,18 @@ const createSocialLinks = (wechatLabel: string) => [
   {icon: WECHAT_ICON, link: '/images/wechat-qrcode.jpg', ariaLabel: wechatLabel},
 ]
 
+const createNav = (locale: 'zh' | 'en') => {
+  const prefix = locale === 'zh' ? '/zh' : '/en'
+  const text = (zh: string, enText: string) => (locale === 'zh' ? zh : enText)
+  return [
+    {text: text('文档', 'Docs'), link: `https://docs.dc3.site${prefix}/`},
+    {text: text('演示', 'Demo'), link: 'https://demo.dc3.site'},
+    {text: text('看板', 'Dashboards'), link: `${prefix}/demo/`},
+    {text: text('书籍', 'Book'), link: 'https://book.dc3.site'},
+    {text: text('价格', 'Pricing'), link: `${prefix}/pricing/`},
+  ]
+}
+
 const lastmodCache = new Map<string, string | undefined>()
 
 // sitemap 的 lastmod 取源文件最后一次实质提交日期，取不到则省略该字段
@@ -112,7 +124,7 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh-CN',
       themeConfig: {
-        nav: [],
+        nav: createNav('zh'),
         darkModeSwitchLabel: '外观',
         darkModeSwitchTitle: '切换到深色模式',
         lightModeSwitchTitle: '切换到浅色模式',
@@ -127,7 +139,7 @@ export default defineConfig({
       label: 'English',
       lang: 'en-US',
       themeConfig: {
-        nav: [],
+        nav: createNav('en'),
         siteTitle: NAV_SITE_TITLE_EN,
         darkModeSwitchLabel: 'Appearance',
         darkModeSwitchTitle: 'Switch to dark theme',

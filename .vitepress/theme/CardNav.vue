@@ -53,7 +53,7 @@ const content = computed(() => isEnglish.value ? {
   title: 'Keep devices, data and intelligence in motion',
   description: 'From heterogeneous device access to AI-driven decisions, IoT DC3 turns every data change into a visible and controllable real-time loop.',
   capabilitiesLabel: 'Platform capabilities',
-  capabilities: ['28 multi-protocol drivers', 'Spring AI intelligence loop', 'Cloud-native · Multi-tenant · Open source'],
+  capabilities: ['36 multi-protocol drivers', 'Spring AI intelligence loop', 'Cloud-native · Multi-tenant · Open source'],
   dashboard: {label: '12 Industry Dashboards', link: '/en/demo/'},
   footer: 'IoT DC3 · Connect the Physical World to AI · An open-source Industrial IoT Runtime for Physical AI',
   footerMeta: `AGPL-3.0 · © 2016–${currentYear}`
@@ -62,7 +62,7 @@ const content = computed(() => isEnglish.value ? {
   title: '让设备、数据与智能持续流动',
   description: '从异构设备接入到 AI 决策执行，IoT DC3 将每一次数据变化汇入可感知、可控制的实时闭环。',
   capabilitiesLabel: '平台能力',
-  capabilities: ['28 个多协议驱动', 'Spring AI 智能闭环', '云原生 · 多租户 · 全开源'],
+  capabilities: ['36 个多协议驱动', 'Spring AI 智能闭环', '云原生 · 多租户 · 全开源'],
   dashboard: {label: '12 个行业看板', link: '/zh/demo/'},
   footer: 'IoT DC3 · 连接物理世界与 AI · 面向 Physical AI 的开源工业物联网 Runtime',
   footerMeta: `AGPL-3.0 · © 2016–${currentYear}`

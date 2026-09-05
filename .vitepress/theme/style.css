@@ -1611,6 +1611,17 @@ body:has(.demo-gallery-page) .VPFooter {
     padding: 0 !important;
 }
 
+/* 价格页与看板同族：容器 padding 清零让页面底色直达顶部（否则导航下露出白色容器条）。 */
+.dc3-pricing-layout .VPContent,
+.dc3-pricing-layout .VPPage {
+    padding: 0 !important;
+}
+
+/* 价格页用组件内收束 CTA 结尾，家族化隐藏默认页脚（同首页/看板）。 */
+body:has(.pricing-page) .VPFooter {
+    display: none;
+}
+
 /* demo 页看板下方的 SEO/AEO 说明文字：深色背景下淡化可读，不抢看板视觉（看板 .dc3d-stage 是 min-height:100vh，此段自然落在看板下方、滚动可见） */
 .demo-seo-desc {
     max-width: 760px;
@@ -1680,6 +1691,73 @@ body:has(.demo-gallery-page) .VPFooter {
 
 .demo-article a:hover {
     border-bottom-style: solid;
+}
+
+/* ===== Pricing 页长文区（FAQ 等）：走主题变量，明暗主题自适应（demo-article 是演示页专用的深底浅字） ===== */
+.pricing-article {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 56px 24px 88px;
+    font-size: 14px;
+    line-height: 1.85;
+    text-align: left;
+}
+
+.pricing-article h2 {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 10px;
+    color: var(--vp-c-text-1);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.pricing-article h2::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--vp-c-divider), transparent);
+}
+
+.pricing-article h3 {
+    position: relative;
+    margin: 28px 0 6px;
+    padding-left: 18px;
+    color: var(--vp-c-text-1);
+    font-size: 15.5px;
+    font-weight: 600;
+    line-height: 1.6;
+}
+
+.pricing-article h3::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: linear-gradient(135deg, #1296db, #4b58d2);
+}
+
+.pricing-article p {
+    margin: 0;
+    color: var(--vp-c-text-2);
+    font-size: 14px;
+    line-height: 1.85;
+}
+
+.pricing-article a {
+    color: var(--vp-c-brand-1, #409eff);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.pricing-article a:hover {
+    color: var(--vp-c-brand-1, #409eff);
+    text-decoration: underline;
 }
 
 /* ===== Quiet footer: the page ends with the CTA, the footer is the fade-out ===== */

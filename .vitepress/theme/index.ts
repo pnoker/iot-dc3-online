@@ -27,6 +27,8 @@ function registerLazyComponents(app: App) {
   app.component('HomeCta', lazy(() => import('./components/home/HomeCta.vue')))
   app.component('VisionPage', lazy(() => import('./components/vision/VisionPage.vue')))
 
+  app.component('PricingPlans', lazy(() => import('./components/PricingPlans.vue')))
+
   app.component('DashboardGallery', lazy(() => import('./components/panels/DashboardGallery.vue')))
   app.component('SmartFactoryPanel', lazy(() => import('./components/domains/SmartFactoryPanel.vue')))
   app.component('WaterNetworkPanel', lazy(() => import('./components/domains/WaterNetworkPanel.vue')))
@@ -59,11 +61,14 @@ const theme: Theme = {
     const {page} = useData()
     const visionLayout = ['zh/index.md', 'en/index.md'].includes(page.value.relativePath)
     const demoGalleryLayout = ['zh/demo/index.md', 'en/demo/index.md'].includes(page.value.relativePath)
-    const immersiveLayout = visionLayout || demoGalleryLayout
+    // 价格页与首页/看板共用同一套沉浸式玻璃胶囊导航（家族化 header）
+    const pricingLayout = ['zh/pricing.md', 'en/pricing.md'].includes(page.value.relativePath)
+    const immersiveLayout = visionLayout || demoGalleryLayout || pricingLayout
 
     return h(DefaultTheme.Layout, {class: {
       'dc3-vision-layout': immersiveLayout,
       'dc3-demo-layout': demoGalleryLayout,
+      'dc3-pricing-layout': pricingLayout,
     }}, {
       'home-hero-before': () => [h(HeroWaves), h(HeroParticles)],
       'home-hero-image': () => h(HeroLogo),

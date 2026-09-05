@@ -15,7 +15,7 @@ const copy = computed(() => en.value ? {
   note: 'Live mock data · responsive visualization · traceable metrics',
   stats: [
     {value: '12', label: 'industry scenarios'},
-    {value: '28', label: 'protocol drivers'},
+    {value: '36', label: 'protocol drivers'},
     {value: '24 / 7', label: 'continuous sensing'},
   ],
   sectionIndex: '01 / SCENARIO GALLERY',
@@ -35,7 +35,7 @@ const copy = computed(() => en.value ? {
   note: '实时模拟数据 · 响应式可视化 · 指标全程可查',
   stats: [
     {value: '12', label: '行业场景'},
-    {value: '28', label: '协议驱动'},
+    {value: '36', label: '协议驱动'},
     {value: '24 / 7', label: '持续感知'},
   ],
   sectionIndex: '01 / 行业场景',
