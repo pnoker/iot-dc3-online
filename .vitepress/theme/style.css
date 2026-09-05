@@ -406,9 +406,9 @@ body {
     --social-rgb: 55, 72, 98;
 }
 
-.VPNavBarSocialLinks .VPSocialLink[href$="/images/wechat-qr.png"],
-.VPNavBarExtra .VPSocialLink[href$="/images/wechat-qr.png"],
-.VPNavScreenSocialLinks .VPSocialLink[href$="/images/wechat-qr.png"] {
+.VPNavBarSocialLinks .VPSocialLink[href$="/images/wechat-qrcode.jpg"],
+.VPNavBarExtra .VPSocialLink[href$="/images/wechat-qrcode.jpg"],
+.VPNavScreenSocialLinks .VPSocialLink[href$="/images/wechat-qrcode.jpg"] {
     --social-rgb: 7, 193, 96;
     position: relative;
 }
@@ -451,9 +451,9 @@ body {
     --social-rgb: 179, 196, 220;
 }
 
-.dark .VPNavBarSocialLinks .VPSocialLink[href$="/images/wechat-qr.png"],
-.dark .VPNavBarExtra .VPSocialLink[href$="/images/wechat-qr.png"],
-.dark .VPNavScreenSocialLinks .VPSocialLink[href$="/images/wechat-qr.png"] {
+.dark .VPNavBarSocialLinks .VPSocialLink[href$="/images/wechat-qrcode.jpg"],
+.dark .VPNavBarExtra .VPSocialLink[href$="/images/wechat-qrcode.jpg"],
+.dark .VPNavScreenSocialLinks .VPSocialLink[href$="/images/wechat-qrcode.jpg"] {
     --social-rgb: 77, 216, 139;
 }
 
@@ -496,7 +496,7 @@ body {
 
 /* 微信与其他社交入口走同一套 VitePress socialLinks 渲染；二维码卡片只是链接的渐进增强，不参与三端布局。
    卡片与 book.dc3.site 同款：上二维码、下账号名（取自 aria-label，中英随 locale 配置切换），白底保证任何主题下可扫。 */
-.VPSocialLink[href$="/images/wechat-qr.png"]::after {
+.VPSocialLink[href$="/images/wechat-qrcode.jpg"]::after {
     content: attr(aria-label);
     position: absolute;
     top: calc(100% + 10px);
@@ -507,7 +507,7 @@ body {
     padding: 140px 8px 9px;
     border: 1px solid rgba(var(--social-rgb), 0.4);
     border-radius: 12px;
-    background: #fff url('/images/wechat-qr.png') center 8px / 132px 132px no-repeat;
+    background: #fff url('/images/wechat-qrcode.jpg') center 8px / 132px 132px no-repeat;
     color: #374151;
     font-size: 12px;
     font-weight: 500;
@@ -523,21 +523,21 @@ body {
     transition: opacity 180ms ease, visibility 180ms ease, transform 220ms cubic-bezier(.2, .8, .2, 1);
 }
 
-.VPSocialLink[href$="/images/wechat-qr.png"]:hover::after,
-.VPSocialLink[href$="/images/wechat-qr.png"]:focus-visible::after {
+.VPSocialLink[href$="/images/wechat-qrcode.jpg"]:hover::after,
+.VPSocialLink[href$="/images/wechat-qrcode.jpg"]:focus-visible::after {
     opacity: 1;
     visibility: visible;
     transform: translateY(0) scale(1);
 }
 
 @media (min-width: 768px) and (max-width: 1279.98px) {
-    .VPNavBarExtra .VPMenu:has(.VPSocialLink[href$="/images/wechat-qr.png"]) {
+    .VPNavBarExtra .VPMenu:has(.VPSocialLink[href$="/images/wechat-qrcode.jpg"]) {
         overflow: visible;
     }
 }
 
 @media (max-width: 767.98px) {
-    .VPNavScreenSocialLinks .VPSocialLink[href$="/images/wechat-qr.png"]::after {
+    .VPNavScreenSocialLinks .VPSocialLink[href$="/images/wechat-qrcode.jpg"]::after {
         display: none;
     }
 }

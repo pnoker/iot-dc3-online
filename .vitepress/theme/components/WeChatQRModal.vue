@@ -2,21 +2,22 @@
 import {useData} from 'vitepress'
 import {computed, nextTick, onBeforeUnmount, onMounted, ref, watch} from 'vue'
 
-const QR_URL = '/images/wechat-qr.png'
+const QR_URL = '/images/wechat-qrcode.jpg'
 
 const {lang} = useData()
 const isZh = computed(() => (lang.value || '').toLowerCase().startsWith('zh'))
 
+// 文案与 book.dc3.site 的公众号弹窗保持一致
 const copy = computed(() => isZh.value
   ? {
-    title: '找一位同行者',
+    title: '微信公众号',
     closeLabel: '关闭',
-    caption: '一个人可以走得快，一群人才能走得远。IoT DC3 开源十年，正在从工业物联网走向 Physical AI——如果你也相信开源、想一起做点事业，扫码加我，聊聊看。'
+    caption: '微信扫码关注'
   }
   : {
-    title: 'Let\'s build together',
+    title: 'WeChat Official Account',
     closeLabel: 'Close',
-    caption: 'Alone you go fast; together you go far. IoT DC3 is ten years of open source, now evolving from industrial IoT toward Physical AI. If you believe in open source and want to build something that matters — scan and say hi.'
+    caption: 'Scan on WeChat to follow'
   })
 
 const open = ref(false)
@@ -72,7 +73,7 @@ onBeforeUnmount(() => {
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </button>
           <p class="dc-wechat-title">{{ copy.title }}</p>
-          <div class="dc-wechat-qr"><img :src="QR_URL" alt="IoT DC3 微信二维码" width="220" height="220"></div>
+          <div class="dc-wechat-qr"><img :src="QR_URL" :alt="copy.title" width="220" height="220"></div>
           <p class="dc-wechat-caption">{{ copy.caption }}</p>
         </div>
       </div>
@@ -165,7 +166,7 @@ onBeforeUnmount(() => {
   font-size: 12.5px;
   line-height: 20px;
   color: var(--vp-c-text-2);
-  text-align: left;
+  text-align: center;
 }
 
 .dc-wechat-close {
