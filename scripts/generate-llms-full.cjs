@@ -78,10 +78,13 @@ function extractText(html) {
 }
 
 const files = walkHtml(DIST)
-  // 根路径与 404 是 noindex 的语言跳转/错误页，不进入 AI 语料
+  // 根路径与 404 是 noindex 的语言跳转/错误页，不进入 AI 语料；
+  // clean-urls 目录索引副本（ensure-clean-url-indexes 生成）与扁平 .html 页面重复，跳过
   .filter(file => {
     const rel = relative(DIST, file).replace(/\\/g, '/')
-    return rel !== 'index.html' && rel !== '404.html'
+    if (rel === 'index.html' || rel === '404.html') return false
+    if (rel.endsWith('/index.html')) return false
+    return true
   })
   // 中文页在前，与 llms.txt 的阅读顺序一致
   .sort((a, b) => {
