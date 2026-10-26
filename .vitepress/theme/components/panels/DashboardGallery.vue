@@ -145,7 +145,7 @@ function clearPointer(event: PointerEvent) {
                 <span>{{ vizLabel(domain.vizType) }}</span>
               </div>
               <p class="demo-card-tagline">{{ en ? domain.tagline_en : domain.tagline_zh }}</p>
-              <p class="demo-card-signature">{{ domain.signature }}</p>
+              <p class="demo-card-signature">{{ en ? domain.signature_en : domain.signature_zh }}</p>
               <div class="demo-card-foot">
                 <span>{{ copy.cardAction }}</span>
                 <i>↗</i>

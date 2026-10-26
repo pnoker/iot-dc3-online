@@ -63,7 +63,7 @@ const KPIS: KpiSpec[] = [
   {
     key: 'occupancy',
     label: t('在线人数', 'Occupancy'),
-    content: '{nt} 人',
+    content: t('{nt} 人', '{nt} people'),
     fill: GREEN,
     toFixed: 0,
     baseline: 326,

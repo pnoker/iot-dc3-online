@@ -36,7 +36,7 @@ const KPIS: KpiSpec[] = [
   {
     key: 'output',
     label: t('今日累计产量', "Today's Output"),
-    content: '{nt} 件',
+    content: t('{nt} 件', '{nt} pcs'),
     fill: CYAN,
     baseline: 8000,
     unit: '件',
@@ -50,7 +50,7 @@ const KPIS: KpiSpec[] = [
   {
     key: 'wip',
     label: t('在制品 WIP', 'WIP'),
-    content: '{nt} 件',
+    content: t('{nt} 件', '{nt} pcs'),
     fill: GREEN,
     baseline: 320,
     unit: '件',
@@ -62,7 +62,7 @@ const KPIS: KpiSpec[] = [
   {
     key: 'orders',
     label: t('当班订单', 'Shift Orders'),
-    content: '{nt} 单',
+    content: t('{nt} 单', '{nt} orders'),
     fill: AMBER,
     baseline: 156,
     unit: '单',
@@ -98,7 +98,7 @@ const KPIS: KpiSpec[] = [
   {
     key: 'online',
     label: t('在线设备', 'Online Devices'),
-    content: '{nt} 台',
+    content: t('{nt} 台', '{nt} units'),
     fill: GREEN,
     baseline: 48,
     unit: '台',

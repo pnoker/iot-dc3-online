@@ -71,7 +71,7 @@ const statusColor = computed(() =>
           {{ t('该领域看板将在', 'This dashboard ships in') }} <b>{{ domain.stage }}</b>
           {{ t('实现。完成后呈现:', ', featuring:') }} {{ en ? domain.tagline_en : domain.tagline_zh }}
         </p>
-        <p class="ph-sig"><b>{{ t('招牌可视化', 'Signature visuals') }}:</b> {{ domain.signature }}</p>
+        <p class="ph-sig"><b>{{ t('招牌可视化', 'Signature visuals') }}:</b> {{ en ? domain.signature_en : domain.signature_zh }}</p>
       </section>
 
       <section class="dc3d-panel ph-card ph-demo">

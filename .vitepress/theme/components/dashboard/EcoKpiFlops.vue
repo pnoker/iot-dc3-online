@@ -119,7 +119,7 @@ const KPIS: KpiSpec[] = [
   {
     key: 'goodDays',
     label: t('优良天(累计)', 'Good Days (YTD)'),
-    content: '{nt} 天',
+    content: t('{nt} 天', '{nt} days'),
     fill: LIME,
     baseline: 214,
     unit: '天',
