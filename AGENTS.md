@@ -27,6 +27,7 @@ The site is built with **VitePress 1.6** and deployed to GitHub Pages (custom do
 │   ├── ads.txt            # AdSense authorization
 │   └── <hex>.txt          # IndexNow key file — key is referenced by deploy.yml; do not delete
 ├── scripts/
+│   ├── ensure-clean-url-indexes.cjs  # Post-build: creates directory indexes for cleanUrls (e.g. /zh/pricing/ alongside /zh/pricing.html)
 │   ├── generate-llms-full.cjs  # Post-build: extracts SSR HTML text into dist/llms-full.txt (AEO)
 │   └── gen-og-images.mjs       # Regenerates public/images/og-{zh,en}.png from SVG (run locally, commit PNGs)
 └── .github/workflows/deploy.yml  # Build + GitHub Pages deploy + IndexNow ping
@@ -34,7 +35,7 @@ The site is built with **VitePress 1.6** and deployed to GitHub Pages (custom do
 
 ## Build & Deploy
 
-- `pnpm install` then `pnpm dev` for local dev; `pnpm build` runs `vitepress build && node scripts/generate-llms-full.cjs`.
+- `pnpm install` then `pnpm dev` for local dev; `pnpm build` runs `vitepress build && node scripts/ensure-clean-url-indexes.cjs && node scripts/generate-llms-full.cjs`.
 - Deployment is automatic on push to `main`; no manual build output is committed.
 
 ## Content Conventions

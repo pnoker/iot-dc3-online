@@ -18,7 +18,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # 全量历史：sitemap lastmod 依赖 git log 按文件取最后提交日期（config.ts gitLastmod），
+      # 浅克隆下所有文件都只会返回 HEAD 日期
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
         with:

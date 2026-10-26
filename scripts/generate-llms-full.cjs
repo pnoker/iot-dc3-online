@@ -8,7 +8,7 @@
  *    读源 md 会拿到空的 <VisionPage /> 占位，读渲染产物才能覆盖全部真实文本。
  * 2. 顺带剥离所有组件标签与 HTML 噪音，输出即所见文本。
  */
-const {readFileSync, writeFileSync, readdirSync, statSync, mkdirSync} = require('node:fs')
+const {readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, existsSync} = require('node:fs')
 const {join, relative, dirname, resolve} = require('node:path')
 
 const SITE_URL = 'https://dc3.site'
@@ -79,11 +79,14 @@ function extractText(html) {
 
 const files = walkHtml(DIST)
   // 根路径与 404 是 noindex 的语言跳转/错误页，不进入 AI 语料；
-  // clean-urls 目录索引副本（ensure-clean-url-indexes 生成）与扁平 .html 页面重复，跳过
+  // vision 是 noindex 的跳转 stub（与 config sitemap、seo.ts 的 noindex 规则一致）；
+  // clean-urls 目录索引副本（ensure-clean-url-indexes 生成）在扁平 .html 已存在时才重复，跳过——
+  // zh/en 首页与 demo 画廊页只产出目录索引、无扁平副本，是真实页面，必须保留
   .filter(file => {
     const rel = relative(DIST, file).replace(/\\/g, '/')
     if (rel === 'index.html' || rel === '404.html') return false
-    if (rel.endsWith('/index.html')) return false
+    if (/^(zh|en)\/vision(\.html|\/index\.html)$/.test(rel)) return false
+    if (rel.endsWith('/index.html') && existsSync(join(DIST, dirname(rel) + '.html'))) return false
     return true
   })
   // 中文页在前，与 llms.txt 的阅读顺序一致

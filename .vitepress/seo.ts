@@ -1,3 +1,4 @@
+import {execSync} from 'node:child_process'
 import {existsSync, readFileSync} from 'node:fs'
 import {fileURLToPath} from 'node:url'
 import {resolve} from 'node:path'
@@ -56,6 +57,26 @@ const ORGANIZATION = {
 interface FaqEntry {
   question: string
   answer: string
+}
+
+const lastmodCache = new Map<string, string | undefined>()
+
+// JSON-LD 的时效信号:取源文件最后一次实质提交日期(与 config.ts sitemap lastmod 同源),
+// 取不到则省略字段而非编造。浅克隆(CI 未拉全量历史)下会退化为 HEAD 日期,deploy.yml 已设 fetch-depth: 0。
+function gitDate(relativePath: string): string | undefined {
+  if (lastmodCache.has(relativePath)) return lastmodCache.get(relativePath)
+  let result: string | undefined
+  try {
+    const date = execSync(`git log -1 --format=%cs -- "${relativePath}"`, {
+      encoding: 'utf8',
+      cwd: resolve(SITE_ROOT, '..')
+    }).trim()
+    result = /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : undefined
+  } catch {
+    result = undefined
+  }
+  lastmodCache.set(relativePath, result)
+  return result
 }
 
 function getLocale(relativePath: string): keyof typeof LOCALES | null {
@@ -186,6 +207,7 @@ function getStructuredData(
   title: string,
   description: string
 ) {
+  const dateModified = gitDate(relativePath)
   const graph: Record<string, unknown>[] = [
     ORGANIZATION,
     {
@@ -204,7 +226,9 @@ function getStructuredData(
       description,
       inLanguage: LOCALES[locale].hreflang,
       isPartOf: {'@id': WEBSITE_ID},
-      breadcrumb: {'@id': `${canonicalUrl}#breadcrumb`}
+      breadcrumb: {'@id': `${canonicalUrl}#breadcrumb`},
+      publisher: {'@id': ORGANIZATION_ID},
+      ...(dateModified ? {dateModified} : {})
     },
     {
       '@type': 'BreadcrumbList',
